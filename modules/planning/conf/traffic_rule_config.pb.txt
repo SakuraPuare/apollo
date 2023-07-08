@@ -10,10 +10,10 @@ config: {
   rule_id: CROSSWALK
   enabled: true
   crosswalk {
-    stop_distance: 1.0
+    stop_distance: 2.25
     max_stop_deceleration: 6.0
     min_pass_s_distance: 1.0
-    max_valid_stop_distance: 2.25
+    max_valid_stop_distance: 3.5
     expand_s_distance: 2.0
     stop_strict_l_distance: 6.0
     stop_loose_l_distance: 8.0
