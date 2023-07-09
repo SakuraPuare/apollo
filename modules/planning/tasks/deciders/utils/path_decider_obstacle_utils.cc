@@ -35,6 +35,9 @@ namespace apollo {
                 obstacle.IsIgnore()) {
                 return false;
             }
+            if (obstacle.Perception().type() == 1 && obstacle.speed() < 10.5){
+                return true;
+            }
             // Obstacle should not be pedestrian or bicycle.
             if (obstacle.Perception().type() == 3 || obstacle.Perception().type() == 4){
                 return false;
@@ -55,6 +58,17 @@ namespace apollo {
             // These obstacles will almost certainly move in the near future and we
             // should not side-pass such obstacles.
 
+            // enum PerceptionObstacle_Type : int {
+            //     PerceptionObstacle_Type_UNKNOWN = 0,
+            //     PerceptionObstacle_Type_UNKNOWN_MOVABLE = 1,
+            //     PerceptionObstacle_Type_UNKNOWN_UNMOVABLE = 2,
+            //     PerceptionObstacle_Type_PEDESTRIAN = 3,
+            //     PerceptionObstacle_Type_BICYCLE = 4,
+            //     PerceptionObstacle_Type_VEHICLE = 5
+            // };
+
+            AINFO << "Obstacle [" << obstacle.Id() << "] type : "
+                  << obstacle.Perception().type() << ", speed : " << obstacle.speed();
             return true;
         }
 

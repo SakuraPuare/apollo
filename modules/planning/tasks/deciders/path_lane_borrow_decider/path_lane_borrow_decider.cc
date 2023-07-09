@@ -295,7 +295,7 @@ namespace apollo {
                         lane_boundary_type == hdmap::LaneBoundaryType::SOLID_WHITE) {
                         *left_neighbor_lane_borrowable = false;
                     }
-                    ADEBUG << "s[" << check_s << "] left_lane_boundary_type["
+                    AINFO << "s[" << check_s << "] left_lane_boundary_type["
                            << LaneBoundaryType_Type_Name(lane_boundary_type) << "]";
                 }
                 if (*right_neighbor_lane_borrowable) {
@@ -304,7 +304,7 @@ namespace apollo {
                         lane_boundary_type == hdmap::LaneBoundaryType::SOLID_WHITE) {
                         *right_neighbor_lane_borrowable = false;
                     }
-                    ADEBUG << "s[" << check_s << "] right_neighbor_lane_borrowable["
+                    AINFO << "s[" << check_s << "] right_neighbor_lane_borrowable["
                            << LaneBoundaryType_Type_Name(lane_boundary_type) << "]";
                 }
                 check_s += 2.0;

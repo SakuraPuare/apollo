@@ -54,7 +54,7 @@ namespace apollo {
             if (FLAGS_enable_skip_path_tasks && path_reusable) {
                 return Status::OK();
             }
-            ADEBUG << "Plan at the starting point: x = " << init_point.path_point().x()
+            AINFO << "Plan at the starting point: x = " << init_point.path_point().x()
                    << ", y = " << init_point.path_point().y()
                    << ", and angle = " << init_point.path_point().theta();
             common::TrajectoryPoint planning_start_point = init_point;
@@ -316,16 +316,16 @@ namespace apollo {
 
             if (!success) {
                 AERROR << "piecewise jerk path optimizer failed";
-                std::stringstream ssm;
                 AERROR << "dl bound" << FLAGS_lateral_derivative_bound_default
                        << " jerk bound" << jerk_bound;
-                for (size_t i = 0; i < lat_boundaries.size(); i++) {
-                    ssm << lat_boundaries[i].first << " " << lat_boundaries[i].second << ","
-                        << ddl_bounds[i].first << " " << ddl_bounds[i].second << ","
-                        << path_reference_l_ref[i] << std::endl;
-                }
-                AERROR << "lat boundary, ddl boundary , path reference" << std::endl
-                       << ssm.str();
+                // std::stringstream ssm;
+                // for (size_t i = 0; i < lat_boundaries.size(); i++) {
+                //     ssm << lat_boundaries[i].first << " " << lat_boundaries[i].second << ","
+                //         << ddl_bounds[i].first << " " << ddl_bounds[i].second << ","
+                //         << path_reference_l_ref[i] << std::endl;
+                // }
+                // AERROR << "lat boundary, ddl boundary , path reference" << std::endl
+                //        << ssm.str();
                 return false;
             }
 
