@@ -29,10 +29,6 @@ namespace apollo {
 
                 Stage::StageStatus TrafficLightProtectedStageIntersectionCruise::Process(
                         const common::TrajectoryPoint &planning_init_point, Frame *frame) {
-                    // print current car speed
-                    AINFO << "current speed = " << frame->vehicle_state().linear_velocity();
-                    AINFO << "current acc = " << frame->vehicle_state().linear_acceleration();
-                    
                     ADEBUG << "stage: IntersectionCruise";
                     CHECK_NOTNULL(frame);
 

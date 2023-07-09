@@ -144,6 +144,10 @@ namespace apollo {
                     PerceptionObstacle::Type obstacle_type = perception_obstacle.type();
                     std::string obstacle_type_name =
                             PerceptionObstacle_Type_Name(obstacle_type);
+                            
+                    // print obstacle type and name
+                    AINFO << "Type:" << obstacle_type
+                          << "Name:" << obstacle_type_name;
 
                     // update stop timestamp on static pedestrian for watch timer
                     const bool is_on_lane =
@@ -179,11 +183,11 @@ namespace apollo {
 
                     if (stop) {
                         pedestrians.push_back(obstacle_id);
-                        ADEBUG << "wait for: obstacle_id[" << obstacle_id << "] type["
+                        AINFO << "wait for: obstacle_id[" << obstacle_id << "] type["
                                << obstacle_type_name << "] crosswalk_id[" << crosswalk_id
                                << "]";
                     } else {
-                        ADEBUG << "skip: obstacle_id[" << obstacle_id << "] type["
+                        AINFO << "skip: obstacle_id[" << obstacle_id << "] type["
                                << obstacle_type_name << "] crosswalk_id[" << crosswalk_id
                                << "]";
                     }

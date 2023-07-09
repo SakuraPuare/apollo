@@ -54,14 +54,9 @@ namespace apollo {
                 next_stage_ = config_.stage_type();
                 std::unordered_map<TaskConfig::TaskType, const TaskConfig *, std::hash < int>>
                 config_map;
-
-                int cnt = 0;
                 for (const auto &task_config: config_.task_config()) {
                     config_map[task_config.task_type()] = &task_config;
-                    // print taskinfo
-                    AINFO << ++cnt << ": " << task_config.DebugString();
                 }
-                
                 for (int i = 0; i < config_.task_type_size(); ++i) {
                     auto task_type = config_.task_type(i);
                     ACHECK(config_map.find(task_type) != config_map.end())
@@ -76,8 +71,6 @@ namespace apollo {
                         task_list_.push_back(iter->second.get());
                     }
                 }
-
-                AINFO << "DEBUG: Stage " << name_ << " init done";
             }
 
             const std::string &Stage::Name() const { return name_; }

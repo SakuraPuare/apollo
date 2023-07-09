@@ -35,15 +35,19 @@ namespace apollo {
                 obstacle.IsIgnore()) {
                 return false;
             }
+            // Obstacle should not be pedestrian or bicycle.
+            if (obstacle.Perception().type() == 3 || obstacle.Perception().type() == 4){
+                return false;
+            }
+            // Obstacle should not be moving obstacle.
+            if (obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
+                return false;
+            }
             // Obstacle should not be moving obstacle.
             // if (!obstacle.IsStatic() ||
             //     obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
             //     return false;
             // }
-
-            if (obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
-                return false;
-            }
 
             // TODO(jiacheng):
             // Some obstacles are not moving, but only because they are waiting for

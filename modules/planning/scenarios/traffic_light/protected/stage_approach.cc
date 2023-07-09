@@ -110,7 +110,6 @@ namespace apollo {
                         traffic_light->add_done_traffic_light_overlap_id(traffic_light_overlap_id);
                     }
 
-                    AINFO << "HERE RUN FINISH STAGE";
                     next_stage_ = StageType::TRAFFIC_LIGHT_PROTECTED_INTERSECTION_CRUISE;
                     return Stage::FINISHED;
                 }

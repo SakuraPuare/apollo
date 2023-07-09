@@ -369,8 +369,8 @@ namespace apollo {
             }
 
             PerceptionObstacle::Type obstacle_type = obstacle.Perception().type();
-            ADEBUG << "STOP: obstacle_id[" << obstacle.Id() << "] obstacle_type["
-                   << PerceptionObstacle_Type_Name(obstacle_type) << "]";
+            AINFO << "STOP: obstacle_id[" << obstacle.Id() << "] obstacle_type["
+                  << PerceptionObstacle_Type_Name(obstacle_type) << "]";
 
             return true;
         }
