@@ -22,21 +22,23 @@
 #include "modules/prediction/network/net_model.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class AutotuningMLPModel : public prediction::network::NetModel {
- public:
-  AutotuningMLPModel() = default;
-  virtual ~AutotuningMLPModel() = default;
-  /**
-   * @brief Compute the model output from inputs according to a defined layers'
-   * flow
-   * @param Inputs to the network
-   * @param Output of the network will be returned
-   */
-  void Run(const std::vector<Eigen::MatrixXf>& inputs,
-           Eigen::MatrixXf* output) const override;
-};
+        class AutotuningMLPModel : public prediction::network::NetModel {
+        public:
+            AutotuningMLPModel() = default;
 
-}  // namespace planning
+            virtual ~AutotuningMLPModel() = default;
+
+            /**
+             * @brief Compute the model output from inputs according to a defined layers'
+             * flow
+             * @param Inputs to the network
+             * @param Output of the network will be returned
+             */
+            void Run(const std::vector <Eigen::MatrixXf> &inputs,
+                     Eigen::MatrixXf *output) const override;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

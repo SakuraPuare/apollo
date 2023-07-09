@@ -30,7 +30,7 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @class TrafficDecider
@@ -42,27 +42,31 @@ namespace planning {
  *  * End of routing
  *  * Select the drivable reference line.
  */
-class TrafficDecider {
- public:
-  TrafficDecider() = default;
-  bool Init(const TrafficRuleConfigs &config);
-  virtual ~TrafficDecider() = default;
-  apollo::common::Status Execute(
-      Frame *frame, ReferenceLineInfo *reference_line_info,
-      const std::shared_ptr<DependencyInjector> &injector);
+        class TrafficDecider {
+        public:
+            TrafficDecider() = default;
 
- private:
-  static apollo::common::util::Factory<
-      TrafficRuleConfig::RuleId, TrafficRule,
-      TrafficRule *(*)(const TrafficRuleConfig &config,
-                       const std::shared_ptr<DependencyInjector> &injector)>
-      s_rule_factory;
+            bool Init(const TrafficRuleConfigs &config);
 
-  void RegisterRules();
-  void BuildPlanningTarget(ReferenceLineInfo *reference_line_info);
+            virtual ~TrafficDecider() = default;
 
-  TrafficRuleConfigs rule_configs_;
-};
+            apollo::common::Status Execute(
+                    Frame *frame, ReferenceLineInfo *reference_line_info,
+                    const std::shared_ptr <DependencyInjector> &injector);
 
-}  // namespace planning
+        private:
+            static apollo::common::util::Factory<
+                    TrafficRuleConfig::RuleId, TrafficRule,
+                    TrafficRule *(*)(const TrafficRuleConfig &config,
+                                     const std::shared_ptr <DependencyInjector> &injector)>
+                    s_rule_factory;
+
+            void RegisterRules();
+
+            void BuildPlanningTarget(ReferenceLineInfo *reference_line_info);
+
+            TrafficRuleConfigs rule_configs_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

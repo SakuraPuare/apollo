@@ -35,35 +35,39 @@
 #include "modules/planning/math/smoothing_spline/spline_1d_seg.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class Spline1d {
- public:
-  Spline1d(const std::vector<double>& x_knots, const uint32_t order);
+        class Spline1d {
+        public:
+            Spline1d(const std::vector<double> &x_knots, const uint32_t order);
 
-  // @brief: given x return f(x) value, derivative, second order derivative and
-  // the third order;
-  double operator()(const double x) const;
-  double Derivative(const double x) const;
-  double SecondOrderDerivative(const double x) const;
-  double ThirdOrderDerivative(const double x) const;
+            // @brief: given x return f(x) value, derivative, second order derivative and
+            // the third order;
+            double operator()(const double x) const;
 
-  // @brief: set spline segments
-  bool SetSplineSegs(const Eigen::MatrixXd& param_matrix, const uint32_t order);
+            double Derivative(const double x) const;
 
-  const std::vector<double>& x_knots() const;
-  uint32_t spline_order() const;
+            double SecondOrderDerivative(const double x) const;
 
-  const std::vector<Spline1dSeg>& splines() const;
+            double ThirdOrderDerivative(const double x) const;
 
- private:
-  uint32_t FindIndex(const double x) const;
+            // @brief: set spline segments
+            bool SetSplineSegs(const Eigen::MatrixXd &param_matrix, const uint32_t order);
 
- private:
-  std::vector<Spline1dSeg> splines_;
-  std::vector<double> x_knots_;
-  uint32_t spline_order_;
-};
+            const std::vector<double> &x_knots() const;
 
-}  // namespace planning
+            uint32_t spline_order() const;
+
+            const std::vector <Spline1dSeg> &splines() const;
+
+        private:
+            uint32_t FindIndex(const double x) const;
+
+        private:
+            std::vector <Spline1dSeg> splines_;
+            std::vector<double> x_knots_;
+            uint32_t spline_order_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

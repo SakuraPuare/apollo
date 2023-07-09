@@ -25,76 +25,76 @@
 #include "modules/planning/scenarios/emergency/emergency_stop/stage_standby.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace emergency_stop {
+    namespace planning {
+        namespace scenario {
+            namespace emergency_stop {
 
-apollo::common::util::Factory<
-    StageType, Stage,
-    Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
-               const std::shared_ptr<DependencyInjector>& injector)>
-    EmergencyStopScenario::s_stage_factory_;
+                apollo::common::util::Factory<
+                        StageType, Stage,
+                        Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
+                                   const std::shared_ptr <DependencyInjector> &injector)>
+                        EmergencyStopScenario::s_stage_factory_;
 
-void EmergencyStopScenario::Init() {
-  if (init_) {
-    return;
-  }
+                void EmergencyStopScenario::Init() {
+                    if (init_) {
+                        return;
+                    }
 
-  Scenario::Init();
+                    Scenario::Init();
 
-  if (!GetScenarioConfig()) {
-    AERROR << "fail to get scenario specific config";
-    return;
-  }
+                    if (!GetScenarioConfig()) {
+                        AERROR << "fail to get scenario specific config";
+                        return;
+                    }
 
-  init_ = true;
-}
+                    init_ = true;
+                }
 
-void EmergencyStopScenario::RegisterStages() {
-  if (!s_stage_factory_.Empty()) {
-    s_stage_factory_.Clear();
-  }
-  s_stage_factory_.Register(
-      StageType::EMERGENCY_STOP_APPROACH,
-      [](const ScenarioConfig::StageConfig& config,
-         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
-        return new EmergencyStopStageApproach(config, injector);
-      });
-  s_stage_factory_.Register(
-      StageType::EMERGENCY_STOP_STANDBY,
-      [](const ScenarioConfig::StageConfig& config,
-         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
-        return new EmergencyStopStageStandby(config, injector);
-      });
-}
+                void EmergencyStopScenario::RegisterStages() {
+                    if (!s_stage_factory_.Empty()) {
+                        s_stage_factory_.Clear();
+                    }
+                    s_stage_factory_.Register(
+                            StageType::EMERGENCY_STOP_APPROACH,
+                            [](const ScenarioConfig::StageConfig &config,
+                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
+                                return new EmergencyStopStageApproach(config, injector);
+                            });
+                    s_stage_factory_.Register(
+                            StageType::EMERGENCY_STOP_STANDBY,
+                            [](const ScenarioConfig::StageConfig &config,
+                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
+                                return new EmergencyStopStageStandby(config, injector);
+                            });
+                }
 
-std::unique_ptr<Stage> EmergencyStopScenario::CreateStage(
-    const ScenarioConfig::StageConfig& stage_config,
-    const std::shared_ptr<DependencyInjector>& injector) {
-  if (s_stage_factory_.Empty()) {
-    RegisterStages();
-  }
-  auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
-                                                 stage_config, injector);
-  if (ptr) {
-    ptr->SetContext(&context_);
-  }
-  return ptr;
-}
+                std::unique_ptr <Stage> EmergencyStopScenario::CreateStage(
+                        const ScenarioConfig::StageConfig &stage_config,
+                        const std::shared_ptr <DependencyInjector> &injector) {
+                    if (s_stage_factory_.Empty()) {
+                        RegisterStages();
+                    }
+                    auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
+                                                                   stage_config, injector);
+                    if (ptr) {
+                        ptr->SetContext(&context_);
+                    }
+                    return ptr;
+                }
 
 /*
  * read scenario specific configs and set in context_ for stages to read
  */
-bool EmergencyStopScenario::GetScenarioConfig() {
-  if (!config_.has_emergency_stop_config()) {
-    AERROR << "miss scenario specific config";
-    return false;
-  }
-  context_.scenario_config.CopyFrom(config_.emergency_stop_config());
-  return true;
-}
+                bool EmergencyStopScenario::GetScenarioConfig() {
+                    if (!config_.has_emergency_stop_config()) {
+                        AERROR << "miss scenario specific config";
+                        return false;
+                    }
+                    context_.scenario_config.CopyFrom(config_.emergency_stop_config());
+                    return true;
+                }
 
-}  // namespace emergency_stop
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace emergency_stop
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

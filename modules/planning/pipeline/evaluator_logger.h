@@ -20,17 +20,17 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class EvaluatorLogger {
- public:
-  static std::ofstream& GetStream() {
-    static std::ofstream log_file(
-        FLAGS_planning_data_dir + "/output_data_evaluated.log",
-        std::ios_base::out | std::ios_base::app);
-    return log_file;
-  }
-};
+        class EvaluatorLogger {
+        public:
+            static std::ofstream &GetStream() {
+                static std::ofstream log_file(
+                        FLAGS_planning_data_dir + "/output_data_evaluated.log",
+                        std::ios_base::out | std::ios_base::app);
+                return log_file;
+            }
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

@@ -28,25 +28,28 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class PathOptimizer : public Task {
- public:
-  explicit PathOptimizer(const TaskConfig &config);
-  PathOptimizer(const TaskConfig &config,
-                const std::shared_ptr<DependencyInjector> &injector);
-  virtual ~PathOptimizer() = default;
-  apollo::common::Status Execute(
-      Frame *frame, ReferenceLineInfo *reference_line_info) override;
+        class PathOptimizer : public Task {
+        public:
+            explicit PathOptimizer(const TaskConfig &config);
 
- protected:
-  virtual apollo::common::Status Process(
-      const SpeedData &speed_data, const ReferenceLine &reference_line,
-      const common::TrajectoryPoint &init_point, const bool path_reusable,
-      PathData *const path_data) = 0;
+            PathOptimizer(const TaskConfig &config,
+                          const std::shared_ptr <DependencyInjector> &injector);
 
-  void RecordDebugInfo(const PathData &path_data);
-};
+            virtual ~PathOptimizer() = default;
 
-}  // namespace planning
+            apollo::common::Status Execute(
+                    Frame *frame, ReferenceLineInfo *reference_line_info) override;
+
+        protected:
+            virtual apollo::common::Status Process(
+                    const SpeedData &speed_data, const ReferenceLine &reference_line,
+                    const common::TrajectoryPoint &init_point, const bool path_reusable,
+                    PathData *const path_data) = 0;
+
+            void RecordDebugInfo(const PathData &path_data);
+        };
+
+    }  // namespace planning
 }  // namespace apollo

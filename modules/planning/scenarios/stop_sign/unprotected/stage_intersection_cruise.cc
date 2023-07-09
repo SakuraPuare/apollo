@@ -23,34 +23,34 @@
 #include "cyber/common/log.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace stop_sign {
+    namespace planning {
+        namespace scenario {
+            namespace stop_sign {
 
-Stage::StageStatus StopSignUnprotectedStageIntersectionCruise::Process(
-    const common::TrajectoryPoint& planning_init_point, Frame* frame) {
-  ADEBUG << "stage: IntersectionCruise";
-  CHECK_NOTNULL(frame);
+                Stage::StageStatus StopSignUnprotectedStageIntersectionCruise::Process(
+                        const common::TrajectoryPoint &planning_init_point, Frame *frame) {
+                    ADEBUG << "stage: IntersectionCruise";
+                    CHECK_NOTNULL(frame);
 
-  bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
-  if (!plan_ok) {
-    AERROR << "StopSignUnprotectedStageIntersectionCruise plan error";
-  }
+                    bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
+                    if (!plan_ok) {
+                        AERROR << "StopSignUnprotectedStageIntersectionCruise plan error";
+                    }
 
-  bool stage_done =
-      stage_impl_.CheckDone(*frame, ScenarioType::STOP_SIGN_UNPROTECTED,
-                            config_, injector_->planning_context(), false);
-  if (stage_done) {
-    return FinishStage();
-  }
-  return Stage::RUNNING;
-}
+                    bool stage_done =
+                            stage_impl_.CheckDone(*frame, ScenarioType::STOP_SIGN_UNPROTECTED,
+                                                  config_, injector_->planning_context(), false);
+                    if (stage_done) {
+                        return FinishStage();
+                    }
+                    return Stage::RUNNING;
+                }
 
-Stage::StageStatus StopSignUnprotectedStageIntersectionCruise::FinishStage() {
-  return FinishScenario();
-}
+                Stage::StageStatus StopSignUnprotectedStageIntersectionCruise::FinishStage() {
+                    return FinishScenario();
+                }
 
-}  // namespace stop_sign
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace stop_sign
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

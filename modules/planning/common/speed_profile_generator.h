@@ -30,24 +30,24 @@
 #include "modules/planning/math/curve1d/quintic_polynomial_curve1d.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class SpeedProfileGenerator {
- public:
-  SpeedProfileGenerator() = delete;
+        class SpeedProfileGenerator {
+        public:
+            SpeedProfileGenerator() = delete;
 
-  static SpeedData GenerateFallbackSpeed(const EgoInfo* ego_info,
-                                         const double stop_distance = 0.0);
+            static SpeedData GenerateFallbackSpeed(const EgoInfo *ego_info,
+                                                   const double stop_distance = 0.0);
 
-  static void FillEnoughSpeedPoints(SpeedData* const speed_data);
+            static void FillEnoughSpeedPoints(SpeedData *const speed_data);
 
-  static SpeedData GenerateFixedDistanceCreepProfile(const double distance,
-                                                     const double max_speed);
+            static SpeedData GenerateFixedDistanceCreepProfile(const double distance,
+                                                               const double max_speed);
 
- private:
-  static SpeedData GenerateStopProfile(const double init_speed,
-                                       const double init_acc);
-};
+        private:
+            static SpeedData GenerateStopProfile(const double init_speed,
+                                                 const double init_acc);
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

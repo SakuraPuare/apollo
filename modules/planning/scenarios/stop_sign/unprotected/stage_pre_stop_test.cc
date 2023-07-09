@@ -22,31 +22,37 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace stop_sign {
+    namespace planning {
+        namespace scenario {
+            namespace stop_sign {
 
-class StopSignUnprotectedStagePreStopTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_stage_type(StageType::STOP_SIGN_UNPROTECTED_PRE_STOP);
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+                class StopSignUnprotectedStagePreStopTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {
+                        config_.set_stage_type(StageType::STOP_SIGN_UNPROTECTED_PRE_STOP);
+                        injector_ = std::make_shared<DependencyInjector>();
+                    }
 
- protected:
-  ScenarioConfig::StageConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+                protected:
+                    ScenarioConfig::StageConfig config_;
+                    std::shared_ptr <DependencyInjector> injector_;
+                };
 
-TEST_F(StopSignUnprotectedStagePreStopTest, Init) {
-  StopSignUnprotectedStagePreStop stop_sign_unprotected_stage_pre_stop(
-      config_, injector_);
-  EXPECT_EQ(stop_sign_unprotected_stage_pre_stop.Name(),
-            StageType_Name(
-                StageType::STOP_SIGN_UNPROTECTED_PRE_STOP));
-}
+                TEST_F(StopSignUnprotectedStagePreStopTest, Init
+                ) {
+                StopSignUnprotectedStagePreStop stop_sign_unprotected_stage_pre_stop(
+                        config_, injector_);
+                EXPECT_EQ(stop_sign_unprotected_stage_pre_stop
+                .
 
-}  // namespace stop_sign
-}  // namespace scenario
+                Name(),
+                        StageType_Name(
+                        StageType::STOP_SIGN_UNPROTECTED_PRE_STOP)
+
+                );
+            }
+
+        }  // namespace stop_sign
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

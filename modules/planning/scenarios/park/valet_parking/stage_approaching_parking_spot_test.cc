@@ -23,31 +23,37 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace valet_parking {
-class StageApproachingParkingSpotTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_stage_type(
-        StageType::VALET_PARKING_APPROACHING_PARKING_SPOT);
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+    namespace planning {
+        namespace scenario {
+            namespace valet_parking {
+                class StageApproachingParkingSpotTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {
+                        config_.set_stage_type(
+                                StageType::VALET_PARKING_APPROACHING_PARKING_SPOT);
+                        injector_ = std::make_shared<DependencyInjector>();
+                    }
 
- protected:
-  ScenarioConfig::StageConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+                protected:
+                    ScenarioConfig::StageConfig config_;
+                    std::shared_ptr <DependencyInjector> injector_;
+                };
 
-TEST_F(StageApproachingParkingSpotTest, Init) {
-  StageApproachingParkingSpot stage_approaching_parking_spot(config_,
-                                                             injector_);
-  EXPECT_EQ(stage_approaching_parking_spot.Name(),
-            StageType_Name(
-                StageType::VALET_PARKING_APPROACHING_PARKING_SPOT));
-}
+                TEST_F(StageApproachingParkingSpotTest, Init
+                ) {
+                StageApproachingParkingSpot stage_approaching_parking_spot(config_,
+                                                                           injector_);
+                EXPECT_EQ(stage_approaching_parking_spot
+                .
 
-}  // namespace valet_parking
-}  // namespace scenario
+                Name(),
+                        StageType_Name(
+                        StageType::VALET_PARKING_APPROACHING_PARKING_SPOT)
+
+                );
+            }
+
+        }  // namespace valet_parking
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

@@ -28,35 +28,35 @@
 #include "modules/planning/tasks/deciders/decider.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class OpenSpacePreStopDecider : public Decider {
- public:
-  OpenSpacePreStopDecider(const TaskConfig& config,
-                          const std::shared_ptr<DependencyInjector>& injector);
+        class OpenSpacePreStopDecider : public Decider {
+        public:
+            OpenSpacePreStopDecider(const TaskConfig &config,
+                                    const std::shared_ptr <DependencyInjector> &injector);
 
- private:
-  apollo::common::Status Process(
-      Frame* frame, ReferenceLineInfo* reference_line_info) override;
+        private:
+            apollo::common::Status Process(
+                    Frame *frame, ReferenceLineInfo *reference_line_info) override;
 
-  bool CheckParkingSpotPreStop(Frame* const frame,
-                               ReferenceLineInfo* const reference_line_info,
-                               double* target_s);
+            bool CheckParkingSpotPreStop(Frame *const frame,
+                                         ReferenceLineInfo *const reference_line_info,
+                                         double *target_s);
 
-  bool CheckPullOverPreStop(Frame* const frame,
-                            ReferenceLineInfo* const reference_line_info,
-                            double* target_s);
+            bool CheckPullOverPreStop(Frame *const frame,
+                                      ReferenceLineInfo *const reference_line_info,
+                                      double *target_s);
 
-  void SetParkingSpotStopFence(const double target_s, Frame* const frame,
-                               ReferenceLineInfo* const reference_line_info);
+            void SetParkingSpotStopFence(const double target_s, Frame *const frame,
+                                         ReferenceLineInfo *const reference_line_info);
 
-  void SetPullOverStopFence(const double target_s, Frame* const frame,
-                            ReferenceLineInfo* const reference_line_info);
+            void SetPullOverStopFence(const double target_s, Frame *const frame,
+                                      ReferenceLineInfo *const reference_line_info);
 
- private:
-  static constexpr const char* OPEN_SPACE_STOP_ID = "OPEN_SPACE_PRE_STOP";
-  OpenSpacePreStopDeciderConfig open_space_pre_stop_decider_config_;
-};
+        private:
+            static constexpr const char *OPEN_SPACE_STOP_ID = "OPEN_SPACE_PRE_STOP";
+            OpenSpacePreStopDeciderConfig open_space_pre_stop_decider_config_;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

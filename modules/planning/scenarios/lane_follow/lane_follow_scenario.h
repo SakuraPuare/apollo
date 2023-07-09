@@ -36,23 +36,23 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace lane_follow {
+    namespace planning {
+        namespace scenario {
+            namespace lane_follow {
 
-class LaneFollowScenario : public Scenario {
- public:
-  LaneFollowScenario(const ScenarioConfig& config,
-                     const ScenarioContext* context,
-                     const std::shared_ptr<DependencyInjector>& injector)
-      : Scenario(config, context, injector) {}
+                class LaneFollowScenario : public Scenario {
+                public:
+                    LaneFollowScenario(const ScenarioConfig &config,
+                                       const ScenarioContext *context,
+                                       const std::shared_ptr <DependencyInjector> &injector)
+                            : Scenario(config, context, injector) {}
 
-  std::unique_ptr<Stage> CreateStage(
-      const ScenarioConfig::StageConfig& stage_config,
-      const std::shared_ptr<DependencyInjector>& injector) override;
-};
+                    std::unique_ptr <Stage> CreateStage(
+                            const ScenarioConfig::StageConfig &stage_config,
+                            const std::shared_ptr <DependencyInjector> &injector) override;
+                };
 
-}  // namespace lane_follow
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace lane_follow
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

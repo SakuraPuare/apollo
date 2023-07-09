@@ -24,41 +24,42 @@
 #include "modules/planning/tuning/autotuning_mlp_net_model.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class AutotuningBaseModel {
- public:
-  AutotuningBaseModel() = default;
-  virtual ~AutotuningBaseModel() = default;
+        class AutotuningBaseModel {
+        public:
+            AutotuningBaseModel() = default;
 
-  /**
-   * @brief set mlp model as well as feature builder
-   */
-  virtual common::Status SetParams() = 0;
+            virtual ~AutotuningBaseModel() = default;
 
-  /**
-   * @brief : evaluate by trajectory
-   * @param : input trajectory feature proto
-   * @return : the total value of reward / cost
-   */
-  virtual double Evaluate(
-      const autotuning::TrajectoryFeature& trajectory_feature) const = 0;
+            /**
+             * @brief set mlp model as well as feature builder
+             */
+            virtual common::Status SetParams() = 0;
 
-  /**
-   * @brief: evaluate by trajectory point
-   * @param : trajectory pointwise input feature
-   * @return : total value of reward / cost
-   */
-  virtual double Evaluate(
-      const autotuning::TrajectoryPointwiseFeature& point_feature) const = 0;
+            /**
+             * @brief : evaluate by trajectory
+             * @param : input trajectory feature proto
+             * @return : the total value of reward / cost
+             */
+            virtual double Evaluate(
+                    const autotuning::TrajectoryFeature &trajectory_feature) const = 0;
 
- protected:
-  /**
-   * @brief : stored autotuning mlp model
-   */
-  std::unique_ptr<AutotuningMLPModel> mlp_model_ = nullptr;
-  std::unique_ptr<AutotuningFeatureBuilder> feature_builder_ = nullptr;
-};
+            /**
+             * @brief: evaluate by trajectory point
+             * @param : trajectory pointwise input feature
+             * @return : total value of reward / cost
+             */
+            virtual double Evaluate(
+                    const autotuning::TrajectoryPointwiseFeature &point_feature) const = 0;
 
-}  // namespace planning
+        protected:
+            /**
+             * @brief : stored autotuning mlp model
+             */
+            std::unique_ptr <AutotuningMLPModel> mlp_model_ = nullptr;
+            std::unique_ptr <AutotuningFeatureBuilder> feature_builder_ = nullptr;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

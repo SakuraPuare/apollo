@@ -30,35 +30,35 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class Task {
- public:
-  explicit Task(const TaskConfig& config);
+        class Task {
+        public:
+            explicit Task(const TaskConfig &config);
 
-  Task(const TaskConfig& config,
-       const std::shared_ptr<DependencyInjector>& injector);
+            Task(const TaskConfig &config,
+                 const std::shared_ptr <DependencyInjector> &injector);
 
-  virtual ~Task() = default;
+            virtual ~Task() = default;
 
-  const std::string& Name() const;
+            const std::string &Name() const;
 
-  const TaskConfig& Config() const { return config_; }
+            const TaskConfig &Config() const { return config_; }
 
-  virtual common::Status Execute(Frame* frame,
-                                 ReferenceLineInfo* reference_line_info);
+            virtual common::Status Execute(Frame *frame,
+                                           ReferenceLineInfo *reference_line_info);
 
-  virtual common::Status Execute(Frame* frame);
+            virtual common::Status Execute(Frame *frame);
 
- protected:
-  Frame* frame_ = nullptr;
-  ReferenceLineInfo* reference_line_info_ = nullptr;
+        protected:
+            Frame *frame_ = nullptr;
+            ReferenceLineInfo *reference_line_info_ = nullptr;
 
-  TaskConfig config_;
-  std::string name_;
+            TaskConfig config_;
+            std::string name_;
 
-  std::shared_ptr<DependencyInjector> injector_;
-};
+            std::shared_ptr <DependencyInjector> injector_;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

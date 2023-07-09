@@ -26,34 +26,43 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace yield_sign {
+    namespace planning {
+        namespace scenario {
+            namespace yield_sign {
 
-class YieldSignScenarioTest : public ::testing::Test {
- public:
-  virtual void SetUp() {}
+                class YieldSignScenarioTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {}
 
- protected:
-  std::unique_ptr<YieldSignScenario> scenario_;
-};
+                protected:
+                    std::unique_ptr <YieldSignScenario> scenario_;
+                };
 
-TEST_F(YieldSignScenarioTest, VerifyConf) {
-  FLAGS_scenario_yield_sign_config_file =
-      "/apollo/modules/planning/conf/"
-      "scenario/yield_sign_config.pb.txt";
+                TEST_F(YieldSignScenarioTest, VerifyConf
+                ) {
+                FLAGS_scenario_yield_sign_config_file =
+                "/apollo/modules/planning/conf/"
+                "scenario/yield_sign_config.pb.txt";
 
-  ScenarioConfig config;
-  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-      FLAGS_scenario_yield_sign_config_file, &config));
+                ScenarioConfig config;
+                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+                        FLAGS_scenario_yield_sign_config_file, &config)
+                );
 
-  ScenarioContext context;
-  auto injector = std::make_shared<DependencyInjector>();
-  scenario_.reset(new YieldSignScenario(config, &context, injector));
-  EXPECT_EQ(scenario_->scenario_type(), ScenarioType::YIELD_SIGN);
-}
+                ScenarioContext context;
+                auto injector = std::make_shared<DependencyInjector>();
+                scenario_.reset(new
+                YieldSignScenario(config, &context, injector
+                ));
+                EXPECT_EQ(scenario_
+                ->
 
-}  // namespace yield_sign
-}  // namespace scenario
+                scenario_type(), ScenarioType::YIELD_SIGN
+
+                );
+            }
+
+        }  // namespace yield_sign
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

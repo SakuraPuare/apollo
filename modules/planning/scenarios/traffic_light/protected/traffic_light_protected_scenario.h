@@ -29,46 +29,47 @@
 #include "modules/planning/scenarios/scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace traffic_light {
+    namespace planning {
+        namespace scenario {
+            namespace traffic_light {
 
 // stage context
-struct TrafficLightProtectedContext {
-  ScenarioTrafficLightProtectedConfig scenario_config;
-  std::vector<std::string> current_traffic_light_overlap_ids;
-};
+                struct TrafficLightProtectedContext {
+                    ScenarioTrafficLightProtectedConfig scenario_config;
+                    std::vector <std::string> current_traffic_light_overlap_ids;
+                };
 
-class TrafficLightProtectedScenario : public Scenario {
- public:
-  TrafficLightProtectedScenario(
-      const ScenarioConfig& config, const ScenarioContext* context,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Scenario(config, context, injector) {}
+                class TrafficLightProtectedScenario : public Scenario {
+                public:
+                    TrafficLightProtectedScenario(
+                            const ScenarioConfig &config, const ScenarioContext *context,
+                            const std::shared_ptr <DependencyInjector> &injector)
+                            : Scenario(config, context, injector) {}
 
-  void Init() override;
+                    void Init() override;
 
-  std::unique_ptr<Stage> CreateStage(
-      const ScenarioConfig::StageConfig& stage_config,
-      const std::shared_ptr<DependencyInjector>& injector);
+                    std::unique_ptr <Stage> CreateStage(
+                            const ScenarioConfig::StageConfig &stage_config,
+                            const std::shared_ptr <DependencyInjector> &injector);
 
-  TrafficLightProtectedContext* GetContext() { return &context_; }
+                    TrafficLightProtectedContext *GetContext() { return &context_; }
 
- private:
-  static void RegisterStages();
-  bool GetScenarioConfig();
+                private:
+                    static void RegisterStages();
 
- private:
-  static apollo::common::util::Factory<
-      StageType, Stage,
-      Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
-                 const std::shared_ptr<DependencyInjector>& injector)>
-      s_stage_factory_;
-  bool init_ = false;
-  TrafficLightProtectedContext context_;
-};
+                    bool GetScenarioConfig();
 
-}  // namespace traffic_light
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    static apollo::common::util::Factory<
+                            StageType, Stage,
+                            Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
+                                       const std::shared_ptr <DependencyInjector> &injector)>
+                            s_stage_factory_;
+                    bool init_ = false;
+                    TrafficLightProtectedContext context_;
+                };
+
+            }  // namespace traffic_light
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

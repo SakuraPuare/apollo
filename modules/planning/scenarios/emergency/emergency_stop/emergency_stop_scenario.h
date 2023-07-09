@@ -27,45 +27,46 @@
 #include "modules/planning/scenarios/scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace emergency_stop {
+    namespace planning {
+        namespace scenario {
+            namespace emergency_stop {
 
 // stage context
-struct EmergencyStopContext {
-  ScenarioEmergencyStopConfig scenario_config;
-};
+                struct EmergencyStopContext {
+                    ScenarioEmergencyStopConfig scenario_config;
+                };
 
-class EmergencyStopScenario : public Scenario {
- public:
-  EmergencyStopScenario(const ScenarioConfig& config,
-                        const ScenarioContext* context,
-                        const std::shared_ptr<DependencyInjector>& injector)
-      : Scenario(config, context, injector) {}
+                class EmergencyStopScenario : public Scenario {
+                public:
+                    EmergencyStopScenario(const ScenarioConfig &config,
+                                          const ScenarioContext *context,
+                                          const std::shared_ptr <DependencyInjector> &injector)
+                            : Scenario(config, context, injector) {}
 
-  void Init() override;
+                    void Init() override;
 
-  std::unique_ptr<Stage> CreateStage(
-      const ScenarioConfig::StageConfig& stage_config,
-      const std::shared_ptr<DependencyInjector>& injector);
+                    std::unique_ptr <Stage> CreateStage(
+                            const ScenarioConfig::StageConfig &stage_config,
+                            const std::shared_ptr <DependencyInjector> &injector);
 
-  EmergencyStopContext* GetContext() { return &context_; }
+                    EmergencyStopContext *GetContext() { return &context_; }
 
- private:
-  static void RegisterStages();
-  bool GetScenarioConfig();
+                private:
+                    static void RegisterStages();
 
- private:
-  static apollo::common::util::Factory<
-      StageType, Stage,
-      Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
-                 const std::shared_ptr<DependencyInjector>& injector)>
-      s_stage_factory_;
-  bool init_ = false;
-  EmergencyStopContext context_;
-};
+                    bool GetScenarioConfig();
 
-}  // namespace emergency_stop
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    static apollo::common::util::Factory<
+                            StageType, Stage,
+                            Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
+                                       const std::shared_ptr <DependencyInjector> &injector)>
+                            s_stage_factory_;
+                    bool init_ = false;
+                    EmergencyStopContext context_;
+                };
+
+            }  // namespace emergency_stop
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

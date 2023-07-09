@@ -21,32 +21,38 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace bare_intersection {
+    namespace planning {
+        namespace scenario {
+            namespace bare_intersection {
 
-class StageApproachTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_stage_type(
-        StageType::BARE_INTERSECTION_UNPROTECTED_APPROACH);
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+                class StageApproachTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {
+                        config_.set_stage_type(
+                                StageType::BARE_INTERSECTION_UNPROTECTED_APPROACH);
+                        injector_ = std::make_shared<DependencyInjector>();
+                    }
 
- protected:
-  ScenarioConfig::StageConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+                protected:
+                    ScenarioConfig::StageConfig config_;
+                    std::shared_ptr <DependencyInjector> injector_;
+                };
 
-TEST_F(StageApproachTest, Init) {
-  BareIntersectionUnprotectedStageApproach
-      bare_intersection_unprotected_stage_approach(config_, injector_);
-  EXPECT_EQ(bare_intersection_unprotected_stage_approach.Name(),
-            StageType_Name(
-                StageType::BARE_INTERSECTION_UNPROTECTED_APPROACH));
-}
+                TEST_F(StageApproachTest, Init
+                ) {
+                BareIntersectionUnprotectedStageApproach
+                        bare_intersection_unprotected_stage_approach(config_, injector_);
+                EXPECT_EQ(bare_intersection_unprotected_stage_approach
+                .
 
-}  // namespace bare_intersection
-}  // namespace scenario
+                Name(),
+                        StageType_Name(
+                        StageType::BARE_INTERSECTION_UNPROTECTED_APPROACH)
+
+                );
+            }
+
+        }  // namespace bare_intersection
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

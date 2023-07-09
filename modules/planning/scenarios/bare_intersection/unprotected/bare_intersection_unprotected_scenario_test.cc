@@ -26,36 +26,45 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace bare_intersection {
+    namespace planning {
+        namespace scenario {
+            namespace bare_intersection {
 
-class BareIntersectionUnprotectedScenarioTest : public ::testing::Test {
- public:
-  virtual void SetUp() {}
+                class BareIntersectionUnprotectedScenarioTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {}
 
- protected:
-  std::unique_ptr<BareIntersectionUnprotectedScenario> scenario_;
-};
+                protected:
+                    std::unique_ptr <BareIntersectionUnprotectedScenario> scenario_;
+                };
 
-TEST_F(BareIntersectionUnprotectedScenarioTest, Init) {
-  FLAGS_scenario_bare_intersection_unprotected_config_file =
-      "/apollo/modules/planning/conf/"
-      "scenario/bare_intersection_unprotected_config.pb.txt";
+                TEST_F(BareIntersectionUnprotectedScenarioTest, Init
+                ) {
+                FLAGS_scenario_bare_intersection_unprotected_config_file =
+                "/apollo/modules/planning/conf/"
+                "scenario/bare_intersection_unprotected_config.pb.txt";
 
-  ScenarioConfig config;
-  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-      FLAGS_scenario_bare_intersection_unprotected_config_file, &config));
+                ScenarioConfig config;
+                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+                        FLAGS_scenario_bare_intersection_unprotected_config_file, &config)
+                );
 
-  ScenarioContext context;
-  auto planning_context = std::make_shared<DependencyInjector>();
-  scenario_.reset(new BareIntersectionUnprotectedScenario(config, &context,
-                                                          planning_context));
-  EXPECT_EQ(scenario_->scenario_type(),
-            ScenarioType::BARE_INTERSECTION_UNPROTECTED);
-}
+                ScenarioContext context;
+                auto planning_context = std::make_shared<DependencyInjector>();
+                scenario_.reset(new
+                BareIntersectionUnprotectedScenario(config, &context,
+                        planning_context
+                ));
+                EXPECT_EQ(scenario_
+                ->
 
-}  // namespace bare_intersection
-}  // namespace scenario
+                scenario_type(),
+                        ScenarioType::BARE_INTERSECTION_UNPROTECTED
+
+                );
+            }
+
+        }  // namespace bare_intersection
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

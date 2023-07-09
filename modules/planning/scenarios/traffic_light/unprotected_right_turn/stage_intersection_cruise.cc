@@ -22,37 +22,37 @@
 #include "cyber/common/log.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace traffic_light {
+    namespace planning {
+        namespace scenario {
+            namespace traffic_light {
 
-Stage::StageStatus
-TrafficLightUnprotectedRightTurnStageIntersectionCruise::Process(
-    const common::TrajectoryPoint& planning_init_point, Frame* frame) {
-  ADEBUG << "stage: IntersectionCruise";
-  CHECK_NOTNULL(frame);
+                Stage::StageStatus
+                TrafficLightUnprotectedRightTurnStageIntersectionCruise::Process(
+                        const common::TrajectoryPoint &planning_init_point, Frame *frame) {
+                    ADEBUG << "stage: IntersectionCruise";
+                    CHECK_NOTNULL(frame);
 
-  bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
-  if (!plan_ok) {
-    AERROR << "TrafficLightUnprotectedRightTurnStageIntersectionCruise "
-           << "plan error";
-  }
+                    bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
+                    if (!plan_ok) {
+                        AERROR << "TrafficLightUnprotectedRightTurnStageIntersectionCruise "
+                               << "plan error";
+                    }
 
-  bool stage_done = stage_impl_.CheckDone(
-      *frame, ScenarioType::TRAFFIC_LIGHT_UNPROTECTED_RIGHT_TURN, config_,
-      injector_->planning_context(), false);
-  if (stage_done) {
-    return FinishStage();
-  }
-  return Stage::RUNNING;
-}
+                    bool stage_done = stage_impl_.CheckDone(
+                            *frame, ScenarioType::TRAFFIC_LIGHT_UNPROTECTED_RIGHT_TURN, config_,
+                            injector_->planning_context(), false);
+                    if (stage_done) {
+                        return FinishStage();
+                    }
+                    return Stage::RUNNING;
+                }
 
-Stage::StageStatus
-TrafficLightUnprotectedRightTurnStageIntersectionCruise::FinishStage() {
-  return FinishScenario();
-}
+                Stage::StageStatus
+                TrafficLightUnprotectedRightTurnStageIntersectionCruise::FinishStage() {
+                    return FinishScenario();
+                }
 
-}  // namespace traffic_light
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace traffic_light
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

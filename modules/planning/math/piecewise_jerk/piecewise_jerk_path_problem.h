@@ -26,7 +26,7 @@
 #include "modules/planning/math/piecewise_jerk/piecewise_jerk_problem.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /*
  * @brief:
@@ -46,20 +46,20 @@ namespace planning {
  * which makes the line P(start), P0, P(1) ... P(k-1) "smooth".
  */
 
-class PiecewiseJerkPathProblem : public PiecewiseJerkProblem {
- public:
-  PiecewiseJerkPathProblem(const size_t num_of_knots, const double delta_s,
-                           const std::array<double, 3>& x_init);
+        class PiecewiseJerkPathProblem : public PiecewiseJerkProblem {
+        public:
+            PiecewiseJerkPathProblem(const size_t num_of_knots, const double delta_s,
+                                     const std::array<double, 3> &x_init);
 
-  virtual ~PiecewiseJerkPathProblem() = default;
+            virtual ~PiecewiseJerkPathProblem() = default;
 
- protected:
-  void CalculateKernel(std::vector<c_float>* P_data,
-                       std::vector<c_int>* P_indices,
-                       std::vector<c_int>* P_indptr) override;
+        protected:
+            void CalculateKernel(std::vector <c_float> *P_data,
+                                 std::vector <c_int> *P_indices,
+                                 std::vector <c_int> *P_indptr) override;
 
-  void CalculateOffset(std::vector<c_float>* q) override;
-};
+            void CalculateOffset(std::vector <c_float> *q) override;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

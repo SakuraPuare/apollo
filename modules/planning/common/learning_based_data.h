@@ -25,33 +25,33 @@
 #include "modules/planning/proto/learning_data.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class LearningBasedData {
- public:
-  LearningBasedData() = default;
+        class LearningBasedData {
+        public:
+            LearningBasedData() = default;
 
-  void Clear();
+            void Clear();
 
-  void InsertLearningDataFrame(const LearningDataFrame& learning_data_frame);
+            void InsertLearningDataFrame(const LearningDataFrame &learning_data_frame);
 
-  LearningDataFrame* GetLatestLearningDataFrame();
+            LearningDataFrame *GetLatestLearningDataFrame();
 
-  void set_learning_data_adc_future_trajectory_points(
-      const std::vector<common::TrajectoryPoint> &trajectory_points) {
-    learning_data_adc_future_trajectory_points_ = trajectory_points;
-  }
+            void set_learning_data_adc_future_trajectory_points(
+                    const std::vector <common::TrajectoryPoint> &trajectory_points) {
+                learning_data_adc_future_trajectory_points_ = trajectory_points;
+            }
 
-  const std::vector<common::TrajectoryPoint>
-      &learning_data_adc_future_trajectory_points() const {
-    return learning_data_adc_future_trajectory_points_;
-  }
+            const std::vector <common::TrajectoryPoint>
+            &learning_data_adc_future_trajectory_points() const {
+                return learning_data_adc_future_trajectory_points_;
+            }
 
- private:
-  LearningData learning_data_;
-  std::vector<common::TrajectoryPoint>
-      learning_data_adc_future_trajectory_points_;
-};
+        private:
+            LearningData learning_data_;
+            std::vector <common::TrajectoryPoint>
+                    learning_data_adc_future_trajectory_points_;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

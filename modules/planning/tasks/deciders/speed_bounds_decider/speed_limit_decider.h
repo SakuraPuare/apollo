@@ -32,33 +32,35 @@
 #include "modules/planning/reference_line/reference_line.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class SpeedLimitDecider {
- public:
-  SpeedLimitDecider(const SpeedBoundsDeciderConfig& config,
-                    const ReferenceLine& reference_line,
-                    const PathData& path_data);
+        class SpeedLimitDecider {
+        public:
+            SpeedLimitDecider(const SpeedBoundsDeciderConfig &config,
+                              const ReferenceLine &reference_line,
+                              const PathData &path_data);
 
-  virtual ~SpeedLimitDecider() = default;
+            virtual ~SpeedLimitDecider() = default;
 
-  virtual common::Status GetSpeedLimits(
-      const IndexedList<std::string, Obstacle>& obstacles,
-      SpeedLimit* const speed_limit_data) const;
+            virtual common::Status GetSpeedLimits(
+                    const IndexedList <std::string, Obstacle> &obstacles,
+                    SpeedLimit *const speed_limit_data) const;
 
- private:
-  FRIEND_TEST(SpeedLimitDeciderTest, get_centric_acc_limit);
-  double GetCentricAccLimit(const double kappa) const;
+        private:
+            FRIEND_TEST(SpeedLimitDeciderTest, get_centric_acc_limit
+            );
 
-  void GetAvgKappa(const std::vector<common::PathPoint>& path_points,
-                   std::vector<double>* kappa) const;
+            double GetCentricAccLimit(const double kappa) const;
 
- private:
-  const SpeedBoundsDeciderConfig& speed_bounds_config_;
-  const ReferenceLine& reference_line_;
-  const PathData& path_data_;
-  const apollo::common::VehicleParam& vehicle_param_;
-};
+            void GetAvgKappa(const std::vector <common::PathPoint> &path_points,
+                             std::vector<double> *kappa) const;
 
-}  // namespace planning
+        private:
+            const SpeedBoundsDeciderConfig &speed_bounds_config_;
+            const ReferenceLine &reference_line_;
+            const PathData &path_data_;
+            const apollo::common::VehicleParam &vehicle_param_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

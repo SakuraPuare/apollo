@@ -29,101 +29,101 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-namespace planning {
-class PathReferenceDecider : public Task {
- public:
-  PathReferenceDecider(const TaskConfig &config,
-                       const std::shared_ptr<DependencyInjector> &injector);
+    namespace planning {
+        class PathReferenceDecider : public Task {
+        public:
+            PathReferenceDecider(const TaskConfig &config,
+                                 const std::shared_ptr <DependencyInjector> &injector);
 
-  apollo::common::Status Execute(
-      Frame *frame, ReferenceLineInfo *reference_line_info) override;
+            apollo::common::Status Execute(
+                    Frame *frame, ReferenceLineInfo *reference_line_info) override;
 
- private:
-  apollo::common::Status Process(Frame *frame,
-                                 ReferenceLineInfo *reference_line_info);
+        private:
+            apollo::common::Status Process(Frame *frame,
+                                           ReferenceLineInfo *reference_line_info);
 
-  /**
-   * @brief check is learning model output is within path bounds
-   *
-   * @param path_reference learning model output
-   * @param path_bound path boundaries for rule-based model
-   * @return true using learning model output as path reference
-   * @return false
-   */
-  bool IsValidPathReference(
-      const ReferenceLineInfo &reference_line_info,
-      const PathBoundary &path_bound,
-      const std::vector<common::PathPoint> &path_reference);
+            /**
+             * @brief check is learning model output is within path bounds
+             *
+             * @param path_reference learning model output
+             * @param path_bound path boundaries for rule-based model
+             * @return true using learning model output as path reference
+             * @return false
+             */
+            bool IsValidPathReference(
+                    const ReferenceLineInfo &reference_line_info,
+                    const PathBoundary &path_bound,
+                    const std::vector <common::PathPoint> &path_reference);
 
-  /**
-   * @brief convert discrete path bounds to line segments
-   *
-   */
-  void PathBoundToLineSegments(
-      const PathBoundary &path_bound,
-      std::vector<std::vector<common::math::LineSegment2d>>
-          *path_bound_segments);
+            /**
+             * @brief convert discrete path bounds to line segments
+             *
+             */
+            void PathBoundToLineSegments(
+                    const PathBoundary &path_bound,
+                    std::vector <std::vector<common::math::LineSegment2d>>
+                    *path_bound_segments);
 
-  /**
-   * @brief convert path points from evenly dt to evenly ds distribution
-   *
-   * @param path_bound
-   * @param path_reference
-   * @param evaluated_path_reference
-   */
-  void EvaluatePathReference(
-      const PathBoundary &path_bound,
-      const std::vector<common::PathPoint> &path_reference,
-      std::vector<common::PathPoint> *evaluated_path_reference);
+            /**
+             * @brief convert path points from evenly dt to evenly ds distribution
+             *
+             * @param path_bound
+             * @param path_reference
+             * @param evaluated_path_reference
+             */
+            void EvaluatePathReference(
+                    const PathBoundary &path_bound,
+                    const std::vector <common::PathPoint> &path_reference,
+                    std::vector <common::PathPoint> *evaluated_path_reference);
 
-  /**
-   * @brief check if a point (x,y) is within path bounds
-   *
-   * @param reference_line_info
-   * @param path_bound
-   * @param x
-   * @param y
-   * @return int
-   */
+            /**
+             * @brief check if a point (x,y) is within path bounds
+             *
+             * @param reference_line_info
+             * @param path_bound
+             * @param x
+             * @param y
+             * @return int
+             */
 
-  int IsPointWithinPathBounds(const ReferenceLineInfo &reference_line_info,
-                              const PathBoundary &path_bound, const double x,
-                              const double y);
+            int IsPointWithinPathBounds(const ReferenceLineInfo &reference_line_info,
+                                        const PathBoundary &path_bound, const double x,
+                                        const double y);
 
-  /**
-   * @brief Get the Regular Path Bound object
-   *
-   * @param path_bounds
-   * @return size_t
-   */
-  size_t GetRegularPathBound(
-      const std::vector<PathBoundary> &path_bounds) const;
+            /**
+             * @brief Get the Regular Path Bound object
+             *
+             * @param path_bounds
+             * @return size_t
+             */
+            size_t GetRegularPathBound(
+                    const std::vector <PathBoundary> &path_bounds) const;
 
-  /**
-   * @brief check is ADC box along path reference is within path bounds
-   *        more accurate method.
-   *
-   * @param path_reference
-   * @param regular_path_bound
-   * @return true
-   * @return false
-   */
-  bool IsADCBoxAlongPathReferenceWithinPathBounds(
-      const std::vector<common::TrajectoryPoint> &path_reference,
-      const PathBoundary &regular_path_bound);
+            /**
+             * @brief check is ADC box along path reference is within path bounds
+             *        more accurate method.
+             *
+             * @param path_reference
+             * @param regular_path_bound
+             * @return true
+             * @return false
+             */
+            bool IsADCBoxAlongPathReferenceWithinPathBounds(
+                    const std::vector <common::TrajectoryPoint> &path_reference,
+                    const PathBoundary &regular_path_bound);
 
-  void ConvertTrajectoryToPath(
-      const std::vector<common::TrajectoryPoint> &trajectory,
-      std::vector<common::PathPoint> *path);
+            void ConvertTrajectoryToPath(
+                    const std::vector <common::TrajectoryPoint> &trajectory,
+                    std::vector <common::PathPoint> *path);
 
-  void RecordDebugInfo(const std::vector<common::PathPoint> &path_points,
-                       const std::string &path_name,
-                       ReferenceLineInfo *const reference_line_info);
+            void RecordDebugInfo(const std::vector <common::PathPoint> &path_points,
+                                 const std::string &path_name,
+                                 ReferenceLineInfo *const reference_line_info);
 
- private:
-  static int valid_path_reference_counter_;  // count valid path reference
-  static int total_path_counter_;            // count total path
-};
+        private:
+            static int valid_path_reference_counter_;  // count valid path reference
+            static int total_path_counter_;            // count total path
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

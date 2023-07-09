@@ -25,21 +25,21 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class LearningModelInferenceTrajectoryTask : public Task {
- public:
-  LearningModelInferenceTrajectoryTask(
-      const TaskConfig &config,
-      const std::shared_ptr<DependencyInjector> &injector);
+        class LearningModelInferenceTrajectoryTask : public Task {
+        public:
+            LearningModelInferenceTrajectoryTask(
+                    const TaskConfig &config,
+                    const std::shared_ptr <DependencyInjector> &injector);
 
-  apollo::common::Status Execute(
-      Frame *frame, ReferenceLineInfo *reference_line_info) override;
+            apollo::common::Status Execute(
+                    Frame *frame, ReferenceLineInfo *reference_line_info) override;
 
- private:
-  apollo::common::Status Process(Frame *frame,
-                                 ReferenceLineInfo *reference_line_info);
-};
+        private:
+            apollo::common::Status Process(Frame *frame,
+                                           ReferenceLineInfo *reference_line_info);
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

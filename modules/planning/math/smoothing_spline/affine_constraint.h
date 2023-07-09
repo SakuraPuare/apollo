@@ -24,28 +24,32 @@
 #include "modules/planning/math/polynomial_xd.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class AffineConstraint {
- public:
-  AffineConstraint() = default;
-  explicit AffineConstraint(const bool is_equality);
-  AffineConstraint(const Eigen::MatrixXd& constraint_matrix,
-                   const Eigen::MatrixXd& constraint_boundary,
-                   const bool is_equality);
+        class AffineConstraint {
+        public:
+            AffineConstraint() = default;
 
-  void SetIsEquality(const double is_equality);
+            explicit AffineConstraint(const bool is_equality);
 
-  const Eigen::MatrixXd& constraint_matrix() const;
-  const Eigen::MatrixXd& constraint_boundary() const;
-  bool AddConstraint(const Eigen::MatrixXd& constraint_matrix,
-                     const Eigen::MatrixXd& constraint_boundary);
+            AffineConstraint(const Eigen::MatrixXd &constraint_matrix,
+                             const Eigen::MatrixXd &constraint_boundary,
+                             const bool is_equality);
 
- private:
-  Eigen::MatrixXd constraint_matrix_;
-  Eigen::MatrixXd constraint_boundary_;
-  bool is_equality_ = true;
-};
+            void SetIsEquality(const double is_equality);
 
-}  // namespace planning
+            const Eigen::MatrixXd &constraint_matrix() const;
+
+            const Eigen::MatrixXd &constraint_boundary() const;
+
+            bool AddConstraint(const Eigen::MatrixXd &constraint_matrix,
+                               const Eigen::MatrixXd &constraint_boundary);
+
+        private:
+            Eigen::MatrixXd constraint_matrix_;
+            Eigen::MatrixXd constraint_boundary_;
+            bool is_equality_ = true;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

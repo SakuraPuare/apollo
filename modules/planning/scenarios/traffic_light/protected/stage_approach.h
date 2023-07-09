@@ -26,34 +26,35 @@
 #include "modules/planning/scenarios/traffic_light/protected/traffic_light_protected_scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace traffic_light {
+    namespace planning {
+        namespace scenario {
+            namespace traffic_light {
 
-struct TrafficLightProtectedContext;
+                struct TrafficLightProtectedContext;
 
-class TrafficLightProtectedStageApproach : public Stage {
- public:
-  TrafficLightProtectedStageApproach(
-      const ScenarioConfig::StageConfig& config,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                class TrafficLightProtectedStageApproach : public Stage {
+                public:
+                    TrafficLightProtectedStageApproach(
+                            const ScenarioConfig::StageConfig &config,
+                            const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
-  TrafficLightProtectedContext* GetContext() {
-    return GetContextAs<TrafficLightProtectedContext>();
-  }
+                private:
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
- private:
-  Stage::StageStatus FinishStage();
+                    TrafficLightProtectedContext *GetContext() {
+                        return GetContextAs<TrafficLightProtectedContext>();
+                    }
 
- private:
-  ScenarioTrafficLightProtectedConfig scenario_config_;
-};
+                private:
+                    Stage::StageStatus FinishStage();
 
-}  // namespace traffic_light
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    ScenarioTrafficLightProtectedConfig scenario_config_;
+                };
+
+            }  // namespace traffic_light
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

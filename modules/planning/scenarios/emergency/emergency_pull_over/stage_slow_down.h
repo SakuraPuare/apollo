@@ -27,32 +27,32 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace emergency_pull_over {
+    namespace planning {
+        namespace scenario {
+            namespace emergency_pull_over {
 
-struct EmergencyPullOverContext;
+                struct EmergencyPullOverContext;
 
-class EmergencyPullOverStageSlowDown : public Stage {
- public:
-  EmergencyPullOverStageSlowDown(
-      const ScenarioConfig::StageConfig& config,
-      const std::shared_ptr<DependencyInjector>& injector);
+                class EmergencyPullOverStageSlowDown : public Stage {
+                public:
+                    EmergencyPullOverStageSlowDown(
+                            const ScenarioConfig::StageConfig &config,
+                            const std::shared_ptr <DependencyInjector> &injector);
 
-  StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                      Frame* frame) override;
+                    StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                        Frame *frame) override;
 
-  EmergencyPullOverContext* GetContext() {
-    return Stage::GetContextAs<EmergencyPullOverContext>();
-  }
+                    EmergencyPullOverContext *GetContext() {
+                        return Stage::GetContextAs<EmergencyPullOverContext>();
+                    }
 
-  Stage::StageStatus FinishStage();
+                    Stage::StageStatus FinishStage();
 
- private:
-  ScenarioEmergencyPullOverConfig scenario_config_;
-};
+                private:
+                    ScenarioEmergencyPullOverConfig scenario_config_;
+                };
 
-}  // namespace emergency_pull_over
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace emergency_pull_over
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

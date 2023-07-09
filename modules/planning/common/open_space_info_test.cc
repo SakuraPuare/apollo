@@ -25,21 +25,25 @@
 #include "modules/common_msgs/routing_msgs/routing.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class OpenSpaceInfoTest : public ::testing::Test {
- public:
-  virtual void SetUp() {}
+        class OpenSpaceInfoTest : public ::testing::Test {
+        public:
+            virtual void SetUp() {}
 
- protected:
-  OpenSpaceInfo open_space_info_;
-};
+        protected:
+            OpenSpaceInfo open_space_info_;
+        };
 
-TEST_F(OpenSpaceInfoTest, Init) { EXPECT_NE(&open_space_info_, nullptr); }
+        TEST_F(OpenSpaceInfoTest, Init
+        ) {
+        EXPECT_NE(&open_space_info_, nullptr
+        );
+    }
 
-bool ComputeSLBoundaryIntersection(const SLBoundary& sl_boundary,
-                                   const double s, double* ptr_l_min,
-                                   double* ptr_l_max);
+    bool ComputeSLBoundaryIntersection(const SLBoundary &sl_boundary,
+                                       const double s, double *ptr_l_min,
+                                       double *ptr_l_max);
 
 }  // namespace planning
 }  // namespace apollo

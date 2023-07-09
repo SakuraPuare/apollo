@@ -26,25 +26,27 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace park_and_go {
+    namespace planning {
+        namespace scenario {
+            namespace park_and_go {
 
-class ParkAndGoTest : public ::testing::Test {
- public:
-  virtual void SetUp() {}
+                class ParkAndGoTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {}
 
- protected:
-  std::unique_ptr<ParkAndGoScenario> scenario_;
-};
+                protected:
+                    std::unique_ptr <ParkAndGoScenario> scenario_;
+                };
 
-TEST_F(ParkAndGoTest, VerifyConf) {
-  ScenarioConfig config;
-  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-      FLAGS_scenario_park_and_go_config_file, &config));
-}
+                TEST_F(ParkAndGoTest, VerifyConf
+                ) {
+                ScenarioConfig config;
+                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+                        FLAGS_scenario_park_and_go_config_file, &config)
+                );
+            }
 
-}  // namespace park_and_go
-}  // namespace scenario
+        }  // namespace park_and_go
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

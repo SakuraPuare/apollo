@@ -23,44 +23,44 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace park_and_go {
+    namespace planning {
+        namespace scenario {
+            namespace park_and_go {
 
-struct ParkAndGoContext;
+                struct ParkAndGoContext;
 
-class ParkAndGoStageCruise : public Stage {
- public:
-  enum ParkAndGoStatus {
-    CRUISING = 1,
-    CRUISE_COMPLETE = 2,
-    ADJUST = 3,
-    ADJUST_COMPLETE = 4,
-    FAIL = 5,
-  };
+                class ParkAndGoStageCruise : public Stage {
+                public:
+                    enum ParkAndGoStatus {
+                        CRUISING = 1,
+                        CRUISE_COMPLETE = 2,
+                        ADJUST = 3,
+                        ADJUST_COMPLETE = 4,
+                        FAIL = 5,
+                    };
 
-  ParkAndGoStageCruise(const ScenarioConfig::StageConfig& config,
-                       const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                    ParkAndGoStageCruise(const ScenarioConfig::StageConfig &config,
+                                         const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
-  ParkAndGoContext* GetContext() {
-    return Stage::GetContextAs<ParkAndGoContext>();
-  }
+                    ParkAndGoContext *GetContext() {
+                        return Stage::GetContextAs<ParkAndGoContext>();
+                    }
 
-  Stage::StageStatus FinishStage();
+                    Stage::StageStatus FinishStage();
 
- private:
-  ParkAndGoStatus CheckADCParkAndGoCruiseCompleted(
-      const ReferenceLineInfo& reference_line_info);
+                private:
+                    ParkAndGoStatus CheckADCParkAndGoCruiseCompleted(
+                            const ReferenceLineInfo &reference_line_info);
 
- private:
-  ScenarioParkAndGoConfig scenario_config_;
-};
+                private:
+                    ScenarioParkAndGoConfig scenario_config_;
+                };
 
-}  // namespace park_and_go
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace park_and_go
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

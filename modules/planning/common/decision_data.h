@@ -22,74 +22,85 @@
 #include "modules/common_msgs/prediction_msgs/prediction_obstacle.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-enum class VirtualObjectType {
-  DESTINATION = 0,
-  CROSSWALK = 1,
-  TRAFFIC_LIGHT = 2,
-  CLEAR_ZONE = 3,
-  REROUTE = 4,
-  DECISION_JUMP = 5,
-  PRIORITY = 6
-};
+        enum class VirtualObjectType {
+            DESTINATION = 0,
+            CROSSWALK = 1,
+            TRAFFIC_LIGHT = 2,
+            CLEAR_ZONE = 3,
+            REROUTE = 4,
+            DECISION_JUMP = 5,
+            PRIORITY = 6
+        };
 
-struct EnumClassHash {
-  template <typename T>
-  size_t operator()(T t) const {
-    return static_cast<size_t>(t);
-  }
-};
+        struct EnumClassHash {
+            template<typename T>
+            size_t operator()(T t) const {
+                return static_cast<size_t>(t);
+            }
+        };
 
-class DecisionData {
- public:
-  DecisionData(const prediction::PredictionObstacles& prediction_obstacles,
-               const ReferenceLine& reference_line);
-  ~DecisionData() = default;
+        class DecisionData {
+        public:
+            DecisionData(const prediction::PredictionObstacles &prediction_obstacles,
+                         const ReferenceLine &reference_line);
 
- public:
-  Obstacle* GetObstacleById(const std::string& id);
-  std::vector<Obstacle*> GetObstacleByType(const VirtualObjectType& type);
-  std::unordered_set<std::string> GetObstacleIdByType(
-      const VirtualObjectType& type);
-  const std::vector<Obstacle*>& GetStaticObstacle() const;
-  const std::vector<Obstacle*>& GetDynamicObstacle() const;
-  const std::vector<Obstacle*>& GetVirtualObstacle() const;
-  const std::vector<Obstacle*>& GetPracticalObstacle() const;
-  const std::vector<Obstacle*>& GetAllObstacle() const;
+            ~DecisionData() = default;
 
- public:
-  bool CreateVirtualObstacle(const ReferencePoint& point,
-                             const VirtualObjectType& type,
-                             std::string* const id);
-  bool CreateVirtualObstacle(const double point_s,
-                             const VirtualObjectType& type,
-                             std::string* const id);
+        public:
+            Obstacle *GetObstacleById(const std::string &id);
 
- private:
-  bool IsValidTrajectory(const prediction::Trajectory& trajectory);
-  bool IsValidTrajectoryPoint(const common::TrajectoryPoint& point);
-  bool CreateVirtualObstacle(const common::math::Box2d& obstacle_box,
-                             const VirtualObjectType& type,
-                             std::string* const id);
+            std::vector<Obstacle *> GetObstacleByType(const VirtualObjectType &type);
 
- private:
-  std::vector<Obstacle*> static_obstacle_;
-  std::vector<Obstacle*> dynamic_obstacle_;
-  std::vector<Obstacle*> virtual_obstacle_;
-  std::vector<Obstacle*> practical_obstacle_;
-  std::vector<Obstacle*> all_obstacle_;
+            std::unordered_set <std::string> GetObstacleIdByType(
+                    const VirtualObjectType &type);
 
- private:
-  const ReferenceLine& reference_line_;
-  std::list<std::unique_ptr<Obstacle>> obstacles_;
-  std::unordered_map<std::string, Obstacle*> obstacle_map_;
-  std::unordered_map<VirtualObjectType, std::unordered_set<std::string>,
-                     EnumClassHash>
-      virtual_obstacle_id_map_;
-  std::mutex mutex_;
-  std::mutex transaction_mutex_;
-};
+            const std::vector<Obstacle *> &GetStaticObstacle() const;
 
-}  // namespace planning
+            const std::vector<Obstacle *> &GetDynamicObstacle() const;
+
+            const std::vector<Obstacle *> &GetVirtualObstacle() const;
+
+            const std::vector<Obstacle *> &GetPracticalObstacle() const;
+
+            const std::vector<Obstacle *> &GetAllObstacle() const;
+
+        public:
+            bool CreateVirtualObstacle(const ReferencePoint &point,
+                                       const VirtualObjectType &type,
+                                       std::string *const id);
+
+            bool CreateVirtualObstacle(const double point_s,
+                                       const VirtualObjectType &type,
+                                       std::string *const id);
+
+        private:
+            bool IsValidTrajectory(const prediction::Trajectory &trajectory);
+
+            bool IsValidTrajectoryPoint(const common::TrajectoryPoint &point);
+
+            bool CreateVirtualObstacle(const common::math::Box2d &obstacle_box,
+                                       const VirtualObjectType &type,
+                                       std::string *const id);
+
+        private:
+            std::vector<Obstacle *> static_obstacle_;
+            std::vector<Obstacle *> dynamic_obstacle_;
+            std::vector<Obstacle *> virtual_obstacle_;
+            std::vector<Obstacle *> practical_obstacle_;
+            std::vector<Obstacle *> all_obstacle_;
+
+        private:
+            const ReferenceLine &reference_line_;
+            std::list <std::unique_ptr<Obstacle>> obstacles_;
+            std::unordered_map<std::string, Obstacle *> obstacle_map_;
+            std::unordered_map <VirtualObjectType, std::unordered_set<std::string>,
+            EnumClassHash>
+                    virtual_obstacle_id_map_;
+            std::mutex mutex_;
+            std::mutex transaction_mutex_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

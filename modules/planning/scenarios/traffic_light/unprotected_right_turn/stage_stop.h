@@ -27,35 +27,36 @@
 #include "modules/planning/scenarios/traffic_light/unprotected_right_turn/traffic_light_unprotected_right_turn_scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace traffic_light {
+    namespace planning {
+        namespace scenario {
+            namespace traffic_light {
 
-struct TrafficLightUnprotectedRightTurnContext;
+                struct TrafficLightUnprotectedRightTurnContext;
 
-class TrafficLightUnprotectedRightTurnStageStop : public Stage {
- public:
-  TrafficLightUnprotectedRightTurnStageStop(
-      const ScenarioConfig::StageConfig& config,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                class TrafficLightUnprotectedRightTurnStageStop : public Stage {
+                public:
+                    TrafficLightUnprotectedRightTurnStageStop(
+                            const ScenarioConfig::StageConfig &config,
+                            const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
-  TrafficLightUnprotectedRightTurnContext* GetContext() {
-    return GetContextAs<TrafficLightUnprotectedRightTurnContext>();
-  }
+                private:
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
-  bool CheckTrafficLightNoRightTurnOnRed(const std::string& traffic_light_id);
+                    TrafficLightUnprotectedRightTurnContext *GetContext() {
+                        return GetContextAs<TrafficLightUnprotectedRightTurnContext>();
+                    }
 
-  Stage::StageStatus FinishStage(const bool protected_mode);
+                    bool CheckTrafficLightNoRightTurnOnRed(const std::string &traffic_light_id);
 
- private:
-  ScenarioTrafficLightUnprotectedRightTurnConfig scenario_config_;
-};
+                    Stage::StageStatus FinishStage(const bool protected_mode);
 
-}  // namespace traffic_light
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    ScenarioTrafficLightUnprotectedRightTurnConfig scenario_config_;
+                };
+
+            }  // namespace traffic_light
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

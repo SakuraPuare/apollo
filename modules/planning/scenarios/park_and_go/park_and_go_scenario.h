@@ -24,45 +24,46 @@
 #include "modules/planning/scenarios/scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace park_and_go {
+    namespace planning {
+        namespace scenario {
+            namespace park_and_go {
 
 // stage context
-struct ParkAndGoContext {
-  ScenarioParkAndGoConfig scenario_config;
-};
+                struct ParkAndGoContext {
+                    ScenarioParkAndGoConfig scenario_config;
+                };
 
-class ParkAndGoScenario : public Scenario {
- public:
-  ParkAndGoScenario(const ScenarioConfig& config,
-                    const ScenarioContext* context,
-                    const std::shared_ptr<DependencyInjector>& injector)
-      : Scenario(config, context, injector) {}
+                class ParkAndGoScenario : public Scenario {
+                public:
+                    ParkAndGoScenario(const ScenarioConfig &config,
+                                      const ScenarioContext *context,
+                                      const std::shared_ptr <DependencyInjector> &injector)
+                            : Scenario(config, context, injector) {}
 
-  void Init() override;
+                    void Init() override;
 
-  std::unique_ptr<Stage> CreateStage(
-      const ScenarioConfig::StageConfig& stage_config,
-      const std::shared_ptr<DependencyInjector>& injector) override;
+                    std::unique_ptr <Stage> CreateStage(
+                            const ScenarioConfig::StageConfig &stage_config,
+                            const std::shared_ptr <DependencyInjector> &injector) override;
 
-  ParkAndGoContext* GetContext() { return &context_; }
+                    ParkAndGoContext *GetContext() { return &context_; }
 
- private:
-  static void RegisterStages();
-  bool GetScenarioConfig();
+                private:
+                    static void RegisterStages();
 
- private:
-  static apollo::common::util::Factory<
-      StageType, Stage,
-      Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
-                 const std::shared_ptr<DependencyInjector>& injector)>
-      s_stage_factory_;
-  bool init_ = false;
-  ParkAndGoContext context_;
-};
+                    bool GetScenarioConfig();
 
-}  // namespace park_and_go
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    static apollo::common::util::Factory<
+                            StageType, Stage,
+                            Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
+                                       const std::shared_ptr <DependencyInjector> &injector)>
+                            s_stage_factory_;
+                    bool init_ = false;
+                    ParkAndGoContext context_;
+                };
+
+            }  // namespace park_and_go
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

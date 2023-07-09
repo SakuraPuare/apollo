@@ -26,34 +26,35 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * This class creates a virtual obstacle for each clear area region.
  */
-class KeepClear : public TrafficRule {
- public:
-  KeepClear(const TrafficRuleConfig& config,
-            const std::shared_ptr<DependencyInjector>& injector);
-  virtual ~KeepClear() = default;
+        class KeepClear : public TrafficRule {
+        public:
+            KeepClear(const TrafficRuleConfig &config,
+                      const std::shared_ptr <DependencyInjector> &injector);
 
-  common::Status ApplyRule(Frame* const frame,
-                           ReferenceLineInfo* const reference_line_info);
+            virtual ~KeepClear() = default;
 
- private:
-  bool IsCreeping(const double pnc_junction_start_s,
-                  const double adc_front_edge_s) const;
+            common::Status ApplyRule(Frame *const frame,
+                                     ReferenceLineInfo *const reference_line_info);
 
-  bool BuildKeepClearObstacle(Frame* const frame,
-                              ReferenceLineInfo* const reference_line_info,
-                              const std::string& virtual_obstacle_id,
-                              const double keep_clear_start_s,
-                              const double keep_clear_end_s);
+        private:
+            bool IsCreeping(const double pnc_junction_start_s,
+                            const double adc_front_edge_s) const;
 
- private:
-  static constexpr char const* KEEP_CLEAR_VO_ID_PREFIX = "KC_";
-  static constexpr char const* KEEP_CLEAR_JUNCTION_VO_ID_PREFIX = "KC_JC_";
-};
+            bool BuildKeepClearObstacle(Frame *const frame,
+                                        ReferenceLineInfo *const reference_line_info,
+                                        const std::string &virtual_obstacle_id,
+                                        const double keep_clear_start_s,
+                                        const double keep_clear_end_s);
 
-}  // namespace planning
+        private:
+            static constexpr char const *KEEP_CLEAR_VO_ID_PREFIX = "KC_";
+            static constexpr char const *KEEP_CLEAR_JUNCTION_VO_ID_PREFIX = "KC_JC_";
+        };
+
+    }  // namespace planning
 }  // namespace apollo

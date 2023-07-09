@@ -28,46 +28,47 @@
 #include "modules/planning/scenarios/scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace bare_intersection {
+    namespace planning {
+        namespace scenario {
+            namespace bare_intersection {
 
 // stage context
-struct BareIntersectionUnprotectedContext {
-  ScenarioBareIntersectionUnprotectedConfig scenario_config;
-  std::string current_pnc_junction_overlap_id;
-};
+                struct BareIntersectionUnprotectedContext {
+                    ScenarioBareIntersectionUnprotectedConfig scenario_config;
+                    std::string current_pnc_junction_overlap_id;
+                };
 
-class BareIntersectionUnprotectedScenario : public Scenario {
- public:
-  BareIntersectionUnprotectedScenario(
-      const ScenarioConfig& config, const ScenarioContext* context,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Scenario(config, context, injector) {}
+                class BareIntersectionUnprotectedScenario : public Scenario {
+                public:
+                    BareIntersectionUnprotectedScenario(
+                            const ScenarioConfig &config, const ScenarioContext *context,
+                            const std::shared_ptr <DependencyInjector> &injector)
+                            : Scenario(config, context, injector) {}
 
-  void Init() override;
+                    void Init() override;
 
-  std::unique_ptr<Stage> CreateStage(
-      const ScenarioConfig::StageConfig& stage_config,
-      const std::shared_ptr<DependencyInjector>& injector);
+                    std::unique_ptr <Stage> CreateStage(
+                            const ScenarioConfig::StageConfig &stage_config,
+                            const std::shared_ptr <DependencyInjector> &injector);
 
-  BareIntersectionUnprotectedContext* GetContext() { return &context_; }
+                    BareIntersectionUnprotectedContext *GetContext() { return &context_; }
 
- private:
-  static void RegisterStages();
-  bool GetScenarioConfig();
+                private:
+                    static void RegisterStages();
 
- private:
-  static apollo::common::util::Factory<
-      StageType, Stage,
-      Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
-                 const std::shared_ptr<DependencyInjector>& injector)>
-      s_stage_factory_;
-  bool init_ = false;
-  BareIntersectionUnprotectedContext context_;
-};
+                    bool GetScenarioConfig();
 
-}  // namespace bare_intersection
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    static apollo::common::util::Factory<
+                            StageType, Stage,
+                            Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
+                                       const std::shared_ptr <DependencyInjector> &injector)>
+                            s_stage_factory_;
+                    bool init_ = false;
+                    BareIntersectionUnprotectedContext context_;
+                };
+
+            }  // namespace bare_intersection
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

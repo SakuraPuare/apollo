@@ -27,45 +27,46 @@
 #include "modules/planning/scenarios/scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace pull_over {
+    namespace planning {
+        namespace scenario {
+            namespace pull_over {
 
 // stage context
-struct PullOverContext {
-  ScenarioPullOverConfig scenario_config;
-};
+                struct PullOverContext {
+                    ScenarioPullOverConfig scenario_config;
+                };
 
-class PullOverScenario : public Scenario {
- public:
-  PullOverScenario(const ScenarioConfig& config,
-                   const ScenarioContext* scenario_context,
-                   const std::shared_ptr<DependencyInjector>& injector)
-      : Scenario(config, scenario_context, injector) {}
+                class PullOverScenario : public Scenario {
+                public:
+                    PullOverScenario(const ScenarioConfig &config,
+                                     const ScenarioContext *scenario_context,
+                                     const std::shared_ptr <DependencyInjector> &injector)
+                            : Scenario(config, scenario_context, injector) {}
 
-  void Init() override;
+                    void Init() override;
 
-  std::unique_ptr<Stage> CreateStage(
-      const ScenarioConfig::StageConfig& stage_config,
-      const std::shared_ptr<DependencyInjector>& injector);
+                    std::unique_ptr <Stage> CreateStage(
+                            const ScenarioConfig::StageConfig &stage_config,
+                            const std::shared_ptr <DependencyInjector> &injector);
 
-  PullOverContext* GetContext() { return &context_; }
+                    PullOverContext *GetContext() { return &context_; }
 
- private:
-  static void RegisterStages();
-  bool GetScenarioConfig();
+                private:
+                    static void RegisterStages();
 
- private:
-  static apollo::common::util::Factory<
-      StageType, Stage,
-      Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
-                 const std::shared_ptr<DependencyInjector>& injector)>
-      s_stage_factory_;
-  bool init_ = false;
-  PullOverContext context_;
-};
+                    bool GetScenarioConfig();
 
-}  // namespace pull_over
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    static apollo::common::util::Factory<
+                            StageType, Stage,
+                            Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
+                                       const std::shared_ptr <DependencyInjector> &injector)>
+                            s_stage_factory_;
+                    bool init_ = false;
+                    PullOverContext context_;
+                };
+
+            }  // namespace pull_over
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

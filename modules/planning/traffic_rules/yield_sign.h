@@ -28,25 +28,25 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class YieldSign : public TrafficRule {
- public:
-  YieldSign(const TrafficRuleConfig& config,
-            const std::shared_ptr<DependencyInjector>& injector);
+        class YieldSign : public TrafficRule {
+        public:
+            YieldSign(const TrafficRuleConfig &config,
+                      const std::shared_ptr <DependencyInjector> &injector);
 
-  virtual ~YieldSign() = default;
+            virtual ~YieldSign() = default;
 
-  common::Status ApplyRule(Frame* const frame,
-                           ReferenceLineInfo* const reference_line_info);
+            common::Status ApplyRule(Frame *const frame,
+                                     ReferenceLineInfo *const reference_line_info);
 
- private:
-  void MakeDecisions(Frame* const frame,
-                     ReferenceLineInfo* const reference_line_info);
+        private:
+            void MakeDecisions(Frame *const frame,
+                               ReferenceLineInfo *const reference_line_info);
 
- private:
-  static constexpr char const* YIELD_SIGN_VO_ID_PREFIX = "YS_";
-};
+        private:
+            static constexpr char const *YIELD_SIGN_VO_ID_PREFIX = "YS_";
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

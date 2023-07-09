@@ -23,12 +23,22 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-TEST(AutotuningSpeedMLPModel, test_case_one) {
-  AutotuningSpeedMLPModel speed_model;
-  EXPECT_TRUE(speed_model.SetParams().ok());
-}
+        TEST(AutotuningSpeedMLPModel, test_case_one
+        ) {
+        AutotuningSpeedMLPModel speed_model;
+        EXPECT_TRUE(speed_model
+        .
+
+        SetParams()
+
+        .
+
+        ok()
+
+        );
+    }
 
 }  // namespace planning
 }  // namespace apollo

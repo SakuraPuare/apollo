@@ -28,82 +28,82 @@
 #include "modules/planning/scenarios/emergency/emergency_pull_over/stage_standby.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace emergency_pull_over {
+    namespace planning {
+        namespace scenario {
+            namespace emergency_pull_over {
 
-apollo::common::util::Factory<
-    StageType, Stage,
-    Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
-               const std::shared_ptr<DependencyInjector>& injector)>
-    EmergencyPullOverScenario::s_stage_factory_;
+                apollo::common::util::Factory<
+                        StageType, Stage,
+                        Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
+                                   const std::shared_ptr <DependencyInjector> &injector)>
+                        EmergencyPullOverScenario::s_stage_factory_;
 
-void EmergencyPullOverScenario::Init() {
-  if (init_) {
-    return;
-  }
+                void EmergencyPullOverScenario::Init() {
+                    if (init_) {
+                        return;
+                    }
 
-  Scenario::Init();
+                    Scenario::Init();
 
-  if (!GetScenarioConfig()) {
-    AERROR << "fail to get scenario specific config";
-    return;
-  }
+                    if (!GetScenarioConfig()) {
+                        AERROR << "fail to get scenario specific config";
+                        return;
+                    }
 
-  init_ = true;
-}
+                    init_ = true;
+                }
 
-void EmergencyPullOverScenario::RegisterStages() {
-  if (!s_stage_factory_.Empty()) {
-    s_stage_factory_.Clear();
-  }
-  s_stage_factory_.Register(
-      StageType::EMERGENCY_PULL_OVER_SLOW_DOWN,
-      [](const ScenarioConfig::StageConfig& config,
-         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
-        return new EmergencyPullOverStageSlowDown(config, injector);
-      });
-  s_stage_factory_.Register(
-      StageType::EMERGENCY_PULL_OVER_APPROACH,
-      [](const ScenarioConfig::StageConfig& config,
-         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
-        return new EmergencyPullOverStageApproach(config, injector);
-      });
-  s_stage_factory_.Register(
-      StageType::EMERGENCY_PULL_OVER_STANDBY,
-      [](const ScenarioConfig::StageConfig& config,
-         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
-        return new EmergencyPullOverStageStandby(config, injector);
-      });
-}
+                void EmergencyPullOverScenario::RegisterStages() {
+                    if (!s_stage_factory_.Empty()) {
+                        s_stage_factory_.Clear();
+                    }
+                    s_stage_factory_.Register(
+                            StageType::EMERGENCY_PULL_OVER_SLOW_DOWN,
+                            [](const ScenarioConfig::StageConfig &config,
+                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
+                                return new EmergencyPullOverStageSlowDown(config, injector);
+                            });
+                    s_stage_factory_.Register(
+                            StageType::EMERGENCY_PULL_OVER_APPROACH,
+                            [](const ScenarioConfig::StageConfig &config,
+                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
+                                return new EmergencyPullOverStageApproach(config, injector);
+                            });
+                    s_stage_factory_.Register(
+                            StageType::EMERGENCY_PULL_OVER_STANDBY,
+                            [](const ScenarioConfig::StageConfig &config,
+                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
+                                return new EmergencyPullOverStageStandby(config, injector);
+                            });
+                }
 
-std::unique_ptr<Stage> EmergencyPullOverScenario::CreateStage(
-    const ScenarioConfig::StageConfig& stage_config,
-    const std::shared_ptr<DependencyInjector>& injector) {
-  if (s_stage_factory_.Empty()) {
-    RegisterStages();
-  }
-  auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
-                                                 stage_config, injector);
-  if (ptr) {
-    ptr->SetContext(&context_);
-  }
-  return ptr;
-}
+                std::unique_ptr <Stage> EmergencyPullOverScenario::CreateStage(
+                        const ScenarioConfig::StageConfig &stage_config,
+                        const std::shared_ptr <DependencyInjector> &injector) {
+                    if (s_stage_factory_.Empty()) {
+                        RegisterStages();
+                    }
+                    auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
+                                                                   stage_config, injector);
+                    if (ptr) {
+                        ptr->SetContext(&context_);
+                    }
+                    return ptr;
+                }
 
 /*
  * read scenario specific configs and set in context_ for stages to read
  */
-bool EmergencyPullOverScenario::GetScenarioConfig() {
-  if (!config_.has_emergency_pull_over_config()) {
-    AERROR << "miss scenario specific config";
-    return false;
-  }
-  context_.scenario_config.CopyFrom(config_.emergency_pull_over_config());
-  return true;
-}
+                bool EmergencyPullOverScenario::GetScenarioConfig() {
+                    if (!config_.has_emergency_pull_over_config()) {
+                        AERROR << "miss scenario specific config";
+                        return false;
+                    }
+                    context_.scenario_config.CopyFrom(config_.emergency_pull_over_config());
+                    return true;
+                }
 
-}  // namespace emergency_pull_over
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace emergency_pull_over
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

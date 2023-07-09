@@ -20,28 +20,34 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class PathReuseDeciderTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_task_type(TaskConfig::PATH_REUSE_DECIDER);
-    config_.mutable_path_reuse_decider_config();
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+        class PathReuseDeciderTest : public ::testing::Test {
+        public:
+            virtual void SetUp() {
+                config_.set_task_type(TaskConfig::PATH_REUSE_DECIDER);
+                config_.mutable_path_reuse_decider_config();
+                injector_ = std::make_shared<DependencyInjector>();
+            }
 
-  virtual void TearDown() {}
+            virtual void TearDown() {}
 
- protected:
-  TaskConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+        protected:
+            TaskConfig config_;
+            std::shared_ptr <DependencyInjector> injector_;
+        };
 
-TEST_F(PathReuseDeciderTest, Init) {
-  PathReuseDecider path_reuse_decider(config_, injector_);
-  EXPECT_EQ(path_reuse_decider.Name(),
-            TaskConfig::TaskType_Name(config_.task_type()));
-}
+        TEST_F(PathReuseDeciderTest, Init
+        ) {
+        PathReuseDecider path_reuse_decider(config_, injector_);
+        EXPECT_EQ(path_reuse_decider
+        .
+
+        Name(),
+                TaskConfig::TaskType_Name(config_.task_type())
+
+        );
+    }
 
 // TEST_F(PathReuseDeciderTest, GetHistoryStopPositions) {
 //   PathReuseDecider path_reuse_decider(config_);

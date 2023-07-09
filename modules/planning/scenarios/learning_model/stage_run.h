@@ -26,31 +26,32 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
+    namespace planning {
+        namespace scenario {
 
-struct LearningModelSampleContext;
+            struct LearningModelSampleContext;
 
-class LearningModelSampleStageRun : public Stage {
- public:
-  LearningModelSampleStageRun(
-      const ScenarioConfig::StageConfig& config,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+            class LearningModelSampleStageRun : public Stage {
+            public:
+                LearningModelSampleStageRun(
+                        const ScenarioConfig::StageConfig &config,
+                        const std::shared_ptr <DependencyInjector> &injector)
+                        : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
-  LearningModelSampleContext* GetContext() {
-    return GetContextAs<LearningModelSampleContext>();
-  }
+            private:
+                Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                           Frame *frame) override;
 
-  Stage::StageStatus FinishStage();
+                LearningModelSampleContext *GetContext() {
+                    return GetContextAs<LearningModelSampleContext>();
+                }
 
- private:
-  ScenarioLearningModelSampleConfig scenario_config_;
-};
+                Stage::StageStatus FinishStage();
 
-}  // namespace scenario
-}  // namespace planning
+            private:
+                ScenarioLearningModelSampleConfig scenario_config_;
+            };
+
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

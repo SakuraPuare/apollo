@@ -24,32 +24,32 @@
 #include "modules/planning/common/frame.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
+    namespace planning {
+        namespace scenario {
 
-using apollo::common::TrajectoryPoint;
+            using apollo::common::TrajectoryPoint;
 
-Stage::StageStatus LearningModelSampleStageRun::Process(
-    const TrajectoryPoint& planning_init_point, Frame* frame) {
-  ADEBUG << "stage: Run";
-  CHECK_NOTNULL(frame);
+            Stage::StageStatus LearningModelSampleStageRun::Process(
+                    const TrajectoryPoint &planning_init_point, Frame *frame) {
+                ADEBUG << "stage: Run";
+                CHECK_NOTNULL(frame);
 
-  scenario_config_.CopyFrom(GetContext()->scenario_config);
+                scenario_config_.CopyFrom(GetContext()->scenario_config);
 
-  bool plan_ok =
-      ExecuteTaskOnReferenceLineForOnlineLearning(planning_init_point, frame);
-  if (!plan_ok) {
-    AERROR << "LearningModelSampleStageRun planning error";
-    return Stage::RUNNING;
-  }
+                bool plan_ok =
+                        ExecuteTaskOnReferenceLineForOnlineLearning(planning_init_point, frame);
+                if (!plan_ok) {
+                    AERROR << "LearningModelSampleStageRun planning error";
+                    return Stage::RUNNING;
+                }
 
-  return FinishStage();
-}
+                return FinishStage();
+            }
 
-Stage::StageStatus LearningModelSampleStageRun::FinishStage() {
-  return FinishScenario();
-}
+            Stage::StageStatus LearningModelSampleStageRun::FinishStage() {
+                return FinishScenario();
+            }
 
-}  // namespace scenario
-}  // namespace planning
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

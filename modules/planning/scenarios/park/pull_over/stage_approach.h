@@ -27,31 +27,31 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace pull_over {
+    namespace planning {
+        namespace scenario {
+            namespace pull_over {
 
-struct PullOverContext;
+                struct PullOverContext;
 
-class PullOverStageApproach : public Stage {
- public:
-  PullOverStageApproach(const ScenarioConfig::StageConfig& config,
-                        const std::shared_ptr<DependencyInjector>& injector);
+                class PullOverStageApproach : public Stage {
+                public:
+                    PullOverStageApproach(const ScenarioConfig::StageConfig &config,
+                                          const std::shared_ptr <DependencyInjector> &injector);
 
-  StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                      Frame* frame) override;
+                    StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                        Frame *frame) override;
 
-  PullOverContext* GetContext() {
-    return Stage::GetContextAs<PullOverContext>();
-  }
+                    PullOverContext *GetContext() {
+                        return Stage::GetContextAs<PullOverContext>();
+                    }
 
-  Stage::StageStatus FinishStage(const bool success);
+                    Stage::StageStatus FinishStage(const bool success);
 
- private:
-  ScenarioPullOverConfig scenario_config_;
-};
+                private:
+                    ScenarioPullOverConfig scenario_config_;
+                };
 
-}  // namespace pull_over
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace pull_over
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

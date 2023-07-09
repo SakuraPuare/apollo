@@ -28,40 +28,58 @@
 #include "modules/common_msgs/prediction_msgs/prediction_obstacle.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class FrameTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    ASSERT_TRUE(cyber::common::GetProtoFromFile(
-        "/apollo/modules/planning/testdata/common/sample_prediction.pb.txt",
-        &prediction_obstacles_));
-  }
+        class FrameTest : public ::testing::Test {
+        public:
+            virtual void SetUp() {
+                ASSERT_TRUE(cyber::common::GetProtoFromFile(
+                        "/apollo/modules/planning/testdata/common/sample_prediction.pb.txt",
+                        &prediction_obstacles_));
+            }
 
- protected:
-  prediction::PredictionObstacles prediction_obstacles_;
-};
+        protected:
+            prediction::PredictionObstacles prediction_obstacles_;
+        };
 
-TEST_F(FrameTest, AlignPredictionTime) {
-  int first_traj_size = prediction_obstacles_.prediction_obstacle(0)
-                            .trajectory(0)
-                            .trajectory_point_size();
-  double origin_pred_time = prediction_obstacles_.header().timestamp_sec();
-  Frame::AlignPredictionTime(origin_pred_time + 0.1, &prediction_obstacles_);
-  ASSERT_EQ(first_traj_size - 1, prediction_obstacles_.prediction_obstacle(0)
-                                     .trajectory(0)
-                                     .trajectory_point_size());
+        TEST_F(FrameTest, AlignPredictionTime
+        ) {
+        int first_traj_size = prediction_obstacles_.prediction_obstacle(0)
+                .trajectory(0)
+                .trajectory_point_size();
+        double origin_pred_time = prediction_obstacles_.header().timestamp_sec();
+        Frame::AlignPredictionTime(origin_pred_time
+        + 0.1, &prediction_obstacles_);
+        ASSERT_EQ(first_traj_size
+        - 1, prediction_obstacles_.prediction_obstacle(0)
+        .trajectory(0)
+        .
 
-  Frame::AlignPredictionTime(origin_pred_time + 0.5, &prediction_obstacles_);
-  ASSERT_EQ(first_traj_size - 3, prediction_obstacles_.prediction_obstacle(0)
-                                     .trajectory(0)
-                                     .trajectory_point_size());
+        trajectory_point_size()
 
-  Frame::AlignPredictionTime(origin_pred_time + 12.0, &prediction_obstacles_);
-  ASSERT_EQ(0, prediction_obstacles_.prediction_obstacle(0)
-                   .trajectory(0)
-                   .trajectory_point_size());
-}
+        );
+
+        Frame::AlignPredictionTime(origin_pred_time
+        + 0.5, &prediction_obstacles_);
+        ASSERT_EQ(first_traj_size
+        - 3, prediction_obstacles_.prediction_obstacle(0)
+        .trajectory(0)
+        .
+
+        trajectory_point_size()
+
+        );
+
+        Frame::AlignPredictionTime(origin_pred_time
+        + 12.0, &prediction_obstacles_);
+        ASSERT_EQ(0, prediction_obstacles_.prediction_obstacle(0)
+        .trajectory(0)
+        .
+
+        trajectory_point_size()
+
+        );
+    }
 
 }  // namespace planning
 }  // namespace apollo

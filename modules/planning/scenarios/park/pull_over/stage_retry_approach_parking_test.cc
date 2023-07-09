@@ -22,31 +22,37 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace pull_over {
+    namespace planning {
+        namespace scenario {
+            namespace pull_over {
 
-class PullOverStageRetryApproachParkingTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_stage_type(StageType::PULL_OVER_RETRY_APPROACH_PARKING);
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+                class PullOverStageRetryApproachParkingTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {
+                        config_.set_stage_type(StageType::PULL_OVER_RETRY_APPROACH_PARKING);
+                        injector_ = std::make_shared<DependencyInjector>();
+                    }
 
- protected:
-  ScenarioConfig::StageConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+                protected:
+                    ScenarioConfig::StageConfig config_;
+                    std::shared_ptr <DependencyInjector> injector_;
+                };
 
-TEST_F(PullOverStageRetryApproachParkingTest, Init) {
-  PullOverStageRetryApproachParking pull_over_stage_retry_approach_parking(
-      config_, injector_);
-  EXPECT_EQ(pull_over_stage_retry_approach_parking.Name(),
-            StageType_Name(
-                StageType::PULL_OVER_RETRY_APPROACH_PARKING));
-}
+                TEST_F(PullOverStageRetryApproachParkingTest, Init
+                ) {
+                PullOverStageRetryApproachParking pull_over_stage_retry_approach_parking(
+                        config_, injector_);
+                EXPECT_EQ(pull_over_stage_retry_approach_parking
+                .
 
-}  // namespace pull_over
-}  // namespace scenario
+                Name(),
+                        StageType_Name(
+                        StageType::PULL_OVER_RETRY_APPROACH_PARKING)
+
+                );
+            }
+
+        }  // namespace pull_over
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

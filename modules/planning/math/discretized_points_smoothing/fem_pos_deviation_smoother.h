@@ -26,7 +26,7 @@
 #include "modules/planning/proto/math/fem_pos_deviation_smoother_config.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /*
  * @brief:
@@ -44,28 +44,28 @@ namespace planning {
  * points which makes the line P(start), P0, P(1) ... P(k-1) "smooth".
  */
 
-class FemPosDeviationSmoother {
- public:
-  explicit FemPosDeviationSmoother(const FemPosDeviationSmootherConfig& config);
+        class FemPosDeviationSmoother {
+        public:
+            explicit FemPosDeviationSmoother(const FemPosDeviationSmootherConfig &config);
 
-  bool Solve(const std::vector<std::pair<double, double>>& raw_point2d,
-             const std::vector<double>& bounds, std::vector<double>* opt_x,
-             std::vector<double>* opt_y);
+            bool Solve(const std::vector <std::pair<double, double>> &raw_point2d,
+                       const std::vector<double> &bounds, std::vector<double> *opt_x,
+                       std::vector<double> *opt_y);
 
-  bool QpWithOsqp(const std::vector<std::pair<double, double>>& raw_point2d,
-                  const std::vector<double>& bounds, std::vector<double>* opt_x,
-                  std::vector<double>* opt_y);
+            bool QpWithOsqp(const std::vector <std::pair<double, double>> &raw_point2d,
+                            const std::vector<double> &bounds, std::vector<double> *opt_x,
+                            std::vector<double> *opt_y);
 
-  bool NlpWithIpopt(const std::vector<std::pair<double, double>>& raw_point2d,
-                    const std::vector<double>& bounds,
-                    std::vector<double>* opt_x, std::vector<double>* opt_y);
+            bool NlpWithIpopt(const std::vector <std::pair<double, double>> &raw_point2d,
+                              const std::vector<double> &bounds,
+                              std::vector<double> *opt_x, std::vector<double> *opt_y);
 
-  bool SqpWithOsqp(const std::vector<std::pair<double, double>>& raw_point2d,
-                   const std::vector<double>& bounds,
-                   std::vector<double>* opt_x, std::vector<double>* opt_y);
+            bool SqpWithOsqp(const std::vector <std::pair<double, double>> &raw_point2d,
+                             const std::vector<double> &bounds,
+                             std::vector<double> *opt_x, std::vector<double> *opt_y);
 
- private:
-  FemPosDeviationSmootherConfig config_;
-};
-}  // namespace planning
+        private:
+            FemPosDeviationSmootherConfig config_;
+        };
+    }  // namespace planning
 }  // namespace apollo

@@ -26,32 +26,41 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace lane_follow {
+    namespace planning {
+        namespace scenario {
+            namespace lane_follow {
 
-class LaneFollowScenarioTest : public ::testing::Test {
- public:
-  virtual void SetUp() {}
+                class LaneFollowScenarioTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {}
 
- protected:
-  std::unique_ptr<LaneFollowScenario> scenario_;
-};
+                protected:
+                    std::unique_ptr <LaneFollowScenario> scenario_;
+                };
 
-TEST_F(LaneFollowScenarioTest, Init) {
-  FLAGS_scenario_lane_follow_config_file =
-      "/apollo/modules/planning/conf/scenario/lane_follow_config.pb.txt";
+                TEST_F(LaneFollowScenarioTest, Init
+                ) {
+                FLAGS_scenario_lane_follow_config_file =
+                "/apollo/modules/planning/conf/scenario/lane_follow_config.pb.txt";
 
-  ScenarioConfig config;
-  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-      FLAGS_scenario_lane_follow_config_file, &config));
-  ScenarioContext context;
-  auto injector = std::make_shared<DependencyInjector>();
-  scenario_.reset(new LaneFollowScenario(config, &context, injector));
-  EXPECT_EQ(scenario_->scenario_type(), ScenarioType::LANE_FOLLOW);
-}
+                ScenarioConfig config;
+                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+                        FLAGS_scenario_lane_follow_config_file, &config)
+                );
+                ScenarioContext context;
+                auto injector = std::make_shared<DependencyInjector>();
+                scenario_.reset(new
+                LaneFollowScenario(config, &context, injector
+                ));
+                EXPECT_EQ(scenario_
+                ->
 
-}  // namespace lane_follow
-}  // namespace scenario
+                scenario_type(), ScenarioType::LANE_FOLLOW
+
+                );
+            }
+
+        }  // namespace lane_follow
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

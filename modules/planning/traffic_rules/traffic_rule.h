@@ -28,24 +28,29 @@
 #include "modules/planning/proto/traffic_rule_config.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class TrafficRule {
- public:
-  explicit TrafficRule(const TrafficRuleConfig& config) : config_(config) {}
-  TrafficRule(const TrafficRuleConfig& config,
-              const std::shared_ptr<DependencyInjector>& injector)
-      : config_(config), injector_(injector) {}
-  virtual ~TrafficRule() = default;
-  virtual TrafficRuleConfig::RuleId Id() const { return config_.rule_id(); }
-  const TrafficRuleConfig& GetConfig() const { return config_; }
-  virtual common::Status ApplyRule(
-      Frame* const frame, ReferenceLineInfo* const reference_line_info) = 0;
+        class TrafficRule {
+        public:
+            explicit TrafficRule(const TrafficRuleConfig &config) : config_(config) {}
 
- protected:
-  TrafficRuleConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+            TrafficRule(const TrafficRuleConfig &config,
+                        const std::shared_ptr <DependencyInjector> &injector)
+                    : config_(config), injector_(injector) {}
 
-}  // namespace planning
+            virtual ~TrafficRule() = default;
+
+            virtual TrafficRuleConfig::RuleId Id() const { return config_.rule_id(); }
+
+            const TrafficRuleConfig &GetConfig() const { return config_; }
+
+            virtual common::Status ApplyRule(
+                    Frame *const frame, ReferenceLineInfo *const reference_line_info) = 0;
+
+        protected:
+            TrafficRuleConfig config_;
+            std::shared_ptr <DependencyInjector> injector_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

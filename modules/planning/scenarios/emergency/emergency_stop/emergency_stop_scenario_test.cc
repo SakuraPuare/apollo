@@ -26,33 +26,42 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace emergency_stop {
+    namespace planning {
+        namespace scenario {
+            namespace emergency_stop {
 
-class EmergencyStopScenarioTest : public ::testing::Test {
- public:
-  virtual void SetUp() {}
+                class EmergencyStopScenarioTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {}
 
- protected:
-  std::unique_ptr<EmergencyStopScenario> scenario_;
-};
+                protected:
+                    std::unique_ptr <EmergencyStopScenario> scenario_;
+                };
 
-TEST_F(EmergencyStopScenarioTest, Init) {
-  FLAGS_scenario_emergency_stop_config_file =
-      "/apollo/modules/planning/conf/scenario"
-      "/emergency_stop_config.pb.txt";
+                TEST_F(EmergencyStopScenarioTest, Init
+                ) {
+                FLAGS_scenario_emergency_stop_config_file =
+                "/apollo/modules/planning/conf/scenario"
+                "/emergency_stop_config.pb.txt";
 
-  ScenarioConfig config;
-  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-      FLAGS_scenario_emergency_stop_config_file, &config));
-  ScenarioContext context;
-  auto injector = std::make_shared<DependencyInjector>();
-  scenario_.reset(new EmergencyStopScenario(config, &context, injector));
-  EXPECT_EQ(scenario_->scenario_type(), ScenarioType::EMERGENCY_STOP);
-}
+                ScenarioConfig config;
+                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+                        FLAGS_scenario_emergency_stop_config_file, &config)
+                );
+                ScenarioContext context;
+                auto injector = std::make_shared<DependencyInjector>();
+                scenario_.reset(new
+                EmergencyStopScenario(config, &context, injector
+                ));
+                EXPECT_EQ(scenario_
+                ->
 
-}  // namespace emergency_stop
-}  // namespace scenario
+                scenario_type(), ScenarioType::EMERGENCY_STOP
+
+                );
+            }
+
+        }  // namespace emergency_stop
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

@@ -40,7 +40,7 @@
  * @brief apollo::planning
  */
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @class NaviPathDecider
@@ -50,118 +50,122 @@ namespace planning {
  * mode by setting "FLAGS_use_navigation_mode" to "true") and do not use it in
  * standard mode.
  */
-class NaviPathDecider : public NaviTask {
- public:
-  NaviPathDecider();
-  virtual ~NaviPathDecider() = default;
+        class NaviPathDecider : public NaviTask {
+        public:
+            NaviPathDecider();
 
-  bool Init(const PlanningConfig &config) override;
+            virtual ~NaviPathDecider() = default;
 
-  /**
-   * @brief Overrided implementation of the virtual function "Execute" in the
-   * base class "Task".
-   * @param frame Current planning frame.
-   * @param reference_line_info Currently available reference line information.
-   * @return Status::OK() if a suitable path is created; error otherwise.
-   */
-  apollo::common::Status Execute(
-      Frame *frame, ReferenceLineInfo *reference_line_info) override;
+            bool Init(const PlanningConfig &config) override;
 
- private:
-  /**
-   * @brief generate path information for trajectory plan in navigation mode.
-   * @param reference_line  the reference line.
-   * @param init_point start planning point.
-   * @param obstacles unhandled obstacle information.
-   * @param path_decision path decision information provided by perception.
-   * @param path_data output path plan information based on FLU coordinate
-   * system
-   * @return Status::OK() if a suitable path is created; error otherwise.
-   */
-  apollo::common::Status Process(const ReferenceLine &reference_line,
-                                 const common::TrajectoryPoint &init_point,
-                                 const std::vector<const Obstacle *> &obstacles,
-                                 PathDecision *const path_decision,
-                                 PathData *const path_data);
+            /**
+             * @brief Overrided implementation of the virtual function "Execute" in the
+             * base class "Task".
+             * @param frame Current planning frame.
+             * @param reference_line_info Currently available reference line information.
+             * @return Status::OK() if a suitable path is created; error otherwise.
+             */
+            apollo::common::Status Execute(
+                    Frame *frame, ReferenceLineInfo *reference_line_info) override;
 
-  /**
-   * @brief take a section of the reference line as the initial path trajectory.
-   * @param reference_line input reference line.
-   * @param path_points output points intercepted from the reference line
-   * @return if success return true or return false.
-   */
-  bool GetBasicPathData(const ReferenceLine &reference_line,
-                        std::vector<common::PathPoint> *const path_points);
+        private:
+            /**
+             * @brief generate path information for trajectory plan in navigation mode.
+             * @param reference_line  the reference line.
+             * @param init_point start planning point.
+             * @param obstacles unhandled obstacle information.
+             * @param path_decision path decision information provided by perception.
+             * @param path_data output path plan information based on FLU coordinate
+             * system
+             * @return Status::OK() if a suitable path is created; error otherwise.
+             */
+            apollo::common::Status Process(const ReferenceLine &reference_line,
+                                           const common::TrajectoryPoint &init_point,
+                                           const std::vector<const Obstacle *> &obstacles,
+                                           PathDecision *const path_decision,
+                                           PathData *const path_data);
 
-  /**
-   * @brief if adc is not on the dest lane, move to dest lane slowly.
-   * @param the y of adc project point to dest lane reference line.
-   * @param path point intercepted from the reference line
-   */
-  void MoveToDestLane(const double dest_ref_line_y,
-                      std::vector<common::PathPoint> *const path_points);
+            /**
+             * @brief take a section of the reference line as the initial path trajectory.
+             * @param reference_line input reference line.
+             * @param path_points output points intercepted from the reference line
+             * @return if success return true or return false.
+             */
+            bool GetBasicPathData(const ReferenceLine &reference_line,
+                                  std::vector <common::PathPoint> *const path_points);
 
-  /**
-   * @brief if adc is on the dest lane, keep lane.
-   * @param the y of adc project point to dest lane reference line.
-   * @param path point intercepted from the reference line
-   */
-  void KeepLane(const double dest_ref_line_y,
-                std::vector<common::PathPoint> *const path_points);
+            /**
+             * @brief if adc is not on the dest lane, move to dest lane slowly.
+             * @param the y of adc project point to dest lane reference line.
+             * @param path point intercepted from the reference line
+             */
+            void MoveToDestLane(const double dest_ref_line_y,
+                                std::vector <common::PathPoint> *const path_points);
 
-  void RecordDebugInfo(const PathData &path_data);
+            /**
+             * @brief if adc is on the dest lane, keep lane.
+             * @param the y of adc project point to dest lane reference line.
+             * @param path point intercepted from the reference line
+             */
+            void KeepLane(const double dest_ref_line_y,
+                          std::vector <common::PathPoint> *const path_points);
 
-  /**
-   * @brief check whether it is safe to change lanes
-   * @param reference_line input change lane reference line
-   * @param path_decision input all abstacles info
-   * @return true if safe to change lane or return false.
-   */
-  bool IsSafeChangeLane(const ReferenceLine &reference_line,
-                        const PathDecision &path_decision);
+            void RecordDebugInfo(const PathData &path_data);
 
-  /**
-   * @brief calculate the lateral target position with slight avoidance
-   * @path_data_points the basic path data intercepted from the reference line
-   * @param reference_line input reference line
-   * @param obstacles unhandled obstacle information.
-   * @param path_decision path decision information provided by perception.
-   * @vehicle_state adc status
-   * @return the y coordinate value of nudging target position
-   */
-  double NudgeProcess(const ReferenceLine &reference_line,
-                      const std::vector<common::PathPoint> &path_data_points,
-                      const std::vector<const Obstacle *> &obstacles,
-                      const PathDecision &path_decision,
-                      const common::VehicleState &vehicle_state);
-  /**
-   * @brief calculate latreal shift distance by vehicle state and config
-   */
-  double CalculateDistanceToDestLane();
+            /**
+             * @brief check whether it is safe to change lanes
+             * @param reference_line input change lane reference line
+             * @param path_decision input all abstacles info
+             * @return true if safe to change lane or return false.
+             */
+            bool IsSafeChangeLane(const ReferenceLine &reference_line,
+                                  const PathDecision &path_decision);
 
- private:
-  double max_keep_lane_distance_ = 0.0;
-  double min_keep_lane_offset_ = 0.0;
-  double max_keep_lane_shift_y_ = 0.0;
-  double keep_lane_shift_compensation_ = 0.0;
-  double move_dest_lane_compensation_ = 0.0;
-  uint32_t start_plan_point_from_ = 0;
-  std::map<double, double> move_dest_lane_config_talbe_;
-  std::vector<double> max_speed_levels_;
+            /**
+             * @brief calculate the lateral target position with slight avoidance
+             * @path_data_points the basic path data intercepted from the reference line
+             * @param reference_line input reference line
+             * @param obstacles unhandled obstacle information.
+             * @param path_decision path decision information provided by perception.
+             * @vehicle_state adc status
+             * @return the y coordinate value of nudging target position
+             */
+            double NudgeProcess(const ReferenceLine &reference_line,
+                                const std::vector <common::PathPoint> &path_data_points,
+                                const std::vector<const Obstacle *> &obstacles,
+                                const PathDecision &path_decision,
+                                const common::VehicleState &vehicle_state);
 
-  double start_plan_v_ = 0.0;
-  double start_plan_a_ = 0.0;
-  apollo::common::PathPoint start_plan_point_;
+            /**
+             * @brief calculate latreal shift distance by vehicle state and config
+             */
+            double CalculateDistanceToDestLane();
 
-  std::string cur_reference_line_lane_id_;
-  std::map<std::string, bool> last_lane_id_to_nudge_flag_;
-  NaviObstacleDecider obstacle_decider_;
-  common::VehicleState vehicle_state_;
-  NaviPathDeciderConfig config_;
+        private:
+            double max_keep_lane_distance_ = 0.0;
+            double min_keep_lane_offset_ = 0.0;
+            double max_keep_lane_shift_y_ = 0.0;
+            double keep_lane_shift_compensation_ = 0.0;
+            double move_dest_lane_compensation_ = 0.0;
+            uint32_t start_plan_point_from_ = 0;
+            std::map<double, double> move_dest_lane_config_talbe_;
+            std::vector<double> max_speed_levels_;
 
-  FRIEND_TEST(NaviPathDeciderTest, MoveToDestLane);
-  FRIEND_TEST(NaviPathDeciderTest, KeepLane);
-};
+            double start_plan_v_ = 0.0;
+            double start_plan_a_ = 0.0;
+            apollo::common::PathPoint start_plan_point_;
 
-}  // namespace planning
+            std::string cur_reference_line_lane_id_;
+            std::map<std::string, bool> last_lane_id_to_nudge_flag_;
+            NaviObstacleDecider obstacle_decider_;
+            common::VehicleState vehicle_state_;
+            NaviPathDeciderConfig config_;
+
+            FRIEND_TEST(NaviPathDeciderTest, MoveToDestLane
+            );
+            FRIEND_TEST(NaviPathDeciderTest, KeepLane
+            );
+        };
+
+    }  // namespace planning
 }  // namespace apollo

@@ -23,13 +23,17 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-TEST(AutotuningMLPNetModeltest, test_case_one) {
-  AutotuningMLPModel model;
-  prediction::NetParameter net_parameter;
-  EXPECT_TRUE(model.LoadModel(net_parameter));
-}
+        TEST(AutotuningMLPNetModeltest, test_case_one
+        ) {
+        AutotuningMLPModel model;
+        prediction::NetParameter net_parameter;
+        EXPECT_TRUE(model
+        .
+        LoadModel(net_parameter)
+        );
+    }
 
 }  // namespace planning
 }  // namespace apollo

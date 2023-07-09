@@ -27,33 +27,34 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace emergency_stop {
+    namespace planning {
+        namespace scenario {
+            namespace emergency_stop {
 
-struct EmergencyStopContext;
+                struct EmergencyStopContext;
 
-class EmergencyStopStageStandby : public Stage {
- public:
-  EmergencyStopStageStandby(const ScenarioConfig::StageConfig& config,
-                            const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                class EmergencyStopStageStandby : public Stage {
+                public:
+                    EmergencyStopStageStandby(const ScenarioConfig::StageConfig &config,
+                                              const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
-  EmergencyStopContext* GetContext() {
-    return GetContextAs<EmergencyStopContext>();
-  }
+                private:
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
- private:
-  Stage::StageStatus FinishStage();
+                    EmergencyStopContext *GetContext() {
+                        return GetContextAs<EmergencyStopContext>();
+                    }
 
- private:
-  ScenarioEmergencyStopConfig scenario_config_;
-};
+                private:
+                    Stage::StageStatus FinishStage();
 
-}  // namespace emergency_stop
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    ScenarioEmergencyStopConfig scenario_config_;
+                };
+
+            }  // namespace emergency_stop
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

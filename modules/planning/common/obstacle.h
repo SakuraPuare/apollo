@@ -38,7 +38,7 @@
 #include "modules/common_msgs/prediction_msgs/prediction_obstacle.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @class Obstacle
@@ -57,235 +57,256 @@ namespace planning {
  * Ignore decision belongs to both lateral decision and longitudinal decision,
  * and it has the lowest priority.
  */
-class Obstacle {
- public:
-  Obstacle() = default;
-  Obstacle(const std::string& id,
-           const perception::PerceptionObstacle& perception_obstacle,
-           const prediction::ObstaclePriority::Priority& obstacle_priority,
-           const bool is_static);
-  Obstacle(const std::string& id,
-           const perception::PerceptionObstacle& perception_obstacle,
-           const prediction::Trajectory& trajectory,
-           const prediction::ObstaclePriority::Priority& obstacle_priority,
-           const bool is_static);
+        class Obstacle {
+        public:
+            Obstacle() = default;
 
-  const std::string& Id() const { return id_; }
-  void SetId(const std::string& id) { id_ = id; }
+            Obstacle(const std::string &id,
+                     const perception::PerceptionObstacle &perception_obstacle,
+                     const prediction::ObstaclePriority::Priority &obstacle_priority,
+                     const bool is_static);
 
-  double speed() const { return speed_; }
+            Obstacle(const std::string &id,
+                     const perception::PerceptionObstacle &perception_obstacle,
+                     const prediction::Trajectory &trajectory,
+                     const prediction::ObstaclePriority::Priority &obstacle_priority,
+                     const bool is_static);
 
-  int32_t PerceptionId() const { return perception_id_; }
+            const std::string &Id() const { return id_; }
 
-  bool IsStatic() const { return is_static_; }
-  bool IsVirtual() const { return is_virtual_; }
+            void SetId(const std::string &id) { id_ = id; }
 
-  common::TrajectoryPoint GetPointAtTime(const double time) const;
+            double speed() const { return speed_; }
 
-  common::math::Box2d GetBoundingBox(
-      const common::TrajectoryPoint& point) const;
+            int32_t PerceptionId() const { return perception_id_; }
 
-  const common::math::Box2d& PerceptionBoundingBox() const {
-    return perception_bounding_box_;
-  }
-  const common::math::Polygon2d& PerceptionPolygon() const {
-    return perception_polygon_;
-  }
-  const prediction::Trajectory& Trajectory() const { return trajectory_; }
-  common::TrajectoryPoint* AddTrajectoryPoint() {
-    return trajectory_.add_trajectory_point();
-  }
-  bool HasTrajectory() const {
-    return !(trajectory_.trajectory_point().empty());
-  }
+            bool IsStatic() const { return is_static_; }
 
-  const perception::PerceptionObstacle& Perception() const {
-    return perception_obstacle_;
-  }
+            bool IsVirtual() const { return is_virtual_; }
 
-  /**
-   * @brief This is a helper function that can create obstacles from prediction
-   * data.  The original prediction may have multiple trajectories for each
-   * obstacle. But this function will create one obstacle for each trajectory.
-   * @param predictions The prediction results
-   * @return obstacles The output obstacles saved in a list of unique_ptr.
-   */
-  static std::list<std::unique_ptr<Obstacle>> CreateObstacles(
-      const prediction::PredictionObstacles& predictions);
+            common::TrajectoryPoint GetPointAtTime(const double time) const;
 
-  static std::unique_ptr<Obstacle> CreateStaticVirtualObstacles(
-      const std::string& id, const common::math::Box2d& obstacle_box);
+            common::math::Box2d GetBoundingBox(
+                    const common::TrajectoryPoint &point) const;
 
-  static bool IsValidPerceptionObstacle(
-      const perception::PerceptionObstacle& obstacle);
+            const common::math::Box2d &PerceptionBoundingBox() const {
+                return perception_bounding_box_;
+            }
 
-  static bool IsValidTrajectoryPoint(const common::TrajectoryPoint& point);
+            const common::math::Polygon2d &PerceptionPolygon() const {
+                return perception_polygon_;
+            }
 
-  inline bool IsCautionLevelObstacle() const {
-    return is_caution_level_obstacle_;
-  }
+            const prediction::Trajectory &Trajectory() const { return trajectory_; }
 
-  // const Obstacle* obstacle() const;
+            common::TrajectoryPoint *AddTrajectoryPoint() {
+                return trajectory_.add_trajectory_point();
+            }
 
-  /**
-   * return the merged lateral decision
-   * Lateral decision is one of {Nudge, Ignore}
-   **/
-  const ObjectDecisionType& LateralDecision() const;
+            bool HasTrajectory() const {
+                return !(trajectory_.trajectory_point().empty());
+            }
 
-  /**
-   * @brief return the merged longitudinal decision
-   * Longitudinal decision is one of {Stop, Yield, Follow, Overtake, Ignore}
-   **/
-  const ObjectDecisionType& LongitudinalDecision() const;
+            const perception::PerceptionObstacle &Perception() const {
+                return perception_obstacle_;
+            }
 
-  std::string DebugString() const;
+            /**
+             * @brief This is a helper function that can create obstacles from prediction
+             * data.  The original prediction may have multiple trajectories for each
+             * obstacle. But this function will create one obstacle for each trajectory.
+             * @param predictions The prediction results
+             * @return obstacles The output obstacles saved in a list of unique_ptr.
+             */
+            static std::list <std::unique_ptr<Obstacle>> CreateObstacles(
+                    const prediction::PredictionObstacles &predictions);
 
-  const SLBoundary& PerceptionSLBoundary() const;
+            static std::unique_ptr <Obstacle> CreateStaticVirtualObstacles(
+                    const std::string &id, const common::math::Box2d &obstacle_box);
 
-  const STBoundary& reference_line_st_boundary() const;
+            static bool IsValidPerceptionObstacle(
+                    const perception::PerceptionObstacle &obstacle);
 
-  const STBoundary& path_st_boundary() const;
+            static bool IsValidTrajectoryPoint(const common::TrajectoryPoint &point);
 
-  const std::vector<std::string>& decider_tags() const;
+            inline bool IsCautionLevelObstacle() const {
+                return is_caution_level_obstacle_;
+            }
 
-  const std::vector<ObjectDecisionType>& decisions() const;
+            // const Obstacle* obstacle() const;
 
-  void AddLongitudinalDecision(const std::string& decider_tag,
-                               const ObjectDecisionType& decision);
+            /**
+             * return the merged lateral decision
+             * Lateral decision is one of {Nudge, Ignore}
+             **/
+            const ObjectDecisionType &LateralDecision() const;
 
-  void AddLateralDecision(const std::string& decider_tag,
-                          const ObjectDecisionType& decision);
-  bool HasLateralDecision() const;
+            /**
+             * @brief return the merged longitudinal decision
+             * Longitudinal decision is one of {Stop, Yield, Follow, Overtake, Ignore}
+             **/
+            const ObjectDecisionType &LongitudinalDecision() const;
 
-  void set_path_st_boundary(const STBoundary& boundary);
+            std::string DebugString() const;
 
-  bool is_path_st_boundary_initialized() {
-    return path_st_boundary_initialized_;
-  }
+            const SLBoundary &PerceptionSLBoundary() const;
 
-  void SetStBoundaryType(const STBoundary::BoundaryType type);
+            const STBoundary &reference_line_st_boundary() const;
 
-  void EraseStBoundary();
+            const STBoundary &path_st_boundary() const;
 
-  void SetReferenceLineStBoundary(const STBoundary& boundary);
+            const std::vector <std::string> &decider_tags() const;
 
-  void SetReferenceLineStBoundaryType(const STBoundary::BoundaryType type);
+            const std::vector <ObjectDecisionType> &decisions() const;
 
-  void EraseReferenceLineStBoundary();
+            void AddLongitudinalDecision(const std::string &decider_tag,
+                                         const ObjectDecisionType &decision);
 
-  bool HasLongitudinalDecision() const;
+            void AddLateralDecision(const std::string &decider_tag,
+                                    const ObjectDecisionType &decision);
 
-  bool HasNonIgnoreDecision() const;
+            bool HasLateralDecision() const;
 
-  /**
-   * @brief Calculate stop distance with the obstacle using the ADC's minimum
-   * turning radius
-   */
-  double MinRadiusStopDistance(const common::VehicleParam& vehicle_param) const;
+            void set_path_st_boundary(const STBoundary &boundary);
 
-  /**
-   * @brief Check if this object can be safely ignored.
-   * The object will be ignored if the lateral decision is ignore and the
-   * longitudinal decision is ignore
-   *  return longitudinal_decision_ == ignore && lateral_decision == ignore.
-   */
-  bool IsIgnore() const;
-  bool IsLongitudinalIgnore() const;
-  bool IsLateralIgnore() const;
+            bool is_path_st_boundary_initialized() {
+                return path_st_boundary_initialized_;
+            }
 
-  void BuildReferenceLineStBoundary(const ReferenceLine& reference_line,
-                                    const double adc_start_s);
+            void SetStBoundaryType(const STBoundary::BoundaryType type);
 
-  void SetPerceptionSlBoundary(const SLBoundary& sl_boundary);
+            void EraseStBoundary();
 
-  /**
-   * @brief check if an ObjectDecisionType is a longitudinal decision.
-   **/
-  static bool IsLongitudinalDecision(const ObjectDecisionType& decision);
+            void SetReferenceLineStBoundary(const STBoundary &boundary);
 
-  /**
-   * @brief check if an ObjectDecisionType is a lateral decision.
-   **/
-  static bool IsLateralDecision(const ObjectDecisionType& decision);
+            void SetReferenceLineStBoundaryType(const STBoundary::BoundaryType type);
 
-  void SetBlockingObstacle(bool blocking) { is_blocking_obstacle_ = blocking; }
-  bool IsBlockingObstacle() const { return is_blocking_obstacle_; }
+            void EraseReferenceLineStBoundary();
 
-  /*
-   * @brief IsLaneBlocking is only meaningful when IsStatic() == true.
-   */
-  bool IsLaneBlocking() const { return is_lane_blocking_; }
-  void CheckLaneBlocking(const ReferenceLine& reference_line);
-  bool IsLaneChangeBlocking() const { return is_lane_change_blocking_; }
-  void SetLaneChangeBlocking(const bool is_distance_clear);
+            bool HasLongitudinalDecision() const;
 
- private:
-  FRIEND_TEST(MergeLongitudinalDecision, AllDecisions);
-  static ObjectDecisionType MergeLongitudinalDecision(
-      const ObjectDecisionType& lhs, const ObjectDecisionType& rhs);
-  FRIEND_TEST(MergeLateralDecision, AllDecisions);
-  static ObjectDecisionType MergeLateralDecision(const ObjectDecisionType& lhs,
-                                                 const ObjectDecisionType& rhs);
+            bool HasNonIgnoreDecision() const;
 
-  bool BuildTrajectoryStBoundary(const ReferenceLine& reference_line,
-                                 const double adc_start_s,
-                                 STBoundary* const st_boundary);
-  bool IsValidObstacle(
-      const perception::PerceptionObstacle& perception_obstacle);
+            /**
+             * @brief Calculate stop distance with the obstacle using the ADC's minimum
+             * turning radius
+             */
+            double MinRadiusStopDistance(const common::VehicleParam &vehicle_param) const;
 
- private:
-  std::string id_;
-  int32_t perception_id_ = 0;
-  bool is_static_ = false;
-  bool is_virtual_ = false;
-  double speed_ = 0.0;
+            /**
+             * @brief Check if this object can be safely ignored.
+             * The object will be ignored if the lateral decision is ignore and the
+             * longitudinal decision is ignore
+             *  return longitudinal_decision_ == ignore && lateral_decision == ignore.
+             */
+            bool IsIgnore() const;
 
-  bool path_st_boundary_initialized_ = false;
+            bool IsLongitudinalIgnore() const;
 
-  prediction::Trajectory trajectory_;
-  perception::PerceptionObstacle perception_obstacle_;
-  common::math::Box2d perception_bounding_box_;
-  common::math::Polygon2d perception_polygon_;
+            bool IsLateralIgnore() const;
 
-  std::vector<ObjectDecisionType> decisions_;
-  std::vector<std::string> decider_tags_;
-  SLBoundary sl_boundary_;
+            void BuildReferenceLineStBoundary(const ReferenceLine &reference_line,
+                                              const double adc_start_s);
 
-  STBoundary reference_line_st_boundary_;
-  STBoundary path_st_boundary_;
+            void SetPerceptionSlBoundary(const SLBoundary &sl_boundary);
 
-  ObjectDecisionType lateral_decision_;
-  ObjectDecisionType longitudinal_decision_;
+            /**
+             * @brief check if an ObjectDecisionType is a longitudinal decision.
+             **/
+            static bool IsLongitudinalDecision(const ObjectDecisionType &decision);
 
-  // for keep_clear usage only
-  bool is_blocking_obstacle_ = false;
+            /**
+             * @brief check if an ObjectDecisionType is a lateral decision.
+             **/
+            static bool IsLateralDecision(const ObjectDecisionType &decision);
 
-  bool is_lane_blocking_ = false;
+            void SetBlockingObstacle(bool blocking) { is_blocking_obstacle_ = blocking; }
 
-  bool is_lane_change_blocking_ = false;
+            bool IsBlockingObstacle() const { return is_blocking_obstacle_; }
 
-  bool is_caution_level_obstacle_ = false;
+            /*
+             * @brief IsLaneBlocking is only meaningful when IsStatic() == true.
+             */
+            bool IsLaneBlocking() const { return is_lane_blocking_; }
 
-  double min_radius_stop_distance_ = -1.0;
+            void CheckLaneBlocking(const ReferenceLine &reference_line);
 
-  struct ObjectTagCaseHash {
-    size_t operator()(
-        const planning::ObjectDecisionType::ObjectTagCase tag) const {
-      return static_cast<size_t>(tag);
-    }
-  };
+            bool IsLaneChangeBlocking() const { return is_lane_change_blocking_; }
 
-  static const std::unordered_map<ObjectDecisionType::ObjectTagCase, int,
-                                  ObjectTagCaseHash>
-      s_lateral_decision_safety_sorter_;
-  static const std::unordered_map<ObjectDecisionType::ObjectTagCase, int,
-                                  ObjectTagCaseHash>
-      s_longitudinal_decision_safety_sorter_;
-};
+            void SetLaneChangeBlocking(const bool is_distance_clear);
 
-typedef IndexedList<std::string, Obstacle> IndexedObstacles;
-typedef ThreadSafeIndexedList<std::string, Obstacle> ThreadSafeIndexedObstacles;
+        private:
+            FRIEND_TEST(MergeLongitudinalDecision, AllDecisions
+            );
 
-}  // namespace planning
+            static ObjectDecisionType MergeLongitudinalDecision(
+                    const ObjectDecisionType &lhs, const ObjectDecisionType &rhs);
+
+            FRIEND_TEST(MergeLateralDecision, AllDecisions
+            );
+
+            static ObjectDecisionType MergeLateralDecision(const ObjectDecisionType &lhs,
+                                                           const ObjectDecisionType &rhs);
+
+            bool BuildTrajectoryStBoundary(const ReferenceLine &reference_line,
+                                           const double adc_start_s,
+                                           STBoundary *const st_boundary);
+
+            bool IsValidObstacle(
+                    const perception::PerceptionObstacle &perception_obstacle);
+
+        private:
+            std::string id_;
+            int32_t perception_id_ = 0;
+            bool is_static_ = false;
+            bool is_virtual_ = false;
+            double speed_ = 0.0;
+
+            bool path_st_boundary_initialized_ = false;
+
+            prediction::Trajectory trajectory_;
+            perception::PerceptionObstacle perception_obstacle_;
+            common::math::Box2d perception_bounding_box_;
+            common::math::Polygon2d perception_polygon_;
+
+            std::vector <ObjectDecisionType> decisions_;
+            std::vector <std::string> decider_tags_;
+            SLBoundary sl_boundary_;
+
+            STBoundary reference_line_st_boundary_;
+            STBoundary path_st_boundary_;
+
+            ObjectDecisionType lateral_decision_;
+            ObjectDecisionType longitudinal_decision_;
+
+            // for keep_clear usage only
+            bool is_blocking_obstacle_ = false;
+
+            bool is_lane_blocking_ = false;
+
+            bool is_lane_change_blocking_ = false;
+
+            bool is_caution_level_obstacle_ = false;
+
+            double min_radius_stop_distance_ = -1.0;
+
+            struct ObjectTagCaseHash {
+                size_t operator()(
+                        const planning::ObjectDecisionType::ObjectTagCase tag) const {
+                    return static_cast<size_t>(tag);
+                }
+            };
+
+            static const std::unordered_map<ObjectDecisionType::ObjectTagCase, int,
+                    ObjectTagCaseHash>
+                    s_lateral_decision_safety_sorter_;
+            static const std::unordered_map<ObjectDecisionType::ObjectTagCase, int,
+                    ObjectTagCaseHash>
+                    s_longitudinal_decision_safety_sorter_;
+        };
+
+        typedef IndexedList <std::string, Obstacle> IndexedObstacles;
+        typedef ThreadSafeIndexedList <std::string, Obstacle> ThreadSafeIndexedObstacles;
+
+    }  // namespace planning
 }  // namespace apollo

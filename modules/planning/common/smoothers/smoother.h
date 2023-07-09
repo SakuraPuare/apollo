@@ -26,21 +26,22 @@
 #include "modules/common_msgs/planning_msgs/decision.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class Smoother {
- public:
-  Smoother() = default;
-  virtual ~Smoother() = default;
+        class Smoother {
+        public:
+            Smoother() = default;
 
-  apollo::common::Status Smooth(const FrameHistory* frame_history,
-                                const Frame* current_frame,
-                                ADCTrajectory* const current_trajectory_pb);
+            virtual ~Smoother() = default;
 
- private:
-  bool IsCloseStop(const common::VehicleState& vehicle_state,
-                   const MainStop& main_stop);
-};
+            apollo::common::Status Smooth(const FrameHistory *frame_history,
+                                          const Frame *current_frame,
+                                          ADCTrajectory *const current_trajectory_pb);
 
-}  // namespace planning
+        private:
+            bool IsCloseStop(const common::VehicleState &vehicle_state,
+                             const MainStop &main_stop);
+        };
+
+    }  // namespace planning
 }  // namespace apollo

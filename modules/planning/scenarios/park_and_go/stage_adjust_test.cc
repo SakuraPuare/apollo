@@ -23,29 +23,35 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace park_and_go {
+    namespace planning {
+        namespace scenario {
+            namespace park_and_go {
 
-class ParkAndGoStageAdjustTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_stage_type(StageType::PARK_AND_GO_ADJUST);
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+                class ParkAndGoStageAdjustTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {
+                        config_.set_stage_type(StageType::PARK_AND_GO_ADJUST);
+                        injector_ = std::make_shared<DependencyInjector>();
+                    }
 
- protected:
-  ScenarioConfig::StageConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+                protected:
+                    ScenarioConfig::StageConfig config_;
+                    std::shared_ptr <DependencyInjector> injector_;
+                };
 
-TEST_F(ParkAndGoStageAdjustTest, Init) {
-  ParkAndGoStageAdjust park_and_go_stage_adjust(config_, injector_);
-  EXPECT_EQ(park_and_go_stage_adjust.Name(),
-            StageType_Name(StageType::PARK_AND_GO_ADJUST));
-}
+                TEST_F(ParkAndGoStageAdjustTest, Init
+                ) {
+                ParkAndGoStageAdjust park_and_go_stage_adjust(config_, injector_);
+                EXPECT_EQ(park_and_go_stage_adjust
+                .
 
-}  // namespace park_and_go
-}  // namespace scenario
+                Name(),
+                        StageType_Name(StageType::PARK_AND_GO_ADJUST)
+
+                );
+            }
+
+        }  // namespace park_and_go
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

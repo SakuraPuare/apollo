@@ -28,30 +28,33 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class Crosswalk : public TrafficRule {
- public:
-  Crosswalk(const TrafficRuleConfig& config,
-            const std::shared_ptr<DependencyInjector>& injector);
-  virtual ~Crosswalk() = default;
+        class Crosswalk : public TrafficRule {
+        public:
+            Crosswalk(const TrafficRuleConfig &config,
+                      const std::shared_ptr <DependencyInjector> &injector);
 
-  common::Status ApplyRule(Frame* const frame,
-                           ReferenceLineInfo* const reference_line_info);
+            virtual ~Crosswalk() = default;
 
- private:
-  void MakeDecisions(Frame* const frame,
-                     ReferenceLineInfo* const reference_line_info);
-  bool FindCrosswalks(ReferenceLineInfo* const reference_line_info);
-  bool CheckStopForObstacle(ReferenceLineInfo* const reference_line_info,
-                            const hdmap::CrosswalkInfoConstPtr crosswalk_ptr,
-                            const Obstacle& obstacle,
-                            const double stop_deceleration);
+            common::Status ApplyRule(Frame *const frame,
+                                     ReferenceLineInfo *const reference_line_info);
 
- private:
-  static constexpr char const* CROSSWALK_VO_ID_PREFIX = "CW_";
-  std::vector<const hdmap::PathOverlap*> crosswalk_overlaps_;
-};
+        private:
+            void MakeDecisions(Frame *const frame,
+                               ReferenceLineInfo *const reference_line_info);
 
-}  // namespace planning
+            bool FindCrosswalks(ReferenceLineInfo *const reference_line_info);
+
+            bool CheckStopForObstacle(ReferenceLineInfo *const reference_line_info,
+                                      const hdmap::CrosswalkInfoConstPtr crosswalk_ptr,
+                                      const Obstacle &obstacle,
+                                      const double stop_deceleration);
+
+        private:
+            static constexpr char const *CROSSWALK_VO_ID_PREFIX = "CW_";
+            std::vector<const hdmap::PathOverlap *> crosswalk_overlaps_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

@@ -19,6 +19,7 @@
  */
 
 #pragma once
+
 #include <algorithm>
 
 #include "Eigen/Dense"
@@ -29,26 +30,26 @@
 #include "modules/common_msgs/planning_msgs/planning.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class DualVariableWarmStartProblem {
- public:
-  explicit DualVariableWarmStartProblem(
-      const PlannerOpenSpaceConfig& planner_open_space_config);
+        class DualVariableWarmStartProblem {
+        public:
+            explicit DualVariableWarmStartProblem(
+                    const PlannerOpenSpaceConfig &planner_open_space_config);
 
-  virtual ~DualVariableWarmStartProblem() = default;
+            virtual ~DualVariableWarmStartProblem() = default;
 
-  bool Solve(const size_t horizon, const double ts, const Eigen::MatrixXd& ego,
-             const size_t obstacles_num,
-             const Eigen::MatrixXi& obstacles_edges_num,
-             const Eigen::MatrixXd& obstacles_A,
-             const Eigen::MatrixXd& obstacles_b, const Eigen::MatrixXd& xWS,
-             Eigen::MatrixXd* l_warm_up, Eigen::MatrixXd* n_warm_up,
-             Eigen::MatrixXd* s_warm_up);
+            bool Solve(const size_t horizon, const double ts, const Eigen::MatrixXd &ego,
+                       const size_t obstacles_num,
+                       const Eigen::MatrixXi &obstacles_edges_num,
+                       const Eigen::MatrixXd &obstacles_A,
+                       const Eigen::MatrixXd &obstacles_b, const Eigen::MatrixXd &xWS,
+                       Eigen::MatrixXd *l_warm_up, Eigen::MatrixXd *n_warm_up,
+                       Eigen::MatrixXd *s_warm_up);
 
- private:
-  PlannerOpenSpaceConfig planner_open_space_config_;
-};
+        private:
+            PlannerOpenSpaceConfig planner_open_space_config_;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

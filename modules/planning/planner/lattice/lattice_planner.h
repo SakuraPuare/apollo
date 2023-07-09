@@ -30,46 +30,46 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class LatticePlanner : public PlannerWithReferenceLine {
- public:
-  LatticePlanner() = delete;
+        class LatticePlanner : public PlannerWithReferenceLine {
+        public:
+            LatticePlanner() = delete;
 
-  explicit LatticePlanner(const std::shared_ptr<DependencyInjector>& injector)
-      : PlannerWithReferenceLine(injector) {}
+            explicit LatticePlanner(const std::shared_ptr <DependencyInjector> &injector)
+                    : PlannerWithReferenceLine(injector) {}
 
-  virtual ~LatticePlanner() = default;
+            virtual ~LatticePlanner() = default;
 
-  std::string Name() override { return "LATTICE"; }
+            std::string Name() override { return "LATTICE"; }
 
-  common::Status Init(const PlanningConfig& config) override {
-    return common::Status::OK();
-  }
+            common::Status Init(const PlanningConfig &config) override {
+                return common::Status::OK();
+            }
 
-  void Stop() override {}
+            void Stop() override {}
 
-  /**
-   * @brief Override function Plan in parent class Planner.
-   * @param planning_init_point The trajectory point where planning starts.
-   * @param frame Current planning frame.
-   * @return OK if planning succeeds; error otherwise.
-   */
-  common::Status Plan(const common::TrajectoryPoint& planning_init_point,
-                      Frame* frame,
-                      ADCTrajectory* ptr_computed_trajectory) override;
+            /**
+             * @brief Override function Plan in parent class Planner.
+             * @param planning_init_point The trajectory point where planning starts.
+             * @param frame Current planning frame.
+             * @return OK if planning succeeds; error otherwise.
+             */
+            common::Status Plan(const common::TrajectoryPoint &planning_init_point,
+                                Frame *frame,
+                                ADCTrajectory *ptr_computed_trajectory) override;
 
-  /**
-   * @brief Override function Plan in parent class Planner.
-   * @param planning_init_point The trajectory point where planning starts.
-   * @param frame Current planning frame.
-   * @param reference_line_info The computed reference line.
-   * @return OK if planning succeeds; error otherwise.
-   */
-  common::Status PlanOnReferenceLine(
-      const common::TrajectoryPoint& planning_init_point, Frame* frame,
-      ReferenceLineInfo* reference_line_info) override;
-};
+            /**
+             * @brief Override function Plan in parent class Planner.
+             * @param planning_init_point The trajectory point where planning starts.
+             * @param frame Current planning frame.
+             * @param reference_line_info The computed reference line.
+             * @return OK if planning succeeds; error otherwise.
+             */
+            common::Status PlanOnReferenceLine(
+                    const common::TrajectoryPoint &planning_init_point, Frame *frame,
+                    ReferenceLineInfo *reference_line_info) override;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

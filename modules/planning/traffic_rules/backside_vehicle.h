@@ -23,24 +23,25 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class BacksideVehicle : public TrafficRule {
- public:
-  explicit BacksideVehicle(const TrafficRuleConfig& config);
-  virtual ~BacksideVehicle() = default;
+        class BacksideVehicle : public TrafficRule {
+        public:
+            explicit BacksideVehicle(const TrafficRuleConfig &config);
 
-  common::Status ApplyRule(Frame* const frame,
-                           ReferenceLineInfo* const reference_line_info);
+            virtual ~BacksideVehicle() = default;
 
- private:
-  /**
-   * @brief When the reference line info indicates that there is no lane change,
-   * use lane keeping strategy for back side vehicles.
-   */
-  void MakeLaneKeepingObstacleDecision(const SLBoundary& adc_sl_boundary,
-                                       PathDecision* path_decision);
-};
+            common::Status ApplyRule(Frame *const frame,
+                                     ReferenceLineInfo *const reference_line_info);
 
-}  // namespace planning
+        private:
+            /**
+             * @brief When the reference line info indicates that there is no lane change,
+             * use lane keeping strategy for back side vehicles.
+             */
+            void MakeLaneKeepingObstacleDecision(const SLBoundary &adc_sl_boundary,
+                                                 PathDecision *path_decision);
+        };
+
+    }  // namespace planning
 }  // namespace apollo

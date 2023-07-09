@@ -27,12 +27,16 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 // TODO(all): Add your unit test code here according to the Google Unit Testing
 // Specification.
-TEST(NaviPlannerTest, ComputeTrajectory) {}
+        TEST(NaviPlannerTest, ComputeTrajectory
+        ) {
+    }
 
-TEST(NaviPlannerTest, ErrorTest) {}
+    TEST(NaviPlannerTest, ErrorTest
+    ) {
+}
 
 }  // namespace planning
 }  // namespace apollo

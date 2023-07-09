@@ -27,35 +27,35 @@
 #include "modules/planning/scenarios/traffic_light/protected/traffic_light_protected_scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace traffic_light {
+    namespace planning {
+        namespace scenario {
+            namespace traffic_light {
 
-struct TrafficLightProtectedContext;
+                struct TrafficLightProtectedContext;
 
-class TrafficLightProtectedStageIntersectionCruise : public Stage {
- public:
-  TrafficLightProtectedStageIntersectionCruise(
-      const ScenarioConfig::StageConfig& config,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                class TrafficLightProtectedStageIntersectionCruise : public Stage {
+                public:
+                    TrafficLightProtectedStageIntersectionCruise(
+                            const ScenarioConfig::StageConfig &config,
+                            const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
+                private:
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
-  TrafficLightProtectedContext* GetContext() {
-    return GetContextAs<TrafficLightProtectedContext>();
-  }
+                    TrafficLightProtectedContext *GetContext() {
+                        return GetContextAs<TrafficLightProtectedContext>();
+                    }
 
-  Stage::StageStatus FinishStage();
+                    Stage::StageStatus FinishStage();
 
- private:
-  ScenarioTrafficLightProtectedConfig scenario_config_;
-  StageIntersectionCruiseImpl stage_impl_;
-};
+                private:
+                    ScenarioTrafficLightProtectedConfig scenario_config_;
+                    StageIntersectionCruiseImpl stage_impl_;
+                };
 
-}  // namespace traffic_light
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace traffic_light
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

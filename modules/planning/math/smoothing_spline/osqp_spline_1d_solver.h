@@ -27,24 +27,25 @@
 #include "osqp/osqp.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class OsqpSpline1dSolver : public Spline1dSolver {
- public:
-  OsqpSpline1dSolver(const std::vector<double>& x_knots, const uint32_t order);
-  virtual ~OsqpSpline1dSolver();
+        class OsqpSpline1dSolver : public Spline1dSolver {
+        public:
+            OsqpSpline1dSolver(const std::vector<double> &x_knots, const uint32_t order);
 
-  bool Solve() override;
+            virtual ~OsqpSpline1dSolver();
 
-  void CleanUp();
+            bool Solve() override;
 
-  void ResetOsqp();
+            void CleanUp();
 
- private:
-  OSQPSettings* settings_ = nullptr;
-  OSQPWorkspace* work_ = nullptr;  // Workspace
-  OSQPData* data_ = nullptr;       // OSQPData
-};
+            void ResetOsqp();
 
-}  // namespace planning
+        private:
+            OSQPSettings *settings_ = nullptr;
+            OSQPWorkspace *work_ = nullptr;  // Workspace
+            OSQPData *data_ = nullptr;       // OSQPData
+        };
+
+    }  // namespace planning
 }  // namespace apollo

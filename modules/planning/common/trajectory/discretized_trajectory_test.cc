@@ -24,33 +24,78 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-TEST(basic_test, DiscretizedTrajectory) {
-  const std::string path_of_standard_trajectory =
-      "modules/planning/testdata/trajectory_data/standard_trajectory.pb.txt";
-  ADCTrajectory trajectory;
-  EXPECT_TRUE(cyber::common::GetProtoFromFile(path_of_standard_trajectory,
-                                              &trajectory));
-  DiscretizedTrajectory discretized_trajectory(trajectory);
-  EXPECT_DOUBLE_EQ(discretized_trajectory.GetTemporalLength(),
-                   7.9999999999999885);
-  EXPECT_DOUBLE_EQ(discretized_trajectory.GetSpatialLength(),
-                   44.752319202675167);
-  auto p1 = discretized_trajectory.Evaluate(4.0);
-  EXPECT_DOUBLE_EQ(p1.path_point().x(), 587263.01182131236);
-  EXPECT_DOUBLE_EQ(p1.path_point().y(), 4140966.5720794979);
-  EXPECT_DOUBLE_EQ(p1.relative_time(), 4.0);
-  EXPECT_DOUBLE_EQ(p1.v(), 5.4412586837131443);
+        TEST(basic_test, DiscretizedTrajectory
+        ) {
+        const std::string path_of_standard_trajectory =
+                "modules/planning/testdata/trajectory_data/standard_trajectory.pb.txt";
+        ADCTrajectory trajectory;
+        EXPECT_TRUE(cyber::common::GetProtoFromFile(path_of_standard_trajectory,
+                                                    &trajectory)
+        );
+        DiscretizedTrajectory discretized_trajectory(trajectory);
+        EXPECT_DOUBLE_EQ(discretized_trajectory
+        .
 
-  auto k1 = discretized_trajectory.QueryLowerBoundPoint(2.12);
-  EXPECT_EQ(k1, 62);
+        GetTemporalLength(),
 
-  auto k2 = discretized_trajectory.QueryNearestPoint({587264.0, 4140966.2});
-  EXPECT_EQ(k2, 80);
+        7.9999999999999885);
+        EXPECT_DOUBLE_EQ(discretized_trajectory
+        .
 
-  EXPECT_EQ(discretized_trajectory.NumOfPoints(), 121);
-}
+        GetSpatialLength(),
+
+        44.752319202675167);
+        auto p1 = discretized_trajectory.Evaluate(4.0);
+        EXPECT_DOUBLE_EQ(p1
+        .
+
+        path_point()
+
+        .
+
+        x(),
+
+        587263.01182131236);
+        EXPECT_DOUBLE_EQ(p1
+        .
+
+        path_point()
+
+        .
+
+        y(),
+
+        4140966.5720794979);
+        EXPECT_DOUBLE_EQ(p1
+        .
+
+        relative_time(),
+
+        4.0);
+        EXPECT_DOUBLE_EQ(p1
+        .
+
+        v(),
+
+        5.4412586837131443);
+
+        auto k1 = discretized_trajectory.QueryLowerBoundPoint(2.12);
+        EXPECT_EQ(k1,
+        62);
+
+        auto k2 = discretized_trajectory.QueryNearestPoint({587264.0, 4140966.2});
+        EXPECT_EQ(k2,
+        80);
+
+        EXPECT_EQ(discretized_trajectory
+        .
+
+        NumOfPoints(),
+
+        121);
+    }
 
 }  // namespace planning
 }  // namespace apollo

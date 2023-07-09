@@ -41,350 +41,351 @@
 #include "modules/common_msgs/planning_msgs/planning_internal.pb.h"
 
 namespace apollo {
-namespace planning {
-
-typedef std::pair<DiscretizedTrajectory, canbus::Chassis::GearPosition>
-    TrajGearPair;
+    namespace planning {
 
-struct GearSwitchStates {
-  bool gear_switching_flag = false;
-  bool gear_shift_period_finished = true;
-  bool gear_shift_period_started = true;
-  double gear_shift_period_time = 0.0;
-  double gear_shift_start_time = 0.0;
-  apollo::canbus::Chassis::GearPosition gear_shift_position =
-      canbus::Chassis::GEAR_DRIVE;
-};
+        typedef std::pair <DiscretizedTrajectory, canbus::Chassis::GearPosition>
+                TrajGearPair;
 
-class OpenSpaceInfo {
- public:
-  OpenSpaceInfo() = default;
-  ~OpenSpaceInfo() = default;
+        struct GearSwitchStates {
+            bool gear_switching_flag = false;
+            bool gear_shift_period_finished = true;
+            bool gear_shift_period_started = true;
+            double gear_shift_period_time = 0.0;
+            double gear_shift_start_time = 0.0;
+            apollo::canbus::Chassis::GearPosition gear_shift_position =
+                    canbus::Chassis::GEAR_DRIVE;
+        };
 
-  const std::string target_parking_spot_id() const {
-    return target_parking_spot_id_;
-  }
+        class OpenSpaceInfo {
+        public:
+            OpenSpaceInfo() = default;
 
-  std::string *mutable_target_parking_spot_id() {
-    return &target_parking_spot_id_;
-  }
+            ~OpenSpaceInfo() = default;
 
-  const hdmap::ParkingSpaceInfoConstPtr target_parking_spot() const {
-    return target_parking_spot_;
-  }
+            const std::string target_parking_spot_id() const {
+                return target_parking_spot_id_;
+            }
 
-  hdmap::ParkingSpaceInfoConstPtr *mutable_target_parking_spot() {
-    return &target_parking_spot_;
-  }
+            std::string *mutable_target_parking_spot_id() {
+                return &target_parking_spot_id_;
+            }
 
-  const hdmap::LaneInfoConstPtr target_parking_lane() const {
-    return target_parking_lane_;
-  }
+            const hdmap::ParkingSpaceInfoConstPtr target_parking_spot() const {
+                return target_parking_spot_;
+            }
 
-  void set_target_parking_lane(hdmap::LaneInfoConstPtr lane_info_const_ptr) {
-    target_parking_lane_ = lane_info_const_ptr;
-  }
+            hdmap::ParkingSpaceInfoConstPtr *mutable_target_parking_spot() {
+                return &target_parking_spot_;
+            }
 
-  double open_space_pre_stop_fence_s() const {
-    return open_space_pre_stop_fence_s_;
-  }
+            const hdmap::LaneInfoConstPtr target_parking_lane() const {
+                return target_parking_lane_;
+            }
 
-  void set_open_space_pre_stop_fence_s(const double s) {
-    open_space_pre_stop_fence_s_ = s;
-  }
+            void set_target_parking_lane(hdmap::LaneInfoConstPtr lane_info_const_ptr) {
+                target_parking_lane_ = lane_info_const_ptr;
+            }
 
-  bool pre_stop_rightaway_flag() const { return pre_stop_rightaway_flag_; }
+            double open_space_pre_stop_fence_s() const {
+                return open_space_pre_stop_fence_s_;
+            }
 
-  void set_pre_stop_rightaway_flag(const bool flag) {
-    pre_stop_rightaway_flag_ = flag;
-  }
+            void set_open_space_pre_stop_fence_s(const double s) {
+                open_space_pre_stop_fence_s_ = s;
+            }
 
-  const hdmap::MapPathPoint &pre_stop_rightaway_point() const {
-    return pre_stop_rightaway_point_;
-  }
+            bool pre_stop_rightaway_flag() const { return pre_stop_rightaway_flag_; }
 
-  hdmap::MapPathPoint *mutable_pre_stop_rightaway_point() {
-    return &pre_stop_rightaway_point_;
-  }
+            void set_pre_stop_rightaway_flag(const bool flag) {
+                pre_stop_rightaway_flag_ = flag;
+            }
 
-  bool is_on_open_space_trajectory() const {
-    return is_on_open_space_trajectory_;
-  }
+            const hdmap::MapPathPoint &pre_stop_rightaway_point() const {
+                return pre_stop_rightaway_point_;
+            }
 
-  void set_is_on_open_space_trajectory(const bool flag) {
-    is_on_open_space_trajectory_ = flag;
-  }
+            hdmap::MapPathPoint *mutable_pre_stop_rightaway_point() {
+                return &pre_stop_rightaway_point_;
+            }
 
-  size_t obstacles_num() const { return obstacles_num_; }
+            bool is_on_open_space_trajectory() const {
+                return is_on_open_space_trajectory_;
+            }
 
-  void set_obstacles_num(const size_t obstacles_num) {
-    obstacles_num_ = obstacles_num;
-  }
+            void set_is_on_open_space_trajectory(const bool flag) {
+                is_on_open_space_trajectory_ = flag;
+            }
 
-  const Eigen::MatrixXi &obstacles_edges_num() const {
-    return obstacles_edges_num_;
-  }
+            size_t obstacles_num() const { return obstacles_num_; }
 
-  Eigen::MatrixXi *mutable_obstacles_edges_num() {
-    return &obstacles_edges_num_;
-  }
+            void set_obstacles_num(const size_t obstacles_num) {
+                obstacles_num_ = obstacles_num;
+            }
 
-  const std::vector<std::vector<common::math::Vec2d>> &obstacles_vertices_vec()
-      const {
-    return obstacles_vertices_vec_;
-  }
+            const Eigen::MatrixXi &obstacles_edges_num() const {
+                return obstacles_edges_num_;
+            }
 
-  std::vector<std::vector<common::math::Vec2d>>
-      *mutable_obstacles_vertices_vec() {
-    return &obstacles_vertices_vec_;
-  }
+            Eigen::MatrixXi *mutable_obstacles_edges_num() {
+                return &obstacles_edges_num_;
+            }
 
-  const Eigen::MatrixXd &obstacles_A() const { return obstacles_A_; }
+            const std::vector <std::vector<common::math::Vec2d>> &obstacles_vertices_vec()
+            const {
+                return obstacles_vertices_vec_;
+            }
 
-  Eigen::MatrixXd *mutable_obstacles_A() { return &obstacles_A_; }
+            std::vector <std::vector<common::math::Vec2d>>
+            *mutable_obstacles_vertices_vec() {
+                return &obstacles_vertices_vec_;
+            }
 
-  const Eigen::MatrixXd &obstacles_b() const { return obstacles_b_; }
+            const Eigen::MatrixXd &obstacles_A() const { return obstacles_A_; }
 
-  Eigen::MatrixXd *mutable_obstacles_b() { return &obstacles_b_; }
+            Eigen::MatrixXd *mutable_obstacles_A() { return &obstacles_A_; }
 
-  double origin_heading() const { return origin_heading_; }
+            const Eigen::MatrixXd &obstacles_b() const { return obstacles_b_; }
 
-  void set_origin_heading(const double original_heading) {
-    origin_heading_ = original_heading;
-  }
+            Eigen::MatrixXd *mutable_obstacles_b() { return &obstacles_b_; }
 
-  const common::math::Vec2d &origin_point() const { return origin_point_; }
+            double origin_heading() const { return origin_heading_; }
 
-  common::math::Vec2d *mutable_origin_point() { return &origin_point_; }
+            void set_origin_heading(const double original_heading) {
+                origin_heading_ = original_heading;
+            }
 
-  const std::vector<double> &ROI_xy_boundary() const {
-    return ROI_xy_boundary_;
-  }
+            const common::math::Vec2d &origin_point() const { return origin_point_; }
 
-  std::vector<double> *mutable_ROI_xy_boundary() { return &ROI_xy_boundary_; }
+            common::math::Vec2d *mutable_origin_point() { return &origin_point_; }
 
-  const std::vector<double> &open_space_end_pose() const {
-    return open_space_end_pose_;
-  }
+            const std::vector<double> &ROI_xy_boundary() const {
+                return ROI_xy_boundary_;
+            }
 
-  std::vector<double> *mutable_open_space_end_pose() {
-    return &open_space_end_pose_;
-  }
+            std::vector<double> *mutable_ROI_xy_boundary() { return &ROI_xy_boundary_; }
 
-  const DiscretizedTrajectory &optimizer_trajectory_data() const {
-    return optimizer_trajectory_data_;
-  }
+            const std::vector<double> &open_space_end_pose() const {
+                return open_space_end_pose_;
+            }
 
-  DiscretizedTrajectory *mutable_optimizer_trajectory_data() {
-    return &optimizer_trajectory_data_;
-  }
+            std::vector<double> *mutable_open_space_end_pose() {
+                return &open_space_end_pose_;
+            }
 
-  const std::vector<common::TrajectoryPoint> &stitching_trajectory_data()
-      const {
-    return stitching_trajectory_data_;
-  }
+            const DiscretizedTrajectory &optimizer_trajectory_data() const {
+                return optimizer_trajectory_data_;
+            }
 
-  std::vector<common::TrajectoryPoint> *mutable_stitching_trajectory_data() {
-    return &stitching_trajectory_data_;
-  }
+            DiscretizedTrajectory *mutable_optimizer_trajectory_data() {
+                return &optimizer_trajectory_data_;
+            }
 
-  const DiscretizedTrajectory &stitched_trajectory_result() const {
-    return stitched_trajectory_result_;
-  }
+            const std::vector <common::TrajectoryPoint> &stitching_trajectory_data()
+            const {
+                return stitching_trajectory_data_;
+            }
 
-  DiscretizedTrajectory *mutable_stitched_trajectory_result() {
-    return &stitched_trajectory_result_;
-  }
+            std::vector <common::TrajectoryPoint> *mutable_stitching_trajectory_data() {
+                return &stitching_trajectory_data_;
+            }
 
-  bool open_space_provider_success() const {
-    return open_space_provider_success_;
-  }
+            const DiscretizedTrajectory &stitched_trajectory_result() const {
+                return stitched_trajectory_result_;
+            }
 
-  void set_open_space_provider_success(const bool flag) {
-    open_space_provider_success_ = flag;
-  }
+            DiscretizedTrajectory *mutable_stitched_trajectory_result() {
+                return &stitched_trajectory_result_;
+            }
 
-  bool destination_reached() const { return destination_reached_; }
+            bool open_space_provider_success() const {
+                return open_space_provider_success_;
+            }
 
-  void set_destination_reached(const bool flag) { destination_reached_ = flag; }
+            void set_open_space_provider_success(const bool flag) {
+                open_space_provider_success_ = flag;
+            }
 
-  const DiscretizedTrajectory &interpolated_trajectory_result() const {
-    return interpolated_trajectory_result_;
-  }
+            bool destination_reached() const { return destination_reached_; }
 
-  DiscretizedTrajectory *mutable_interpolated_trajectory_result() {
-    return &interpolated_trajectory_result_;
-  }
+            void set_destination_reached(const bool flag) { destination_reached_ = flag; }
 
-  const std::vector<TrajGearPair> &partitioned_trajectories() const {
-    // TODO(Runxin): export to chart
-    return partitioned_trajectories_;
-  }
+            const DiscretizedTrajectory &interpolated_trajectory_result() const {
+                return interpolated_trajectory_result_;
+            }
 
-  std::vector<TrajGearPair> *mutable_partitioned_trajectories() {
-    return &partitioned_trajectories_;
-  }
+            DiscretizedTrajectory *mutable_interpolated_trajectory_result() {
+                return &interpolated_trajectory_result_;
+            }
 
-  const GearSwitchStates &gear_switch_states() const {
-    return gear_switch_states_;
-  }
+            const std::vector <TrajGearPair> &partitioned_trajectories() const {
+                // TODO(Runxin): export to chart
+                return partitioned_trajectories_;
+            }
 
-  GearSwitchStates *mutable_gear_switch_states() {
-    return &gear_switch_states_;
-  }
+            std::vector <TrajGearPair> *mutable_partitioned_trajectories() {
+                return &partitioned_trajectories_;
+            }
 
-  const TrajGearPair &chosen_partitioned_trajectory() const {
-    // TODO(Runxin): export to chart
-    return chosen_partitioned_trajectory_;
-  }
+            const GearSwitchStates &gear_switch_states() const {
+                return gear_switch_states_;
+            }
 
-  TrajGearPair *mutable_chosen_partitioned_trajectory() {
-    return &chosen_partitioned_trajectory_;
-  }
+            GearSwitchStates *mutable_gear_switch_states() {
+                return &gear_switch_states_;
+            }
 
-  bool fallback_flag() const { return fallback_flag_; }
+            const TrajGearPair &chosen_partitioned_trajectory() const {
+                // TODO(Runxin): export to chart
+                return chosen_partitioned_trajectory_;
+            }
 
-  void set_fallback_flag(const bool flag) { fallback_flag_ = flag; }
+            TrajGearPair *mutable_chosen_partitioned_trajectory() {
+                return &chosen_partitioned_trajectory_;
+            }
 
-  TrajGearPair *mutable_fallback_trajectory() { return &fallback_trajectory_; }
+            bool fallback_flag() const { return fallback_flag_; }
 
-  const TrajGearPair &fallback_trajectory() const {
-    return fallback_trajectory_;
-  }
+            void set_fallback_flag(const bool flag) { fallback_flag_ = flag; }
 
-  void set_fallback_trajectory(const TrajGearPair &traj_gear_pair) {
-    fallback_trajectory_ = traj_gear_pair;
-  }
+            TrajGearPair *mutable_fallback_trajectory() { return &fallback_trajectory_; }
 
-  std::pair<PublishableTrajectory, canbus::Chassis::GearPosition>
-      *mutable_publishable_trajectory_data() {
-    return &publishable_trajectory_data_;
-  }
+            const TrajGearPair &fallback_trajectory() const {
+                return fallback_trajectory_;
+            }
 
-  const std::pair<PublishableTrajectory, canbus::Chassis::GearPosition>
-      &publishable_trajectory_data() const {
-    return publishable_trajectory_data_;
-  }
+            void set_fallback_trajectory(const TrajGearPair &traj_gear_pair) {
+                fallback_trajectory_ = traj_gear_pair;
+            }
 
-  // TODO(QiL, Jinyun) refactor and merge this with debug
-  common::TrajectoryPoint *mutable_future_collision_point() {
-    return &future_collision_point_;
-  }
+            std::pair <PublishableTrajectory, canbus::Chassis::GearPosition>
+            *mutable_publishable_trajectory_data() {
+                return &publishable_trajectory_data_;
+            }
 
-  const common::TrajectoryPoint &future_collision_point() const {
-    return future_collision_point_;
-  }
+            const std::pair <PublishableTrajectory, canbus::Chassis::GearPosition>
+            &publishable_trajectory_data() const {
+                return publishable_trajectory_data_;
+            }
 
-  // TODO(QiL, Jinyun): refactor open_space_info vs debug
+            // TODO(QiL, Jinyun) refactor and merge this with debug
+            common::TrajectoryPoint *mutable_future_collision_point() {
+                return &future_collision_point_;
+            }
 
-  apollo::planning_internal::Debug *mutable_debug() { return debug_; }
+            const common::TrajectoryPoint &future_collision_point() const {
+                return future_collision_point_;
+            }
 
-  void set_debug(apollo::planning_internal::Debug *debug) { debug_ = debug; }
+            // TODO(QiL, Jinyun): refactor open_space_info vs debug
 
-  const apollo::planning_internal::Debug &debug() const { return *debug_; }
+            apollo::planning_internal::Debug *mutable_debug() { return debug_; }
 
-  const apollo::planning_internal::Debug debug_instance() const {
-    return debug_instance_;
-  }
+            void set_debug(apollo::planning_internal::Debug *debug) { debug_ = debug; }
 
-  apollo::planning_internal::Debug *mutable_debug_instance() {
-    return &debug_instance_;
-  }
+            const apollo::planning_internal::Debug &debug() const { return *debug_; }
 
-  void sync_debug_instance() {
-    // Remove existing obstacle vectors to prevent repeating obstacle
-    // vectors.
-    if (!debug_->planning_data().open_space().obstacles().empty()) {
-      debug_instance_.mutable_planning_data()
-          ->mutable_open_space()
-          ->clear_obstacles();
-    }
-    debug_instance_.MergeFrom(*debug_);
-  }
+            const apollo::planning_internal::Debug debug_instance() const {
+                return debug_instance_;
+            }
 
-  void RecordDebug(apollo::planning_internal::Debug *ptr_debug);
+            apollo::planning_internal::Debug *mutable_debug_instance() {
+                return &debug_instance_;
+            }
 
-  void set_time_latency(double time_latency) { time_latency_ = time_latency; }
+            void sync_debug_instance() {
+                // Remove existing obstacle vectors to prevent repeating obstacle
+                // vectors.
+                if (!debug_->planning_data().open_space().obstacles().empty()) {
+                    debug_instance_.mutable_planning_data()
+                            ->mutable_open_space()
+                            ->clear_obstacles();
+                }
+                debug_instance_.MergeFrom(*debug_);
+            }
 
- private:
-  std::string target_parking_spot_id_;
+            void RecordDebug(apollo::planning_internal::Debug *ptr_debug);
 
-  hdmap::ParkingSpaceInfoConstPtr target_parking_spot_ = nullptr;
+            void set_time_latency(double time_latency) { time_latency_ = time_latency; }
 
-  hdmap::LaneInfoConstPtr target_parking_lane_ = nullptr;
+        private:
+            std::string target_parking_spot_id_;
 
-  double open_space_pre_stop_fence_s_ = 0.0;
+            hdmap::ParkingSpaceInfoConstPtr target_parking_spot_ = nullptr;
 
-  bool pre_stop_rightaway_flag_ = false;
+            hdmap::LaneInfoConstPtr target_parking_lane_ = nullptr;
 
-  hdmap::MapPathPoint pre_stop_rightaway_point_;
+            double open_space_pre_stop_fence_s_ = 0.0;
 
-  bool is_on_open_space_trajectory_ = false;
-  // @brief obstacles total num including perception obstacles and parking space
-  // boundary
-  size_t obstacles_num_ = 0;
+            bool pre_stop_rightaway_flag_ = false;
 
-  // @brief the dimension needed for A and b matrix dimension in H
-  // representation
-  Eigen::MatrixXi obstacles_edges_num_;
+            hdmap::MapPathPoint pre_stop_rightaway_point_;
 
-  // @brief in the order of [x_min, x_max, y_min, y_max];
-  std::vector<double> ROI_xy_boundary_;
+            bool is_on_open_space_trajectory_ = false;
+            // @brief obstacles total num including perception obstacles and parking space
+            // boundary
+            size_t obstacles_num_ = 0;
 
-  // @brief open_space end configuration in order of x, y, heading and speed.
-  // Speed is set to be always zero now for parking
-  std::vector<double> open_space_end_pose_;
+            // @brief the dimension needed for A and b matrix dimension in H
+            // representation
+            Eigen::MatrixXi obstacles_edges_num_;
 
-  // @brief vector storing the vertices of obstacles in counter-clock-wise order
-  std::vector<std::vector<common::math::Vec2d>> obstacles_vertices_vec_;
+            // @brief in the order of [x_min, x_max, y_min, y_max];
+            std::vector<double> ROI_xy_boundary_;
 
-  // @brief Linear inequality representation of the obstacles Ax>b
-  Eigen::MatrixXd obstacles_A_;
-  Eigen::MatrixXd obstacles_b_;
+            // @brief open_space end configuration in order of x, y, heading and speed.
+            // Speed is set to be always zero now for parking
+            std::vector<double> open_space_end_pose_;
 
-  // @brief origin heading for planning space rotation
-  double origin_heading_ = 0.0;
+            // @brief vector storing the vertices of obstacles in counter-clock-wise order
+            std::vector <std::vector<common::math::Vec2d>> obstacles_vertices_vec_;
 
-  // @brief origin point for scaling down the numeric value of the optimization
-  // problem in order of x , y
-  common::math::Vec2d origin_point_;
+            // @brief Linear inequality representation of the obstacles Ax>b
+            Eigen::MatrixXd obstacles_A_;
+            Eigen::MatrixXd obstacles_b_;
 
-  DiscretizedTrajectory optimizer_trajectory_data_;
+            // @brief origin heading for planning space rotation
+            double origin_heading_ = 0.0;
 
-  std::vector<common::TrajectoryPoint> stitching_trajectory_data_;
+            // @brief origin point for scaling down the numeric value of the optimization
+            // problem in order of x , y
+            common::math::Vec2d origin_point_;
 
-  DiscretizedTrajectory stitched_trajectory_result_;
+            DiscretizedTrajectory optimizer_trajectory_data_;
 
-  bool open_space_provider_success_ = false;
+            std::vector <common::TrajectoryPoint> stitching_trajectory_data_;
 
-  bool destination_reached_ = false;
+            DiscretizedTrajectory stitched_trajectory_result_;
 
-  DiscretizedTrajectory interpolated_trajectory_result_;
+            bool open_space_provider_success_ = false;
 
-  std::vector<TrajGearPair> partitioned_trajectories_;
+            bool destination_reached_ = false;
 
-  GearSwitchStates gear_switch_states_;
+            DiscretizedTrajectory interpolated_trajectory_result_;
 
-  TrajGearPair chosen_partitioned_trajectory_;
+            std::vector <TrajGearPair> partitioned_trajectories_;
 
-  bool fallback_flag_ = true;
+            GearSwitchStates gear_switch_states_;
 
-  TrajGearPair fallback_trajectory_;
+            TrajGearPair chosen_partitioned_trajectory_;
 
-  common::TrajectoryPoint future_collision_point_;
+            bool fallback_flag_ = true;
 
-  std::pair<PublishableTrajectory, canbus::Chassis::GearPosition>
-      publishable_trajectory_data_;
+            TrajGearPair fallback_trajectory_;
 
-  // the pointer from ADCtrajectory
-  apollo::planning_internal::Debug *debug_;
+            common::TrajectoryPoint future_collision_point_;
 
-  // the instance inside debug,
-  // if ADCtrajectory is NULL, blank; else same to ADCtrajectory
-  apollo::planning_internal::Debug debug_instance_;
+            std::pair <PublishableTrajectory, canbus::Chassis::GearPosition>
+                    publishable_trajectory_data_;
 
-  double time_latency_ = 0.0;
-};
+            // the pointer from ADCtrajectory
+            apollo::planning_internal::Debug *debug_;
 
-}  // namespace planning
+            // the instance inside debug,
+            // if ADCtrajectory is NULL, blank; else same to ADCtrajectory
+            apollo::planning_internal::Debug debug_instance_;
+
+            double time_latency_ = 0.0;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

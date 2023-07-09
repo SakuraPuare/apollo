@@ -36,59 +36,60 @@
 #include "modules/common_msgs/storytelling_msgs/story.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class PlanningComponent final
-    : public cyber::Component<prediction::PredictionObstacles, canbus::Chassis,
-                              localization::LocalizationEstimate> {
- public:
-  PlanningComponent() = default;
+        class PlanningComponent final
+                : public cyber::Component<prediction::PredictionObstacles, canbus::Chassis,
+                        localization::LocalizationEstimate> {
+        public:
+            PlanningComponent() = default;
 
-  ~PlanningComponent() = default;
+            ~PlanningComponent() = default;
 
- public:
-  bool Init() override;
+        public:
+            bool Init() override;
 
-  bool Proc(const std::shared_ptr<prediction::PredictionObstacles>&
-                prediction_obstacles,
-            const std::shared_ptr<canbus::Chassis>& chassis,
-            const std::shared_ptr<localization::LocalizationEstimate>&
-                localization_estimate) override;
+            bool Proc(const std::shared_ptr <prediction::PredictionObstacles> &
+            prediction_obstacles,
+                      const std::shared_ptr <canbus::Chassis> &chassis,
+                      const std::shared_ptr <localization::LocalizationEstimate> &
+                      localization_estimate) override;
 
- private:
-  void CheckRerouting();
-  bool CheckInput();
+        private:
+            void CheckRerouting();
 
- private:
-  std::shared_ptr<cyber::Reader<perception::TrafficLightDetection>>
-      traffic_light_reader_;
-  std::shared_ptr<cyber::Reader<routing::RoutingResponse>> routing_reader_;
-  std::shared_ptr<cyber::Reader<planning::PadMessage>> pad_msg_reader_;
-  std::shared_ptr<cyber::Reader<relative_map::MapMsg>> relative_map_reader_;
-  std::shared_ptr<cyber::Reader<storytelling::Stories>> story_telling_reader_;
+            bool CheckInput();
 
-  std::shared_ptr<cyber::Writer<ADCTrajectory>> planning_writer_;
-  std::shared_ptr<cyber::Writer<routing::RoutingRequest>> rerouting_writer_;
-  std::shared_ptr<cyber::Writer<PlanningLearningData>>
-      planning_learning_data_writer_;
+        private:
+            std::shared_ptr <cyber::Reader<perception::TrafficLightDetection>>
+                    traffic_light_reader_;
+            std::shared_ptr <cyber::Reader<routing::RoutingResponse>> routing_reader_;
+            std::shared_ptr <cyber::Reader<planning::PadMessage>> pad_msg_reader_;
+            std::shared_ptr <cyber::Reader<relative_map::MapMsg>> relative_map_reader_;
+            std::shared_ptr <cyber::Reader<storytelling::Stories>> story_telling_reader_;
 
-  std::mutex mutex_;
-  perception::TrafficLightDetection traffic_light_;
-  routing::RoutingResponse routing_;
-  planning::PadMessage pad_msg_;
-  relative_map::MapMsg relative_map_;
-  storytelling::Stories stories_;
+            std::shared_ptr <cyber::Writer<ADCTrajectory>> planning_writer_;
+            std::shared_ptr <cyber::Writer<routing::RoutingRequest>> rerouting_writer_;
+            std::shared_ptr <cyber::Writer<PlanningLearningData>>
+                    planning_learning_data_writer_;
 
-  LocalView local_view_;
+            std::mutex mutex_;
+            perception::TrafficLightDetection traffic_light_;
+            routing::RoutingResponse routing_;
+            planning::PadMessage pad_msg_;
+            relative_map::MapMsg relative_map_;
+            storytelling::Stories stories_;
 
-  std::unique_ptr<PlanningBase> planning_base_;
-  std::shared_ptr<DependencyInjector> injector_;
+            LocalView local_view_;
 
-  PlanningConfig config_;
-  MessageProcess message_process_;
-};
+            std::unique_ptr <PlanningBase> planning_base_;
+            std::shared_ptr <DependencyInjector> injector_;
 
-CYBER_REGISTER_COMPONENT(PlanningComponent)
+            PlanningConfig config_;
+            MessageProcess message_process_;
+        };
 
-}  // namespace planning
+        CYBER_REGISTER_COMPONENT(PlanningComponent)
+
+    }  // namespace planning
 }  // namespace apollo

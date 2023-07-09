@@ -25,26 +25,32 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class OpenSpaceTrajectoryPartitionTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_task_type(TaskConfig::OPEN_SPACE_TRAJECTORY_PARTITION);
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+        class OpenSpaceTrajectoryPartitionTest : public ::testing::Test {
+        public:
+            virtual void SetUp() {
+                config_.set_task_type(TaskConfig::OPEN_SPACE_TRAJECTORY_PARTITION);
+                injector_ = std::make_shared<DependencyInjector>();
+            }
 
- protected:
-  TaskConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+        protected:
+            TaskConfig config_;
+            std::shared_ptr <DependencyInjector> injector_;
+        };
 
-TEST_F(OpenSpaceTrajectoryPartitionTest, Init) {
-  OpenSpaceTrajectoryPartition open_space_trajectory_partition(config_,
-                                                               injector_);
-  EXPECT_EQ(open_space_trajectory_partition.Name(),
-            TaskConfig::TaskType_Name(config_.task_type()));
-}
+        TEST_F(OpenSpaceTrajectoryPartitionTest, Init
+        ) {
+        OpenSpaceTrajectoryPartition open_space_trajectory_partition(config_,
+                                                                     injector_);
+        EXPECT_EQ(open_space_trajectory_partition
+        .
+
+        Name(),
+                TaskConfig::TaskType_Name(config_.task_type())
+
+        );
+    }
 
 }  // namespace planning
 }  // namespace apollo

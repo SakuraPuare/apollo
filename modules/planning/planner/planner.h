@@ -31,7 +31,7 @@
  * @brief apollo::planning
  */
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @class Planner
@@ -39,72 +39,73 @@ namespace planning {
  *        It contains a pure virtual function Plan which must be implemented in
  * derived class.
  */
-class Planner {
- public:
-  /**
-   * @brief Constructor
-   */
-  Planner() = delete;
+        class Planner {
+        public:
+            /**
+             * @brief Constructor
+             */
+            Planner() = delete;
 
-  explicit Planner(const std::shared_ptr<DependencyInjector>& injector)
-      : scenario_manager_(injector) {}
+            explicit Planner(const std::shared_ptr <DependencyInjector> &injector)
+                    : scenario_manager_(injector) {}
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~Planner() = default;
+            /**
+             * @brief Destructor
+             */
+            virtual ~Planner() = default;
 
-  virtual std::string Name() = 0;
-  virtual apollo::common::Status Init(const PlanningConfig& config) = 0;
+            virtual std::string Name() = 0;
 
-  /**
-   * @brief Compute trajectories for execution.
-   * @param planning_init_point The trajectory point where planning starts.
-   * @param frame Current planning frame.
-   * @return OK if planning succeeds; error otherwise.
-   */
-  virtual apollo::common::Status Plan(
-      const common::TrajectoryPoint& planning_init_point, Frame* frame,
-      ADCTrajectory* ptr_computed_trajectory) = 0;
+            virtual apollo::common::Status Init(const PlanningConfig &config) = 0;
 
-  virtual void Stop() = 0;
+            /**
+             * @brief Compute trajectories for execution.
+             * @param planning_init_point The trajectory point where planning starts.
+             * @param frame Current planning frame.
+             * @return OK if planning succeeds; error otherwise.
+             */
+            virtual apollo::common::Status Plan(
+                    const common::TrajectoryPoint &planning_init_point, Frame *frame,
+                    ADCTrajectory *ptr_computed_trajectory) = 0;
 
- protected:
-  PlanningConfig config_;
-  scenario::ScenarioManager scenario_manager_;
-  scenario::Scenario* scenario_ = nullptr;
-};
+            virtual void Stop() = 0;
 
-class PlannerWithReferenceLine : public Planner {
- public:
-  /**
-   * @brief Constructor
-   */
-  PlannerWithReferenceLine() = delete;
+        protected:
+            PlanningConfig config_;
+            scenario::ScenarioManager scenario_manager_;
+            scenario::Scenario *scenario_ = nullptr;
+        };
 
-  explicit PlannerWithReferenceLine(
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Planner(injector) {}
+        class PlannerWithReferenceLine : public Planner {
+        public:
+            /**
+             * @brief Constructor
+             */
+            PlannerWithReferenceLine() = delete;
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~PlannerWithReferenceLine() = default;
+            explicit PlannerWithReferenceLine(
+                    const std::shared_ptr <DependencyInjector> &injector)
+                    : Planner(injector) {}
 
-  /**
-   * @brief Compute a trajectory for execution.
-   * @param planning_init_point The trajectory point where planning starts.
-   * @param frame Current planning frame.
-   * @param reference_line_info The computed reference line.
-   * @return OK if planning succeeds; error otherwise.
-   */
-  virtual apollo::common::Status PlanOnReferenceLine(
-      const common::TrajectoryPoint& planning_init_point, Frame* frame,
-      ReferenceLineInfo* reference_line_info) {
-    CHECK_NOTNULL(frame);
-    return apollo::common::Status::OK();
-  }
-};
+            /**
+             * @brief Destructor
+             */
+            virtual ~PlannerWithReferenceLine() = default;
 
-}  // namespace planning
+            /**
+             * @brief Compute a trajectory for execution.
+             * @param planning_init_point The trajectory point where planning starts.
+             * @param frame Current planning frame.
+             * @param reference_line_info The computed reference line.
+             * @return OK if planning succeeds; error otherwise.
+             */
+            virtual apollo::common::Status PlanOnReferenceLine(
+                    const common::TrajectoryPoint &planning_init_point, Frame *frame,
+                    ReferenceLineInfo *reference_line_info) {
+                CHECK_NOTNULL(frame);
+                return apollo::common::Status::OK();
+            }
+        };
+
+    }  // namespace planning
 }  // namespace apollo

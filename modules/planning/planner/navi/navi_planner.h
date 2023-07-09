@@ -42,7 +42,7 @@
  * @brief apollo::planning
  */
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @class NaviPlanner
@@ -53,75 +53,77 @@ namespace planning {
  * mode by setting "FLAGS_use_navigation_mode" to "true") and do not use it in
  * standard mode.
  */
-class NaviPlanner : public PlannerWithReferenceLine {
- public:
-  NaviPlanner() = delete;
-  explicit NaviPlanner(const std::shared_ptr<DependencyInjector>& injector)
-      : PlannerWithReferenceLine(injector) {}
+        class NaviPlanner : public PlannerWithReferenceLine {
+        public:
+            NaviPlanner() = delete;
 
-  virtual ~NaviPlanner() = default;
+            explicit NaviPlanner(const std::shared_ptr <DependencyInjector> &injector)
+                    : PlannerWithReferenceLine(injector) {}
 
-  std::string Name() override { return "NAVI"; }
+            virtual ~NaviPlanner() = default;
 
-  common::Status Init(const PlanningConfig& config) override;
+            std::string Name() override { return "NAVI"; }
 
-  /**
-   * @brief Override function Plan in parent class Planner.
-   * @param planning_init_point The trajectory point where planning starts.
-   * @param frame Current planning frame.
-   * @return OK if planning succeeds; error otherwise.
-   */
-  common::Status Plan(const common::TrajectoryPoint& planning_init_point,
-                      Frame* frame,
-                      ADCTrajectory* ptr_computed_trajectory) override;
+            common::Status Init(const PlanningConfig &config) override;
 
-  void Stop() override {}
+            /**
+             * @brief Override function Plan in parent class Planner.
+             * @param planning_init_point The trajectory point where planning starts.
+             * @param frame Current planning frame.
+             * @return OK if planning succeeds; error otherwise.
+             */
+            common::Status Plan(const common::TrajectoryPoint &planning_init_point,
+                                Frame *frame,
+                                ADCTrajectory *ptr_computed_trajectory) override;
 
-  /**
-   * @brief Override function Plan in parent class Planner.
-   * @param planning_init_point The trajectory point where planning starts.
-   * @param frame Current planning frame.
-   * @param reference_line_info The computed reference line.
-   * @return OK if planning succeeds; error otherwise.
-   */
-  common::Status PlanOnReferenceLine(
-      const common::TrajectoryPoint& planning_init_point, Frame* frame,
-      ReferenceLineInfo* reference_line_info) override;
+            void Stop() override {}
 
- private:
-  void RegisterTasks();
-  std::vector<common::SpeedPoint> GenerateInitSpeedProfile(
-      const common::TrajectoryPoint& planning_init_point,
-      const ReferenceLineInfo* reference_line_info);
+            /**
+             * @brief Override function Plan in parent class Planner.
+             * @param planning_init_point The trajectory point where planning starts.
+             * @param frame Current planning frame.
+             * @param reference_line_info The computed reference line.
+             * @return OK if planning succeeds; error otherwise.
+             */
+            common::Status PlanOnReferenceLine(
+                    const common::TrajectoryPoint &planning_init_point, Frame *frame,
+                    ReferenceLineInfo *reference_line_info) override;
 
-  std::vector<common::SpeedPoint> DummyHotStart(
-      const common::TrajectoryPoint& planning_init_point);
+        private:
+            void RegisterTasks();
 
-  std::vector<common::SpeedPoint> GenerateSpeedHotStart(
-      const common::TrajectoryPoint& planning_init_point);
+            std::vector <common::SpeedPoint> GenerateInitSpeedProfile(
+                    const common::TrajectoryPoint &planning_init_point,
+                    const ReferenceLineInfo *reference_line_info);
 
-  void GenerateFallbackPathProfile(const ReferenceLineInfo* reference_line_info,
-                                   PathData* path_data);
+            std::vector <common::SpeedPoint> DummyHotStart(
+                    const common::TrajectoryPoint &planning_init_point);
 
-  void GenerateFallbackSpeedProfile(SpeedData* speed_data);
+            std::vector <common::SpeedPoint> GenerateSpeedHotStart(
+                    const common::TrajectoryPoint &planning_init_point);
 
-  SpeedData GenerateStopProfile(const double init_speed,
-                                const double init_acc) const;
+            void GenerateFallbackPathProfile(const ReferenceLineInfo *reference_line_info,
+                                             PathData *path_data);
 
-  SpeedData GenerateStopProfileFromPolynomial(const double init_speed,
-                                              const double init_acc) const;
+            void GenerateFallbackSpeedProfile(SpeedData *speed_data);
 
-  bool IsValidProfile(const QuinticPolynomialCurve1d& curve) const;
+            SpeedData GenerateStopProfile(const double init_speed,
+                                          const double init_acc) const;
 
-  void RecordObstacleDebugInfo(ReferenceLineInfo* reference_line_info);
+            SpeedData GenerateStopProfileFromPolynomial(const double init_speed,
+                                                        const double init_acc) const;
 
-  void RecordDebugInfo(ReferenceLineInfo* reference_line_info,
-                       const std::string& name, const double time_diff_ms);
+            bool IsValidProfile(const QuinticPolynomialCurve1d &curve) const;
 
- private:
-  apollo::common::util::Factory<TaskConfig::TaskType, NaviTask> task_factory_;
-  std::vector<std::unique_ptr<NaviTask>> tasks_;
-};
+            void RecordObstacleDebugInfo(ReferenceLineInfo *reference_line_info);
 
-}  // namespace planning
+            void RecordDebugInfo(ReferenceLineInfo *reference_line_info,
+                                 const std::string &name, const double time_diff_ms);
+
+        private:
+            apollo::common::util::Factory<TaskConfig::TaskType, NaviTask> task_factory_;
+            std::vector <std::unique_ptr<NaviTask>> tasks_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

@@ -17,9 +17,9 @@
 #include "modules/planning/common/frame.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-bool IsWithinPathDeciderScopeObstacle(const Obstacle& obstacle);
+        bool IsWithinPathDeciderScopeObstacle(const Obstacle &obstacle);
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

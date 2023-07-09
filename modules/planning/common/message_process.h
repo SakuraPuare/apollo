@@ -42,105 +42,108 @@
 #include "modules/common_msgs/storytelling_msgs/story.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class MessageProcess {
- public:
-  bool Init(const PlanningConfig& planning_config);
-  bool Init(const PlanningConfig& planning_config,
-            const std::shared_ptr<DependencyInjector>& injector);
+        class MessageProcess {
+        public:
+            bool Init(const PlanningConfig &planning_config);
 
-  void Close();
+            bool Init(const PlanningConfig &planning_config,
+                      const std::shared_ptr <DependencyInjector> &injector);
 
-  void OnChassis(const apollo::canbus::Chassis& chassis);
+            void Close();
 
-  void OnHMIStatus(apollo::dreamview::HMIStatus hmi_status);
+            void OnChassis(const apollo::canbus::Chassis &chassis);
 
-  void OnLocalization(const apollo::localization::LocalizationEstimate& le);
+            void OnHMIStatus(apollo::dreamview::HMIStatus hmi_status);
 
-  void OnPrediction(
-      const apollo::prediction::PredictionObstacles& prediction_obstacles);
+            void OnLocalization(const apollo::localization::LocalizationEstimate &le);
 
-  void OnRoutingResponse(
-      const apollo::routing::RoutingResponse& routing_response);
+            void OnPrediction(
+                    const apollo::prediction::PredictionObstacles &prediction_obstacles);
 
-  void OnStoryTelling(const apollo::storytelling::Stories& stories);
+            void OnRoutingResponse(
+                    const apollo::routing::RoutingResponse &routing_response);
 
-  void OnTrafficLightDetection(
-      const apollo::perception::TrafficLightDetection& traffic_light_detection);
+            void OnStoryTelling(const apollo::storytelling::Stories &stories);
 
-  void ProcessOfflineData(const std::string& record_file);
+            void OnTrafficLightDetection(
+                    const apollo::perception::TrafficLightDetection &traffic_light_detection);
 
- private:
-  struct ADCCurrentInfo {
-    std::pair<double, double> adc_cur_position_;
-    std::pair<double, double> adc_cur_velocity_;
-    std::pair<double, double> adc_cur_acc_;
-    double adc_cur_heading_;
-  };
+            void ProcessOfflineData(const std::string &record_file);
 
-  apollo::hdmap::LaneInfoConstPtr GetCurrentLane(
-      const apollo::common::PointENU& position);
-  bool GetADCCurrentRoutingIndex(int* adc_road_index, int* adc_passage_index,
-                                 double* adc_passage_s);
+        private:
+            struct ADCCurrentInfo {
+                std::pair<double, double> adc_cur_position_;
+                std::pair<double, double> adc_cur_velocity_;
+                std::pair<double, double> adc_cur_acc_;
+                double adc_cur_heading_;
+            };
 
-  int GetADCCurrentInfo(ADCCurrentInfo* adc_curr_info);
+            apollo::hdmap::LaneInfoConstPtr GetCurrentLane(
+                    const apollo::common::PointENU &position);
 
-  void GenerateObstacleTrajectory(const int frame_num, const int obstacle_id,
-                                  const ADCCurrentInfo& adc_curr_info,
-                                  ObstacleFeature* obstacle_feature);
+            bool GetADCCurrentRoutingIndex(int *adc_road_index, int *adc_passage_index,
+                                           double *adc_passage_s);
 
-  void GenerateObstaclePrediction(
-      const int frame_num,
-      const apollo::prediction::PredictionObstacle& prediction_obstacle,
-      const ADCCurrentInfo& adc_curr_info, ObstacleFeature* obstacle_feature);
+            int GetADCCurrentInfo(ADCCurrentInfo *adc_curr_info);
 
-  void GenerateObstacleFeature(LearningDataFrame* learning_data_frame);
+            void GenerateObstacleTrajectory(const int frame_num, const int obstacle_id,
+                                            const ADCCurrentInfo &adc_curr_info,
+                                            ObstacleFeature *obstacle_feature);
 
-  bool GenerateLocalRouting(
-      const int frame_num,
-      RoutingResponseFeature* local_routing,
-      std::vector<std::string>* local_routing_lane_ids);
+            void GenerateObstaclePrediction(
+                    const int frame_num,
+                    const apollo::prediction::PredictionObstacle &prediction_obstacle,
+                    const ADCCurrentInfo &adc_curr_info, ObstacleFeature *obstacle_feature);
 
-  void GenerateRoutingFeature(
-    const RoutingResponseFeature& local_routing,
-    const std::vector<std::string>& local_routing_lane_ids,
-    LearningDataFrame* learning_data_frame);
+            void GenerateObstacleFeature(LearningDataFrame *learning_data_frame);
 
-  void GenerateTrafficLightDetectionFeature(
-      LearningDataFrame* learning_data_frame);
-  void GenerateADCTrajectoryPoints(
-      const std::list<apollo::localization::LocalizationEstimate>&
-          localizations,
-      LearningDataFrame* learning_data_frame);
+            bool GenerateLocalRouting(
+                    const int frame_num,
+                    RoutingResponseFeature *local_routing,
+                    std::vector <std::string> *local_routing_lane_ids);
 
-  void GeneratePlanningTag(LearningDataFrame* learning_data_frame);
+            void GenerateRoutingFeature(
+                    const RoutingResponseFeature &local_routing,
+                    const std::vector <std::string> &local_routing_lane_ids,
+                    LearningDataFrame *learning_data_frame);
 
-  bool GenerateLearningDataFrame(LearningDataFrame* learning_data_frame);
+            void GenerateTrafficLightDetectionFeature(
+                    LearningDataFrame *learning_data_frame);
 
- private:
-  std::shared_ptr<DependencyInjector> injector_;
-  PlanningConfig planning_config_;
-  std::chrono::time_point<std::chrono::system_clock> start_time_;
-  std::ofstream log_file_;
-  std::string record_file_;
-  std::unordered_map<std::string, std::string> map_m_;
-  LearningData learning_data_;
-  int learning_data_file_index_ = 0;
-  std::list<apollo::localization::LocalizationEstimate> localizations_;
-  std::unordered_map<int, apollo::prediction::PredictionObstacle>
-      prediction_obstacles_map_;
-  std::unordered_map<int, std::list<PerceptionObstacleFeature>>
-      obstacle_history_map_;
-  ChassisFeature chassis_feature_;
-  std::string map_name_;
-  PlanningTag planning_tag_;
-  apollo::routing::RoutingResponse routing_response_;
-  double traffic_light_detection_message_timestamp_;
-  std::vector<TrafficLightFeature> traffic_lights_;
-  int total_learning_data_frame_num_ = 0;
-  double last_localization_message_timestamp_sec_ = 0.0;
-};
+            void GenerateADCTrajectoryPoints(
+                    const std::list <apollo::localization::LocalizationEstimate> &
+                    localizations,
+                    LearningDataFrame *learning_data_frame);
 
-}  // namespace planning
+            void GeneratePlanningTag(LearningDataFrame *learning_data_frame);
+
+            bool GenerateLearningDataFrame(LearningDataFrame *learning_data_frame);
+
+        private:
+            std::shared_ptr <DependencyInjector> injector_;
+            PlanningConfig planning_config_;
+            std::chrono::time_point <std::chrono::system_clock> start_time_;
+            std::ofstream log_file_;
+            std::string record_file_;
+            std::unordered_map <std::string, std::string> map_m_;
+            LearningData learning_data_;
+            int learning_data_file_index_ = 0;
+            std::list <apollo::localization::LocalizationEstimate> localizations_;
+            std::unordered_map<int, apollo::prediction::PredictionObstacle>
+                    prediction_obstacles_map_;
+            std::unordered_map<int, std::list<PerceptionObstacleFeature>>
+                    obstacle_history_map_;
+            ChassisFeature chassis_feature_;
+            std::string map_name_;
+            PlanningTag planning_tag_;
+            apollo::routing::RoutingResponse routing_response_;
+            double traffic_light_detection_message_timestamp_;
+            std::vector <TrafficLightFeature> traffic_lights_;
+            int total_learning_data_frame_num_ = 0;
+            double last_localization_message_timestamp_sec_ = 0.0;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

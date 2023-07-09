@@ -27,35 +27,35 @@
 #include "modules/planning/scenarios/traffic_light/unprotected_left_turn/traffic_light_unprotected_left_turn_scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace traffic_light {
+    namespace planning {
+        namespace scenario {
+            namespace traffic_light {
 
-struct TrafficLightUnprotectedLeftTurnContext;
+                struct TrafficLightUnprotectedLeftTurnContext;
 
-class TrafficLightUnprotectedLeftTurnStageApproach : public Stage {
- public:
-  TrafficLightUnprotectedLeftTurnStageApproach(
-      const ScenarioConfig::StageConfig& config,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                class TrafficLightUnprotectedLeftTurnStageApproach : public Stage {
+                public:
+                    TrafficLightUnprotectedLeftTurnStageApproach(
+                            const ScenarioConfig::StageConfig &config,
+                            const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
+                private:
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
-  TrafficLightUnprotectedLeftTurnContext* GetContext() {
-    return Stage::GetContextAs<TrafficLightUnprotectedLeftTurnContext>();
-  }
+                    TrafficLightUnprotectedLeftTurnContext *GetContext() {
+                        return Stage::GetContextAs<TrafficLightUnprotectedLeftTurnContext>();
+                    }
 
- private:
-  Stage::StageStatus FinishStage(Frame* frame);
+                private:
+                    Stage::StageStatus FinishStage(Frame *frame);
 
- private:
-  ScenarioTrafficLightUnprotectedLeftTurnConfig scenario_config_;
-};
+                private:
+                    ScenarioTrafficLightUnprotectedLeftTurnConfig scenario_config_;
+                };
 
-}  // namespace traffic_light
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace traffic_light
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

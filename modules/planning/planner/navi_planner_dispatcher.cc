@@ -21,17 +21,17 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-std::unique_ptr<Planner> NaviPlannerDispatcher::DispatchPlanner(
-    const PlanningConfig& planning_config,
-    const std::shared_ptr<DependencyInjector>& injector) {
-  auto planner_type = PlannerType::NAVI;
-  if (planning_config.has_navigation_planning_config()) {
-    planner_type = planning_config.navigation_planning_config().planner_type(0);
-  }
-  return planner_factory_.CreateObject(planner_type, injector);
-}
+        std::unique_ptr <Planner> NaviPlannerDispatcher::DispatchPlanner(
+                const PlanningConfig &planning_config,
+                const std::shared_ptr <DependencyInjector> &injector) {
+            auto planner_type = PlannerType::NAVI;
+            if (planning_config.has_navigation_planning_config()) {
+                planner_type = planning_config.navigation_planning_config().planner_type(0);
+            }
+            return planner_factory_.CreateObject(planner_type, injector);
+        }
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

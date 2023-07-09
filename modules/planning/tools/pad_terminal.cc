@@ -27,114 +27,117 @@
 
 namespace {
 
-using apollo::cyber::CreateNode;
-using apollo::cyber::Node;
-using apollo::cyber::Writer;
-using apollo::cyber::common::GetProtoFromFile;
-using apollo::planning::PadMessage;
-using apollo::planning::PlanningConfig;
+    using apollo::cyber::CreateNode;
+    using apollo::cyber::Node;
+    using apollo::cyber::Writer;
+    using apollo::cyber::common::GetProtoFromFile;
+    using apollo::planning::PadMessage;
+    using apollo::planning::PlanningConfig;
 
-class PadTerminal {
- public:
-  PadTerminal() : node_(CreateNode("planning_pad_terminal")) {}
-  void init() {
-    const std::string planning_config_file =
-        "/apollo/modules/planning/conf/planning_config.pb.txt";
-    PlanningConfig planning_config;
-    ACHECK(GetProtoFromFile(planning_config_file, &planning_config))
-        << "failed to load planning config file " << planning_config_file;
+    class PadTerminal {
+    public:
+        PadTerminal() : node_(CreateNode("planning_pad_terminal")) {}
 
-    pad_writer_ = node_->CreateWriter<PadMessage>(
-        planning_config.topic_config().planning_pad_topic());
-    terminal_thread_.reset(new std::thread([this] { terminal_thread_func(); }));
-  }
-  void help() {
-    AINFO << "COMMAND:0~10\n";
-    AINFO << "\t0: follow";
-    AINFO << "\t1: change left";
-    AINFO << "\t2: change right";
-    AINFO << "\t3: pull over";
-    AINFO << "\t4: stop";
-    AINFO << "\t5: resume cruise";
-    AINFO << "\t10: exit";
-    AINFO << "\tother number: print help";
-  }
+        void init() {
+            const std::string planning_config_file =
+                    "/apollo/modules/planning/conf/planning_config.pb.txt";
+            PlanningConfig planning_config;
+            ACHECK(GetProtoFromFile(planning_config_file, &planning_config))
+                    << "failed to load planning config file " << planning_config_file;
 
-  void send(int action) {
-    PadMessage pad;
-    pad.set_action(PadMessage::DrivingAction(action));
-    if (action == PadMessage::FOLLOW) {
-      AINFO << "sending FOLLOW action command.";
-    } else if (action == PadMessage::CHANGE_LEFT) {
-      AINFO << "sending CHANGE LEFT action command.";
-    } else if (action == PadMessage::CHANGE_RIGHT) {
-      AINFO << "sending CHANGE RIGHT action command.";
-    } else if (action == PadMessage::PULL_OVER) {
-      AINFO << "sending PULL OVER action command.";
-    } else if (action == PadMessage::STOP) {
-      AINFO << "sending STOP action command.";
-    } else if (action == PadMessage::RESUME_CRUISE) {
-      AINFO << "sending RESUME CRUISE action command.";
-    }
-    apollo::common::util::FillHeader("terminal", &pad);
-    pad_writer_->Write(pad);
-    AINFO << "send pad_message OK";
-  }
+            pad_writer_ = node_->CreateWriter<PadMessage>(
+                    planning_config.topic_config().planning_pad_topic());
+            terminal_thread_.reset(new std::thread([this] { terminal_thread_func(); }));
+        }
 
-  void terminal_thread_func() {
-    int mode = 0;
-    bool should_exit = false;
-    while (std::cin >> mode) {
-      switch (mode) {
-        case 0:
-          send(PadMessage::FOLLOW);
-          break;
-        case 1:
-          send(PadMessage::CHANGE_LEFT);
-          break;
-        case 2:
-          send(PadMessage::CHANGE_RIGHT);
-          break;
-        case 3:
-          send(PadMessage::PULL_OVER);
-          break;
-        case 4:
-          send(PadMessage::STOP);
-          break;
-        case 5:
-          send(PadMessage::RESUME_CRUISE);
-          break;
-        case 10:
-          should_exit = true;
-          break;
-        default:
-          help();
-          break;
-      }
-      if (should_exit) {
-        break;
-      }
-    }
-  }
-  void stop() { terminal_thread_->join(); }
+        void help() {
+            AINFO << "COMMAND:0~10\n";
+            AINFO << "\t0: follow";
+            AINFO << "\t1: change left";
+            AINFO << "\t2: change right";
+            AINFO << "\t3: pull over";
+            AINFO << "\t4: stop";
+            AINFO << "\t5: resume cruise";
+            AINFO << "\t10: exit";
+            AINFO << "\tother number: print help";
+        }
 
- private:
-  std::unique_ptr<std::thread> terminal_thread_;
-  std::shared_ptr<Writer<PadMessage>> pad_writer_;
-  std::shared_ptr<Node> node_;
-};
+        void send(int action) {
+            PadMessage pad;
+            pad.set_action(PadMessage::DrivingAction(action));
+            if (action == PadMessage::FOLLOW) {
+                AINFO << "sending FOLLOW action command.";
+            } else if (action == PadMessage::CHANGE_LEFT) {
+                AINFO << "sending CHANGE LEFT action command.";
+            } else if (action == PadMessage::CHANGE_RIGHT) {
+                AINFO << "sending CHANGE RIGHT action command.";
+            } else if (action == PadMessage::PULL_OVER) {
+                AINFO << "sending PULL OVER action command.";
+            } else if (action == PadMessage::STOP) {
+                AINFO << "sending STOP action command.";
+            } else if (action == PadMessage::RESUME_CRUISE) {
+                AINFO << "sending RESUME CRUISE action command.";
+            }
+            apollo::common::util::FillHeader("terminal", &pad);
+            pad_writer_->Write(pad);
+            AINFO << "send pad_message OK";
+        }
+
+        void terminal_thread_func() {
+            int mode = 0;
+            bool should_exit = false;
+            while (std::cin >> mode) {
+                switch (mode) {
+                    case 0:
+                        send(PadMessage::FOLLOW);
+                        break;
+                    case 1:
+                        send(PadMessage::CHANGE_LEFT);
+                        break;
+                    case 2:
+                        send(PadMessage::CHANGE_RIGHT);
+                        break;
+                    case 3:
+                        send(PadMessage::PULL_OVER);
+                        break;
+                    case 4:
+                        send(PadMessage::STOP);
+                        break;
+                    case 5:
+                        send(PadMessage::RESUME_CRUISE);
+                        break;
+                    case 10:
+                        should_exit = true;
+                        break;
+                    default:
+                        help();
+                        break;
+                }
+                if (should_exit) {
+                    break;
+                }
+            }
+        }
+
+        void stop() { terminal_thread_->join(); }
+
+    private:
+        std::unique_ptr <std::thread> terminal_thread_;
+        std::shared_ptr <Writer<PadMessage>> pad_writer_;
+        std::shared_ptr <Node> node_;
+    };
 
 }  // namespace
 
 int main(int argc, char **argv) {
-  apollo::cyber::Init("planning_pad_terminal");
-  FLAGS_alsologtostderr = true;
-  FLAGS_v = 3;
-  google::ParseCommandLineFlags(&argc, &argv, true);
-  PadTerminal pad_terminal;
-  pad_terminal.init();
-  pad_terminal.help();
-  apollo::cyber::WaitForShutdown();
-  pad_terminal.stop();
-  return 0;
+    apollo::cyber::Init("planning_pad_terminal");
+    FLAGS_alsologtostderr = true;
+    FLAGS_v = 3;
+    google::ParseCommandLineFlags(&argc, &argv, true);
+    PadTerminal pad_terminal;
+    pad_terminal.init();
+    pad_terminal.help();
+    apollo::cyber::WaitForShutdown();
+    pad_terminal.stop();
+    return 0;
 }

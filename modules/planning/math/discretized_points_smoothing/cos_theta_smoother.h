@@ -22,18 +22,18 @@
 #include "modules/planning/proto/math/cos_theta_smoother_config.pb.h"
 
 namespace apollo {
-namespace planning {
-class CosThetaSmoother {
- public:
-  explicit CosThetaSmoother(const CosThetaSmootherConfig& config);
+    namespace planning {
+        class CosThetaSmoother {
+        public:
+            explicit CosThetaSmoother(const CosThetaSmootherConfig &config);
 
-  bool Solve(const std::vector<std::pair<double, double>>& raw_point2d,
-             const std::vector<double>& bounds, std::vector<double>* opt_x,
-             std::vector<double>* opt_y);
+            bool Solve(const std::vector <std::pair<double, double>> &raw_point2d,
+                       const std::vector<double> &bounds, std::vector<double> *opt_x,
+                       std::vector<double> *opt_y);
 
- private:
-  CosThetaSmootherConfig config_;
-};
+        private:
+            CosThetaSmootherConfig config_;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

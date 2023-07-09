@@ -24,57 +24,85 @@
 #include "modules/common/util/util.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-using StringIndexedList = IndexedList<int, std::string>;
-TEST(IndexedList, Add_ConstRef) {
-  StringIndexedList object;
-  {
-    ASSERT_NE(nullptr, object.Add(1, "one"));
-    ASSERT_NE(nullptr, object.Find(1));
-    ASSERT_NE(nullptr, object.Add(1, "one"));
-    const auto& items = object.Items();
-    ASSERT_EQ(nullptr, object.Find(2));
-    ASSERT_EQ(1, items.size());
-    ASSERT_EQ("one", *items[0]);
-  }
-  {
-    ASSERT_NE(nullptr, object.Add(2, "two"));
-    ASSERT_NE(nullptr, object.Add(2, "two"));
-    ASSERT_NE(nullptr, object.Find(1));
-    ASSERT_NE(nullptr, object.Find(2));
-    const auto& items = object.Items();
-    ASSERT_EQ(2, items.size());
+        using StringIndexedList = IndexedList<int, std::string>;
+        TEST(IndexedList, Add_ConstRef
+        ) {
+        StringIndexedList object;
+    {
+        ASSERT_NE(nullptr, object
+        .Add(1, "one"));
+        ASSERT_NE(nullptr, object
+        .Find(1));
+        ASSERT_NE(nullptr, object
+        .Add(1, "one"));
+        const auto &items = object.Items();
+        ASSERT_EQ(nullptr, object
+        .Find(2));
+        ASSERT_EQ(1, items.
+
+        size()
+
+        );
+        ASSERT_EQ("one", *items[0]);
+    }
+{
+    ASSERT_NE(nullptr, object
+    .Add(2, "two"));
+    ASSERT_NE(nullptr, object
+    .Add(2, "two"));
+    ASSERT_NE(nullptr, object
+    .Find(1));
+    ASSERT_NE(nullptr, object
+    .Find(2));
+    const auto &items = object.Items();
+    ASSERT_EQ(2, items.
+
+    size()
+
+    );
     ASSERT_EQ("one", *items[0]);
     ASSERT_EQ("two", *items[1]);
-  }
+}
 }
 
-TEST(IndexedList, Find) {
-  StringIndexedList object;
-  object.Add(1, "one");
-  auto* one = object.Find(1);
-  ASSERT_EQ(*one, "one");
-  ASSERT_NE(nullptr, one);
-  *one = "one_again";
-  const auto* one_again = object.Find(1);
-  ASSERT_NE(nullptr, one_again);
-  ASSERT_EQ("one_again", *one_again);
-  ASSERT_EQ(nullptr, object.Find(2));
+TEST(IndexedList, Find
+) {
+StringIndexedList object;
+object.Add(1, "one");
+auto *one = object.Find(1);
+ASSERT_EQ(*one,
+"one");
+ASSERT_NE(nullptr, one
+);
+*
+one = "one_again";
+const auto *one_again = object.Find(1);
+ASSERT_NE(nullptr, one_again
+);
+ASSERT_EQ("one_again", *one_again);
+ASSERT_EQ(nullptr, object
+.Find(2));
 }
 
-TEST(IndexedList, Copy) {
-  StringIndexedList b_object;
-  b_object.Add(1, "one");
-  b_object.Add(2, "two");
-  StringIndexedList a_object;
-  a_object.Add(3, "three");
-  a_object.Add(4, "four");
-  a_object = b_object;
-  ASSERT_NE(nullptr, a_object.Find(1));
-  ASSERT_NE(nullptr, a_object.Find(2));
-  ASSERT_EQ(nullptr, a_object.Find(3));
-  ASSERT_EQ(nullptr, a_object.Find(4));
+TEST(IndexedList, Copy
+) {
+StringIndexedList b_object;
+b_object.Add(1, "one");
+b_object.Add(2, "two");
+StringIndexedList a_object;
+a_object.Add(3, "three");
+a_object.Add(4, "four");
+a_object = b_object;
+ASSERT_NE(nullptr, a_object
+.Find(1));
+ASSERT_NE(nullptr, a_object
+.Find(2));
+ASSERT_EQ(nullptr, a_object
+.Find(3));
+ASSERT_EQ(nullptr, a_object
+.Find(4));
 }
 
 }  // namespace planning

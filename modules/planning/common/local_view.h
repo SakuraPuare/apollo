@@ -28,23 +28,23 @@
 #include "modules/common_msgs/storytelling_msgs/story.pb.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @struct local_view
  * @brief LocalView contains all necessary data as planning input
  */
 
-struct LocalView {
-  std::shared_ptr<prediction::PredictionObstacles> prediction_obstacles;
-  std::shared_ptr<canbus::Chassis> chassis;
-  std::shared_ptr<localization::LocalizationEstimate> localization_estimate;
-  std::shared_ptr<perception::TrafficLightDetection> traffic_light;
-  std::shared_ptr<routing::RoutingResponse> routing;
-  std::shared_ptr<relative_map::MapMsg> relative_map;
-  std::shared_ptr<PadMessage> pad_msg;
-  std::shared_ptr<storytelling::Stories> stories;
-};
+        struct LocalView {
+            std::shared_ptr <prediction::PredictionObstacles> prediction_obstacles;
+            std::shared_ptr <canbus::Chassis> chassis;
+            std::shared_ptr <localization::LocalizationEstimate> localization_estimate;
+            std::shared_ptr <perception::TrafficLightDetection> traffic_light;
+            std::shared_ptr <routing::RoutingResponse> routing;
+            std::shared_ptr <relative_map::MapMsg> relative_map;
+            std::shared_ptr <PadMessage> pad_msg;
+            std::shared_ptr <storytelling::Stories> stories;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

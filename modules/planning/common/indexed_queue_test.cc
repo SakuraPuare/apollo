@@ -24,39 +24,80 @@
 #include "modules/common/util/future.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-using StringIndexedQueue = IndexedQueue<int, std::string>;
-TEST(IndexedQueue, QueueSize1) {
-  StringIndexedQueue object(1);
-  ASSERT_TRUE(object.Add(1, std::make_unique<std::string>("one")));
-  ASSERT_TRUE(object.Find(1) != nullptr);
-  ASSERT_TRUE(object.Find(2) == nullptr);
-  ASSERT_FALSE(object.Add(1, std::make_unique<std::string>("one")));
-  ASSERT_EQ("one", *object.Latest());
-  ASSERT_TRUE(object.Add(2, std::make_unique<std::string>("two")));
-  ASSERT_TRUE(object.Find(1) == nullptr);
-  ASSERT_TRUE(object.Find(2) != nullptr);
-  ASSERT_EQ("two", *object.Latest());
-}
+        using StringIndexedQueue = IndexedQueue<int, std::string>;
+        TEST(IndexedQueue, QueueSize1
+        ) {
+        StringIndexedQueue object(1);
+        ASSERT_TRUE(object
+        .Add(1, std::make_unique<std::string>("one")));
+        ASSERT_TRUE(object
+        .Find(1) != nullptr);
+        ASSERT_TRUE(object
+        .Find(2) == nullptr);
+        ASSERT_FALSE(object
+        .Add(1, std::make_unique<std::string>("one")));
+        ASSERT_EQ("one", *object.
 
-TEST(IndexedQueue, QueueSize2) {
-  StringIndexedQueue object(2);
-  ASSERT_TRUE(object.Add(1, std::make_unique<std::string>("one")));
-  ASSERT_TRUE(object.Find(1) != nullptr);
-  ASSERT_TRUE(object.Find(2) == nullptr);
-  ASSERT_FALSE(object.Add(1, std::make_unique<std::string>("one")));
-  ASSERT_EQ("one", *object.Latest());
-  ASSERT_TRUE(object.Add(2, std::make_unique<std::string>("two")));
-  ASSERT_TRUE(object.Find(1) != nullptr);
-  ASSERT_TRUE(object.Find(2) != nullptr);
-  ASSERT_EQ("two", *object.Latest());
-  ASSERT_TRUE(object.Add(3, std::make_unique<std::string>("three")));
-  ASSERT_TRUE(object.Find(1) == nullptr);
-  ASSERT_TRUE(object.Find(2) != nullptr);
-  ASSERT_TRUE(object.Find(3) != nullptr);
-  ASSERT_TRUE(object.Find(4) == nullptr);
-  ASSERT_EQ("three", *object.Latest());
+        Latest()
+
+        );
+        ASSERT_TRUE(object
+        .Add(2, std::make_unique<std::string>("two")));
+        ASSERT_TRUE(object
+        .Find(1) == nullptr);
+        ASSERT_TRUE(object
+        .Find(2) != nullptr);
+        ASSERT_EQ("two", *object.
+
+        Latest()
+
+        );
+    }
+
+    TEST(IndexedQueue, QueueSize2
+    ) {
+    StringIndexedQueue object(2);
+    ASSERT_TRUE(object
+    .Add(1, std::make_unique<std::string>("one")));
+    ASSERT_TRUE(object
+    .Find(1) != nullptr);
+    ASSERT_TRUE(object
+    .Find(2) == nullptr);
+    ASSERT_FALSE(object
+    .Add(1, std::make_unique<std::string>("one")));
+    ASSERT_EQ("one", *object.
+
+    Latest()
+
+    );
+    ASSERT_TRUE(object
+    .Add(2, std::make_unique<std::string>("two")));
+    ASSERT_TRUE(object
+    .Find(1) != nullptr);
+    ASSERT_TRUE(object
+    .Find(2) != nullptr);
+    ASSERT_EQ("two", *object.
+
+    Latest()
+
+    );
+    ASSERT_TRUE(object
+    .Add(3, std::make_unique<std::string>("three")));
+    ASSERT_TRUE(object
+    .Find(1) == nullptr);
+    ASSERT_TRUE(object
+    .Find(2) != nullptr);
+    ASSERT_TRUE(object
+    .Find(3) != nullptr);
+    ASSERT_TRUE(object
+    .Find(4) == nullptr);
+    ASSERT_EQ("three", *object.
+
+    Latest()
+
+    );
 }
 
 }  // namespace planning

@@ -50,145 +50,148 @@
  * @brief apollo::planning
  */
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @class ReferenceLineProvider
  * @brief The class of ReferenceLineProvider.
  *        It provides smoothed reference line to planning.
  */
-class ReferenceLineProvider {
- public:
-  ReferenceLineProvider() = default;
-  ReferenceLineProvider(
-      const common::VehicleStateProvider* vehicle_state_provider,
-      const hdmap::HDMap* base_map,
-      const std::shared_ptr<relative_map::MapMsg>& relative_map = nullptr);
+        class ReferenceLineProvider {
+        public:
+            ReferenceLineProvider() = default;
 
-  /**
-   * @brief Default destructor.
-   */
-  ~ReferenceLineProvider();
+            ReferenceLineProvider(
+                    const common::VehicleStateProvider *vehicle_state_provider,
+                    const hdmap::HDMap *base_map,
+                    const std::shared_ptr <relative_map::MapMsg> &relative_map = nullptr);
 
-  bool UpdateRoutingResponse(const routing::RoutingResponse& routing);
+            /**
+             * @brief Default destructor.
+             */
+            ~ReferenceLineProvider();
 
-  void UpdateVehicleState(const common::VehicleState& vehicle_state);
+            bool UpdateRoutingResponse(const routing::RoutingResponse &routing);
 
-  bool Start();
+            void UpdateVehicleState(const common::VehicleState &vehicle_state);
 
-  void Stop();
+            bool Start();
 
-  bool GetReferenceLines(std::list<ReferenceLine>* reference_lines,
-                         std::list<hdmap::RouteSegments>* segments);
+            void Stop();
 
-  double LastTimeDelay();
+            bool GetReferenceLines(std::list <ReferenceLine> *reference_lines,
+                                   std::list <hdmap::RouteSegments> *segments);
 
-  std::vector<routing::LaneWaypoint> FutureRouteWaypoints();
+            double LastTimeDelay();
 
-  bool UpdatedReferenceLine() { return is_reference_line_updated_.load(); }
+            std::vector <routing::LaneWaypoint> FutureRouteWaypoints();
 
- private:
-  /**
-   * @brief Use PncMap to create reference line and the corresponding segments
-   * based on routing and current position. This is a thread safe function.
-   * @return true if !reference_lines.empty() && reference_lines.size() ==
-   *                 segments.size();
-   **/
-  bool CreateReferenceLine(std::list<ReferenceLine>* reference_lines,
-                           std::list<hdmap::RouteSegments>* segments);
+            bool UpdatedReferenceLine() { return is_reference_line_updated_.load(); }
 
-  /**
-   * @brief store the computed reference line. This function can avoid
-   * unnecessary copy if the reference lines are the same.
-   */
-  void UpdateReferenceLine(
-      const std::list<ReferenceLine>& reference_lines,
-      const std::list<hdmap::RouteSegments>& route_segments);
+        private:
+            /**
+             * @brief Use PncMap to create reference line and the corresponding segments
+             * based on routing and current position. This is a thread safe function.
+             * @return true if !reference_lines.empty() && reference_lines.size() ==
+             *                 segments.size();
+             **/
+            bool CreateReferenceLine(std::list <ReferenceLine> *reference_lines,
+                                     std::list <hdmap::RouteSegments> *segments);
 
-  void GenerateThread();
-  void IsValidReferenceLine();
-  void PrioritzeChangeLane(std::list<hdmap::RouteSegments>* route_segments);
+            /**
+             * @brief store the computed reference line. This function can avoid
+             * unnecessary copy if the reference lines are the same.
+             */
+            void UpdateReferenceLine(
+                    const std::list <ReferenceLine> &reference_lines,
+                    const std::list <hdmap::RouteSegments> &route_segments);
 
-  bool CreateRouteSegments(const common::VehicleState& vehicle_state,
-                           std::list<hdmap::RouteSegments>* segments);
+            void GenerateThread();
 
-  bool IsReferenceLineSmoothValid(const ReferenceLine& raw,
-                                  const ReferenceLine& smoothed) const;
+            void IsValidReferenceLine();
 
-  bool SmoothReferenceLine(const ReferenceLine& raw_reference_line,
-                           ReferenceLine* reference_line);
+            void PrioritzeChangeLane(std::list <hdmap::RouteSegments> *route_segments);
 
-  bool SmoothPrefixedReferenceLine(const ReferenceLine& prefix_ref,
-                                   const ReferenceLine& raw_ref,
-                                   ReferenceLine* reference_line);
+            bool CreateRouteSegments(const common::VehicleState &vehicle_state,
+                                     std::list <hdmap::RouteSegments> *segments);
 
-  void GetAnchorPoints(const ReferenceLine& reference_line,
-                       std::vector<AnchorPoint>* anchor_points) const;
+            bool IsReferenceLineSmoothValid(const ReferenceLine &raw,
+                                            const ReferenceLine &smoothed) const;
 
-  bool SmoothRouteSegment(const hdmap::RouteSegments& segments,
-                          ReferenceLine* reference_line);
+            bool SmoothReferenceLine(const ReferenceLine &raw_reference_line,
+                                     ReferenceLine *reference_line);
 
-  /**
-   * @brief This function creates a smoothed forward reference line
-   * based on the given segments.
-   */
-  bool ExtendReferenceLine(const common::VehicleState& state,
-                           hdmap::RouteSegments* segments,
-                           ReferenceLine* reference_line);
+            bool SmoothPrefixedReferenceLine(const ReferenceLine &prefix_ref,
+                                             const ReferenceLine &raw_ref,
+                                             ReferenceLine *reference_line);
 
-  AnchorPoint GetAnchorPoint(const ReferenceLine& reference_line,
-                             double s) const;
+            void GetAnchorPoints(const ReferenceLine &reference_line,
+                                 std::vector <AnchorPoint> *anchor_points) const;
 
-  bool GetReferenceLinesFromRelativeMap(
-      std::list<ReferenceLine>* reference_lines,
-      std::list<hdmap::RouteSegments>* segments);
+            bool SmoothRouteSegment(const hdmap::RouteSegments &segments,
+                                    ReferenceLine *reference_line);
 
-  /**
-   * @brief This function get adc lane info from navigation path and map
-   * by vehicle state.
-   */
-  bool GetNearestWayPointFromNavigationPath(
-      const common::VehicleState& state,
-      const std::unordered_set<std::string>& navigation_lane_ids,
-      hdmap::LaneWaypoint* waypoint);
+            /**
+             * @brief This function creates a smoothed forward reference line
+             * based on the given segments.
+             */
+            bool ExtendReferenceLine(const common::VehicleState &state,
+                                     hdmap::RouteSegments *segments,
+                                     ReferenceLine *reference_line);
 
-  bool Shrink(const common::SLPoint& sl, ReferenceLine* ref,
-              hdmap::RouteSegments* segments);
+            AnchorPoint GetAnchorPoint(const ReferenceLine &reference_line,
+                                       double s) const;
 
- private:
-  bool is_initialized_ = false;
-  std::atomic<bool> is_stop_{false};
+            bool GetReferenceLinesFromRelativeMap(
+                    std::list <ReferenceLine> *reference_lines,
+                    std::list <hdmap::RouteSegments> *segments);
 
-  std::unique_ptr<ReferenceLineSmoother> smoother_;
-  ReferenceLineSmootherConfig smoother_config_;
+            /**
+             * @brief This function get adc lane info from navigation path and map
+             * by vehicle state.
+             */
+            bool GetNearestWayPointFromNavigationPath(
+                    const common::VehicleState &state,
+                    const std::unordered_set <std::string> &navigation_lane_ids,
+                    hdmap::LaneWaypoint *waypoint);
 
-  std::mutex pnc_map_mutex_;
-  std::unique_ptr<hdmap::PncMap> pnc_map_;
+            bool Shrink(const common::SLPoint &sl, ReferenceLine *ref,
+                        hdmap::RouteSegments *segments);
 
-  // Used in Navigation mode
-  std::shared_ptr<relative_map::MapMsg> relative_map_;
+        private:
+            bool is_initialized_ = false;
+            std::atomic<bool> is_stop_{false};
 
-  std::mutex vehicle_state_mutex_;
-  common::VehicleState vehicle_state_;
+            std::unique_ptr <ReferenceLineSmoother> smoother_;
+            ReferenceLineSmootherConfig smoother_config_;
 
-  std::mutex routing_mutex_;
-  routing::RoutingResponse routing_;
-  bool has_routing_ = false;
+            std::mutex pnc_map_mutex_;
+            std::unique_ptr <hdmap::PncMap> pnc_map_;
 
-  std::mutex reference_lines_mutex_;
-  std::list<ReferenceLine> reference_lines_;
-  std::list<hdmap::RouteSegments> route_segments_;
-  double last_calculation_time_ = 0.0;
+            // Used in Navigation mode
+            std::shared_ptr <relative_map::MapMsg> relative_map_;
 
-  std::queue<std::list<ReferenceLine>> reference_line_history_;
-  std::queue<std::list<hdmap::RouteSegments>> route_segments_history_;
+            std::mutex vehicle_state_mutex_;
+            common::VehicleState vehicle_state_;
 
-  std::future<void> task_future_;
+            std::mutex routing_mutex_;
+            routing::RoutingResponse routing_;
+            bool has_routing_ = false;
 
-  std::atomic<bool> is_reference_line_updated_{true};
+            std::mutex reference_lines_mutex_;
+            std::list <ReferenceLine> reference_lines_;
+            std::list <hdmap::RouteSegments> route_segments_;
+            double last_calculation_time_ = 0.0;
 
-  const common::VehicleStateProvider* vehicle_state_provider_ = nullptr;
-};
+            std::queue <std::list<ReferenceLine>> reference_line_history_;
+            std::queue <std::list<hdmap::RouteSegments>> route_segments_history_;
 
-}  // namespace planning
+            std::future<void> task_future_;
+
+            std::atomic<bool> is_reference_line_updated_{true};
+
+            const common::VehicleStateProvider *vehicle_state_provider_ = nullptr;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

@@ -27,59 +27,59 @@
 #include "modules/planning/tasks/optimizers/path_time_heuristic/gridded_path_time_graph.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-using apollo::common::ErrorCode;
-using apollo::common::Status;
+        using apollo::common::ErrorCode;
+        using apollo::common::Status;
 
-PathTimeHeuristicOptimizer::PathTimeHeuristicOptimizer(const TaskConfig& config)
-    : SpeedOptimizer(config) {
-  ACHECK(config.has_speed_heuristic_optimizer_config());
-  speed_heuristic_optimizer_config_ = config.speed_heuristic_optimizer_config();
-}
+        PathTimeHeuristicOptimizer::PathTimeHeuristicOptimizer(const TaskConfig &config)
+                : SpeedOptimizer(config) {
+            ACHECK(config.has_speed_heuristic_optimizer_config());
+            speed_heuristic_optimizer_config_ = config.speed_heuristic_optimizer_config();
+        }
 
-bool PathTimeHeuristicOptimizer::SearchPathTimeGraph(
-    SpeedData* speed_data) const {
-  const auto& dp_st_speed_optimizer_config =
-      reference_line_info_->IsChangeLanePath()
-          ? speed_heuristic_optimizer_config_.lane_change_speed_config()
-          : speed_heuristic_optimizer_config_.default_speed_config();
+        bool PathTimeHeuristicOptimizer::SearchPathTimeGraph(
+                SpeedData *speed_data) const {
+            const auto &dp_st_speed_optimizer_config =
+                    reference_line_info_->IsChangeLanePath()
+                    ? speed_heuristic_optimizer_config_.lane_change_speed_config()
+                    : speed_heuristic_optimizer_config_.default_speed_config();
 
-  GriddedPathTimeGraph st_graph(
-      reference_line_info_->st_graph_data(), dp_st_speed_optimizer_config,
-      reference_line_info_->path_decision()->obstacles().Items(), init_point_);
+            GriddedPathTimeGraph st_graph(
+                    reference_line_info_->st_graph_data(), dp_st_speed_optimizer_config,
+                    reference_line_info_->path_decision()->obstacles().Items(), init_point_);
 
-  if (!st_graph.Search(speed_data).ok()) {
-    AERROR << "failed to search graph with dynamic programming.";
-    return false;
-  }
-  return true;
-}
+            if (!st_graph.Search(speed_data).ok()) {
+                AERROR << "failed to search graph with dynamic programming.";
+                return false;
+            }
+            return true;
+        }
 
-Status PathTimeHeuristicOptimizer::Process(
-    const PathData& path_data, const common::TrajectoryPoint& init_point,
-    SpeedData* const speed_data) {
-  init_point_ = init_point;
+        Status PathTimeHeuristicOptimizer::Process(
+                const PathData &path_data, const common::TrajectoryPoint &init_point,
+                SpeedData *const speed_data) {
+            init_point_ = init_point;
 
-  if (path_data.discretized_path().empty()) {
-    const std::string msg = "Empty path data";
-    AERROR << msg;
-    return Status(ErrorCode::PLANNING_ERROR, msg);
-  }
+            if (path_data.discretized_path().empty()) {
+                const std::string msg = "Empty path data";
+                AERROR << msg;
+                return Status(ErrorCode::PLANNING_ERROR, msg);
+            }
 
-  if (!SearchPathTimeGraph(speed_data)) {
-    const std::string msg = absl::StrCat(
-        Name(), ": Failed to search graph with dynamic programming.");
-    AERROR << msg;
-    RecordDebugInfo(*speed_data, reference_line_info_->mutable_st_graph_data()
-                                     ->mutable_st_graph_debug());
-    return Status(ErrorCode::PLANNING_ERROR, msg);
-  }
-  RecordDebugInfo(
-      *speed_data,
-      reference_line_info_->mutable_st_graph_data()->mutable_st_graph_debug());
-  return Status::OK();
-}
+            if (!SearchPathTimeGraph(speed_data)) {
+                const std::string msg = absl::StrCat(
+                        Name(), ": Failed to search graph with dynamic programming.");
+                AERROR << msg;
+                RecordDebugInfo(*speed_data, reference_line_info_->mutable_st_graph_data()
+                        ->mutable_st_graph_debug());
+                return Status(ErrorCode::PLANNING_ERROR, msg);
+            }
+            RecordDebugInfo(
+                    *speed_data,
+                    reference_line_info_->mutable_st_graph_data()->mutable_st_graph_debug());
+            return Status::OK();
+        }
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

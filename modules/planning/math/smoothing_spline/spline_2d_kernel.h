@@ -27,46 +27,53 @@
 #include "modules/planning/math/smoothing_spline/spline_2d.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class Spline2dKernel {
- public:
-  Spline2dKernel(const std::vector<double>& t_knots,
-                 const uint32_t spline_order);
+        class Spline2dKernel {
+        public:
+            Spline2dKernel(const std::vector<double> &t_knots,
+                           const uint32_t spline_order);
 
-  // customized input output
-  void AddRegularization(const double regularization_param);
-  bool AddKernel(const Eigen::MatrixXd& kernel, const Eigen::MatrixXd& offset,
-                 const double weight);
-  bool AddKernel(const Eigen::MatrixXd& kernel, const double weight);
+            // customized input output
+            void AddRegularization(const double regularization_param);
 
-  Eigen::MatrixXd* mutable_kernel_matrix();
-  Eigen::MatrixXd* mutable_offset();
+            bool AddKernel(const Eigen::MatrixXd &kernel, const Eigen::MatrixXd &offset,
+                           const double weight);
 
-  Eigen::MatrixXd kernel_matrix() const;
-  const Eigen::MatrixXd offset() const;
+            bool AddKernel(const Eigen::MatrixXd &kernel, const double weight);
 
-  // build-in kernel methods
-  void AddDerivativeKernelMatrix(const double weight);
-  void AddSecondOrderDerivativeMatrix(const double weight);
-  void AddThirdOrderDerivativeMatrix(const double weight);
+            Eigen::MatrixXd *mutable_kernel_matrix();
 
-  // reference line kernel, x_coord in strictly increasing order
-  bool AddReferenceLineKernelMatrix(
-      const std::vector<double>& t_coord,
-      const std::vector<common::math::Vec2d>& ref_points, const double weight);
+            Eigen::MatrixXd *mutable_offset();
 
- private:
-  void AddNthDerivativeKernelMatrix(const uint32_t n, const double weight);
-  uint32_t find_index(const double x) const;
+            Eigen::MatrixXd kernel_matrix() const;
 
- private:
-  Eigen::MatrixXd kernel_matrix_;
-  Eigen::MatrixXd offset_;
-  std::vector<double> t_knots_;
-  uint32_t spline_order_;
-  size_t total_params_;
-};
+            const Eigen::MatrixXd offset() const;
 
-}  // namespace planning
+            // build-in kernel methods
+            void AddDerivativeKernelMatrix(const double weight);
+
+            void AddSecondOrderDerivativeMatrix(const double weight);
+
+            void AddThirdOrderDerivativeMatrix(const double weight);
+
+            // reference line kernel, x_coord in strictly increasing order
+            bool AddReferenceLineKernelMatrix(
+                    const std::vector<double> &t_coord,
+                    const std::vector <common::math::Vec2d> &ref_points, const double weight);
+
+        private:
+            void AddNthDerivativeKernelMatrix(const uint32_t n, const double weight);
+
+            uint32_t find_index(const double x) const;
+
+        private:
+            Eigen::MatrixXd kernel_matrix_;
+            Eigen::MatrixXd offset_;
+            std::vector<double> t_knots_;
+            uint32_t spline_order_;
+            size_t total_params_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

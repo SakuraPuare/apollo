@@ -18,17 +18,17 @@
 #include <utility>
 
 namespace apollo {
-namespace planning {
-namespace util {
+    namespace planning {
+        namespace util {
 
 // Helper function to convert world coordinates to relative coordinates
 // around the obstacle of interest.
-std::pair<double, double> WorldCoordToObjCoord(
-    std::pair<double, double> input_world_coord,
-    std::pair<double, double> obj_world_coord, double obj_world_angle);
+            std::pair<double, double> WorldCoordToObjCoord(
+                    std::pair<double, double> input_world_coord,
+                    std::pair<double, double> obj_world_coord, double obj_world_angle);
 
-double WorldAngleToObjAngle(double input_world_angle, double obj_world_angle);
+            double WorldAngleToObjAngle(double input_world_angle, double obj_world_angle);
 
-}  // namespace util
-}  // namespace planning
+        }  // namespace util
+    }  // namespace planning
 }  // namespace apollo

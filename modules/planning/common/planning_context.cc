@@ -17,11 +17,11 @@
 #include "modules/planning/common/planning_context.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-void PlanningContext::Init() {}
+        void PlanningContext::Init() {}
 
-void PlanningContext::Clear() { planning_status_.Clear(); }
+        void PlanningContext::Clear() { planning_status_.Clear(); }
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

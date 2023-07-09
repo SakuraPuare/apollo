@@ -25,27 +25,42 @@
 #include "modules/common/util/util.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-TEST(basic_test, DiscretizedTrajectory) {
-  const std::string path_of_standard_trajectory =
-      "modules/planning/testdata/trajectory_data/standard_trajectory.pb.txt";
-  ADCTrajectory trajectory;
-  EXPECT_TRUE(cyber::common::GetProtoFromFile(path_of_standard_trajectory,
-                                              &trajectory));
-  DiscretizedTrajectory discretized_trajectory(trajectory);
+        TEST(basic_test, DiscretizedTrajectory
+        ) {
+        const std::string path_of_standard_trajectory =
+                "modules/planning/testdata/trajectory_data/standard_trajectory.pb.txt";
+        ADCTrajectory trajectory;
+        EXPECT_TRUE(cyber::common::GetProtoFromFile(path_of_standard_trajectory,
+                                                    &trajectory)
+        );
+        DiscretizedTrajectory discretized_trajectory(trajectory);
 
-  PublishableTrajectory publishable_trajectory(12349834.26,
-                                               discretized_trajectory);
-  EXPECT_EQ(publishable_trajectory.header_time(), 12349834.26);
+        PublishableTrajectory publishable_trajectory(12349834.26,
+                                                     discretized_trajectory);
+        EXPECT_EQ(publishable_trajectory
+        .
 
-  ADCTrajectory output_trajectory;
-  publishable_trajectory.PopulateTrajectoryProtobuf(&output_trajectory);
+        header_time(),
 
-  for (int i = 0; i < output_trajectory.trajectory_point_size(); ++i) {
-    EXPECT_TRUE(apollo::common::util::IsProtoEqual(
-        output_trajectory.trajectory_point(i), trajectory.trajectory_point(i)));
-  }
+        12349834.26);
+
+        ADCTrajectory output_trajectory;
+        publishable_trajectory.
+        PopulateTrajectoryProtobuf(&output_trajectory);
+
+        for (
+        int i = 0;
+        i<output_trajectory.
+
+        trajectory_point_size();
+
+        ++i) {
+        EXPECT_TRUE(apollo::common::util::IsProtoEqual(
+                output_trajectory.trajectory_point(i), trajectory.trajectory_point(i))
+        );
+    }
 }
 
 }  // namespace planning

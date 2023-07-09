@@ -28,20 +28,22 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class TrajectoryOptimizer : public Task {
- public:
-  explicit TrajectoryOptimizer(const TaskConfig &config);
-  TrajectoryOptimizer(const TaskConfig &config,
-                      const std::shared_ptr<DependencyInjector> &injector);
-  virtual ~TrajectoryOptimizer() = default;
+        class TrajectoryOptimizer : public Task {
+        public:
+            explicit TrajectoryOptimizer(const TaskConfig &config);
 
-  apollo::common::Status Execute(Frame *frame) override;
+            TrajectoryOptimizer(const TaskConfig &config,
+                                const std::shared_ptr <DependencyInjector> &injector);
 
- protected:
-  virtual apollo::common::Status Process() = 0;
-};
+            virtual ~TrajectoryOptimizer() = default;
 
-}  // namespace planning
+            apollo::common::Status Execute(Frame *frame) override;
+
+        protected:
+            virtual apollo::common::Status Process() = 0;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

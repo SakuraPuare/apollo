@@ -27,15 +27,15 @@
 #include "modules/planning/math/curve1d/curve1d.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class TrajectoryCombiner {
- public:
-  static DiscretizedTrajectory Combine(
-      const std::vector<common::PathPoint>& reference_line,
-      const Curve1d& lon_trajectory, const Curve1d& lat_trajectory,
-      const double init_relative_time);
-};
+        class TrajectoryCombiner {
+        public:
+            static DiscretizedTrajectory Combine(
+                    const std::vector <common::PathPoint> &reference_line,
+                    const Curve1d &lon_trajectory, const Curve1d &lat_trajectory,
+                    const double init_relative_time);
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

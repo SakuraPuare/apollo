@@ -32,7 +32,7 @@
  * @brief apollo::planning
  */
 namespace apollo {
-namespace planning {
+    namespace planning {
 
 /**
  * @class planning
@@ -40,90 +40,92 @@ namespace planning {
  * @brief Planning module main class. It processes GPS and IMU as input,
  * to generate planning info.
  */
-class NaviPlanning : public PlanningBase {
- public:
-  explicit NaviPlanning(const std::shared_ptr<DependencyInjector>& injector)
-      : PlanningBase(injector) {
-    planner_dispatcher_ = std::make_unique<NaviPlannerDispatcher>();
-  }
-  virtual ~NaviPlanning();
+        class NaviPlanning : public PlanningBase {
+        public:
+            explicit NaviPlanning(const std::shared_ptr <DependencyInjector> &injector)
+                    : PlanningBase(injector) {
+                planner_dispatcher_ = std::make_unique<NaviPlannerDispatcher>();
+            }
 
-  /**
-   * @brief Planning algorithm name.
-   */
-  std::string Name() const override;
+            virtual ~NaviPlanning();
 
-  /**
-   * @brief module initialization function
-   * @return initialization status
-   */
-  apollo::common::Status Init(const PlanningConfig& config) override;
+            /**
+             * @brief Planning algorithm name.
+             */
+            std::string Name() const override;
 
-  /**
-   * @brief main logic of the planning module, runs periodically triggered by
-   * timer.
-   */
-  void RunOnce(const LocalView& local_view,
-               ADCTrajectory* const trajectory_pb) override;
+            /**
+             * @brief module initialization function
+             * @return initialization status
+             */
+            apollo::common::Status Init(const PlanningConfig &config) override;
 
-  apollo::common::Status Plan(
-      const double current_time_stamp,
-      const std::vector<common::TrajectoryPoint>& stitching_trajectory,
-      ADCTrajectory* const trajectory) override;
+            /**
+             * @brief main logic of the planning module, runs periodically triggered by
+             * timer.
+             */
+            void RunOnce(const LocalView &local_view,
+                         ADCTrajectory *const trajectory_pb) override;
 
- private:
-  common::Status InitFrame(const uint32_t sequence_num,
-                           const common::TrajectoryPoint& planning_start_point,
-                           const common::VehicleState& vehicle_state);
+            apollo::common::Status Plan(
+                    const double current_time_stamp,
+                    const std::vector <common::TrajectoryPoint> &stitching_trajectory,
+                    ADCTrajectory *const trajectory) override;
 
-  bool CheckPlanningConfig(const PlanningConfig& config);
+        private:
+            common::Status InitFrame(const uint32_t sequence_num,
+                                     const common::TrajectoryPoint &planning_start_point,
+                                     const common::VehicleState &vehicle_state);
 
-  /**
-   * @brief make driving decisions by received planning pad msg
-   */
-  void ProcessPadMsg(PadMessage::DrivingAction drvie_action);
+            bool CheckPlanningConfig(const PlanningConfig &config);
 
-  /**
-   * @brief get the lane Id of the lane in which the vehicle is located
-   */
-  std::string GetCurrentLaneId();
+            /**
+             * @brief make driving decisions by received planning pad msg
+             */
+            void ProcessPadMsg(PadMessage::DrivingAction drvie_action);
 
-  /**
-   * @brief get the left neighbors lane info of the lane which the vehicle is
-   *located
-   * @lane_info_group output left neighbors info which sorted from near to
-   *far
-   */
-  void GetLeftNeighborLanesInfo(
-      std::vector<std::pair<std::string, double>>* const lane_info_group);
+            /**
+             * @brief get the lane Id of the lane in which the vehicle is located
+             */
+            std::string GetCurrentLaneId();
 
-  /**
-   * @brief get the right neighbors lane of the lane which the vehicle is
-   * located
-   * @lane_info_group output right neighbors info which sorted from near to
-   *far
-   */
-  void GetRightNeighborLanesInfo(
-      std::vector<std::pair<std::string, double>>* const lane_info_group);
+            /**
+             * @brief get the left neighbors lane info of the lane which the vehicle is
+             *located
+             * @lane_info_group output left neighbors info which sorted from near to
+             *far
+             */
+            void GetLeftNeighborLanesInfo(
+                    std::vector <std::pair<std::string, double>> *const lane_info_group);
 
-  void ExportReferenceLineDebug(planning_internal::Debug* debug);
+            /**
+             * @brief get the right neighbors lane of the lane which the vehicle is
+             * located
+             * @lane_info_group output right neighbors info which sorted from near to
+             *far
+             */
+            void GetRightNeighborLanesInfo(
+                    std::vector <std::pair<std::string, double>> *const lane_info_group);
 
-  class VehicleConfig {
-   public:
-    double x_ = 0.0;
-    double y_ = 0.0;
-    double theta_ = 0.0;
-    bool is_valid_ = false;
-  };
-  VehicleConfig last_vehicle_config_;
+            void ExportReferenceLineDebug(planning_internal::Debug *debug);
 
-  VehicleConfig ComputeVehicleConfigFromLocalization(
-      const localization::LocalizationEstimate& localization) const;
+            class VehicleConfig {
+            public:
+                double x_ = 0.0;
+                double y_ = 0.0;
+                double theta_ = 0.0;
+                bool is_valid_ = false;
+            };
 
-  std::string target_lane_id_;
+            VehicleConfig last_vehicle_config_;
 
-  std::unique_ptr<ReferenceLineProvider> reference_line_provider_;
-};
+            VehicleConfig ComputeVehicleConfigFromLocalization(
+                    const localization::LocalizationEstimate &localization) const;
 
-}  // namespace planning
+            std::string target_lane_id_;
+
+            std::unique_ptr <ReferenceLineProvider> reference_line_provider_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

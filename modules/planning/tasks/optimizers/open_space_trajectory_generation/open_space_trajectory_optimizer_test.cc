@@ -24,16 +24,16 @@
 #include "modules/planning/proto/open_space_task_config.pb.h"
 
 namespace apollo {
-namespace planning {
-class OpenSpaceTrajectoryOptimizerTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    OpenSpaceTrajectoryOptimizer open_space_trajectory_optimizer(config);
-  }
+    namespace planning {
+        class OpenSpaceTrajectoryOptimizerTest : public ::testing::Test {
+        public:
+            virtual void SetUp() {
+                OpenSpaceTrajectoryOptimizer open_space_trajectory_optimizer(config);
+            }
 
- protected:
-  OpenSpaceTrajectoryOptimizerConfig config;
-};
+        protected:
+            OpenSpaceTrajectoryOptimizerConfig config;
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

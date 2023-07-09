@@ -27,35 +27,35 @@
 #include "modules/planning/scenarios/traffic_light/unprotected_right_turn/traffic_light_unprotected_right_turn_scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace traffic_light {
+    namespace planning {
+        namespace scenario {
+            namespace traffic_light {
 
-struct TrafficLightUnprotectedRightTurnContext;
+                struct TrafficLightUnprotectedRightTurnContext;
 
-class TrafficLightUnprotectedRightTurnStageCreep : public Stage {
- public:
-  TrafficLightUnprotectedRightTurnStageCreep(
-      const ScenarioConfig::StageConfig& config,
-      const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                class TrafficLightUnprotectedRightTurnStageCreep : public Stage {
+                public:
+                    TrafficLightUnprotectedRightTurnStageCreep(
+                            const ScenarioConfig::StageConfig &config,
+                            const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
+                private:
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
-  TrafficLightUnprotectedRightTurnContext* GetContext() {
-    return Stage::GetContextAs<TrafficLightUnprotectedRightTurnContext>();
-  }
+                    TrafficLightUnprotectedRightTurnContext *GetContext() {
+                        return Stage::GetContextAs<TrafficLightUnprotectedRightTurnContext>();
+                    }
 
- private:
-  Stage::StageStatus FinishStage();
+                private:
+                    Stage::StageStatus FinishStage();
 
- private:
-  ScenarioTrafficLightUnprotectedRightTurnConfig scenario_config_;
-};
+                private:
+                    ScenarioTrafficLightUnprotectedRightTurnConfig scenario_config_;
+                };
 
-}  // namespace traffic_light
-}  // namespace scenario
-}  // namespace planning
+            }  // namespace traffic_light
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

@@ -38,30 +38,30 @@
 #include "modules/planning/tasks/deciders/decider.h"
 
 namespace apollo {
-namespace planning {
-class OpenSpaceFallbackDecider : public Decider {
- public:
-  OpenSpaceFallbackDecider(const TaskConfig& config,
-                           const std::shared_ptr<DependencyInjector>& injector);
+    namespace planning {
+        class OpenSpaceFallbackDecider : public Decider {
+        public:
+            OpenSpaceFallbackDecider(const TaskConfig &config,
+                                     const std::shared_ptr <DependencyInjector> &injector);
 
- private:
-  apollo::common::Status Process(Frame* frame) override;
+        private:
+            apollo::common::Status Process(Frame *frame) override;
 
-  // bool IsCollisionFreeTrajectory(const ADCTrajectory& trajectory_pb);
+            // bool IsCollisionFreeTrajectory(const ADCTrajectory& trajectory_pb);
 
-  void BuildPredictedEnvironment(const std::vector<const Obstacle*>& obstacles,
-                                 std::vector<std::vector<common::math::Box2d>>&
-                                     predicted_bounding_rectangles);
+            void BuildPredictedEnvironment(const std::vector<const Obstacle *> &obstacles,
+                                           std::vector <std::vector<common::math::Box2d>> &
+                                           predicted_bounding_rectangles);
 
-  bool IsCollisionFreeTrajectory(
-      const TrajGearPair& trajectory_pb,
-      const std::vector<std::vector<common::math::Box2d>>&
-          predicted_bounding_rectangles,
-      size_t* current_idx, size_t* first_collision_idx);
+            bool IsCollisionFreeTrajectory(
+                    const TrajGearPair &trajectory_pb,
+                    const std::vector <std::vector<common::math::Box2d>> &
+                    predicted_bounding_rectangles,
+                    size_t *current_idx, size_t *first_collision_idx);
 
-  bool QuardraticFormulaLowerSolution(const double a, const double b,
-                                      const double c, double* sol);
-};
+            bool QuardraticFormulaLowerSolution(const double a, const double b,
+                                                const double c, double *sol);
+        };
 
-}  // namespace planning
+    }  // namespace planning
 }  // namespace apollo

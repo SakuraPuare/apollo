@@ -27,30 +27,32 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class Decider : public Task {
- public:
-  explicit Decider(const TaskConfig& config);
-  Decider(const TaskConfig& config,
-          const std::shared_ptr<DependencyInjector>& injector);
-  virtual ~Decider() = default;
+        class Decider : public Task {
+        public:
+            explicit Decider(const TaskConfig &config);
 
-  apollo::common::Status Execute(
-      Frame* frame, ReferenceLineInfo* reference_line_info) override;
+            Decider(const TaskConfig &config,
+                    const std::shared_ptr <DependencyInjector> &injector);
 
-  apollo::common::Status Execute(Frame* frame) override;
+            virtual ~Decider() = default;
 
- protected:
-  virtual apollo::common::Status Process(
-      Frame* frame, ReferenceLineInfo* reference_line_info) {
-    return apollo::common::Status::OK();
-  }
+            apollo::common::Status Execute(
+                    Frame *frame, ReferenceLineInfo *reference_line_info) override;
 
-  virtual apollo::common::Status Process(Frame* frame) {
-    return apollo::common::Status::OK();
-  }
-};
+            apollo::common::Status Execute(Frame *frame) override;
 
-}  // namespace planning
+        protected:
+            virtual apollo::common::Status Process(
+                    Frame *frame, ReferenceLineInfo *reference_line_info) {
+                return apollo::common::Status::OK();
+            }
+
+            virtual apollo::common::Status Process(Frame *frame) {
+                return apollo::common::Status::OK();
+            }
+        };
+
+    }  // namespace planning
 }  // namespace apollo

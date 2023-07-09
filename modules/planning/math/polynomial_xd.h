@@ -24,27 +24,34 @@
 #include <vector>
 
 namespace apollo {
-namespace planning {
+    namespace planning {
 
-class PolynomialXd {
- public:
-  PolynomialXd() = default;
-  explicit PolynomialXd(const std::uint32_t order);
-  explicit PolynomialXd(const std::vector<double>& params);
-  double operator()(const double value) const;
-  double operator[](const std::uint32_t index) const;
-  void SetParams(const std::vector<double>& params);
+        class PolynomialXd {
+        public:
+            PolynomialXd() = default;
 
-  static PolynomialXd DerivedFrom(const PolynomialXd& base);
-  static PolynomialXd IntegratedFrom(const PolynomialXd& base,
-                                     const double intercept = 0.0);
+            explicit PolynomialXd(const std::uint32_t order);
 
-  std::uint32_t order() const;
-  const std::vector<double>& params() const;
+            explicit PolynomialXd(const std::vector<double> &params);
 
- private:
-  std::vector<double> params_;
-};
+            double operator()(const double value) const;
 
-}  // namespace planning
+            double operator[](const std::uint32_t index) const;
+
+            void SetParams(const std::vector<double> &params);
+
+            static PolynomialXd DerivedFrom(const PolynomialXd &base);
+
+            static PolynomialXd IntegratedFrom(const PolynomialXd &base,
+                                               const double intercept = 0.0);
+
+            std::uint32_t order() const;
+
+            const std::vector<double> &params() const;
+
+        private:
+            std::vector<double> params_;
+        };
+
+    }  // namespace planning
 }  // namespace apollo

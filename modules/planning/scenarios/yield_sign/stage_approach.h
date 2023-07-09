@@ -27,31 +27,32 @@
 #include "modules/planning/scenarios/yield_sign/yield_sign_scenario.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace yield_sign {
+    namespace planning {
+        namespace scenario {
+            namespace yield_sign {
 
-struct YieldSignContext;
+                struct YieldSignContext;
 
-class YieldSignStageApproach : public Stage {
- public:
-  YieldSignStageApproach(const ScenarioConfig::StageConfig& config,
-                         const std::shared_ptr<DependencyInjector>& injector)
-      : Stage(config, injector) {}
+                class YieldSignStageApproach : public Stage {
+                public:
+                    YieldSignStageApproach(const ScenarioConfig::StageConfig &config,
+                                           const std::shared_ptr <DependencyInjector> &injector)
+                            : Stage(config, injector) {}
 
- private:
-  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
-                             Frame* frame) override;
-  YieldSignContext* GetContext() { return GetContextAs<YieldSignContext>(); }
+                private:
+                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
+                                               Frame *frame) override;
 
- private:
-  Stage::StageStatus FinishStage();
+                    YieldSignContext *GetContext() { return GetContextAs<YieldSignContext>(); }
 
- private:
-  ScenarioYieldSignConfig scenario_config_;
-};
+                private:
+                    Stage::StageStatus FinishStage();
 
-}  // namespace yield_sign
-}  // namespace scenario
-}  // namespace planning
+                private:
+                    ScenarioYieldSignConfig scenario_config_;
+                };
+
+            }  // namespace yield_sign
+        }  // namespace scenario
+    }  // namespace planning
 }  // namespace apollo

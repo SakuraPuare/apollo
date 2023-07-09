@@ -22,29 +22,35 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-namespace planning {
-namespace scenario {
-namespace yield_sign {
+    namespace planning {
+        namespace scenario {
+            namespace yield_sign {
 
-class YieldSignStageCreepTest : public ::testing::Test {
- public:
-  virtual void SetUp() {
-    config_.set_stage_type(StageType::YIELD_SIGN_CREEP);
-    injector_ = std::make_shared<DependencyInjector>();
-  }
+                class YieldSignStageCreepTest : public ::testing::Test {
+                public:
+                    virtual void SetUp() {
+                        config_.set_stage_type(StageType::YIELD_SIGN_CREEP);
+                        injector_ = std::make_shared<DependencyInjector>();
+                    }
 
- protected:
-  ScenarioConfig::StageConfig config_;
-  std::shared_ptr<DependencyInjector> injector_;
-};
+                protected:
+                    ScenarioConfig::StageConfig config_;
+                    std::shared_ptr <DependencyInjector> injector_;
+                };
 
-TEST_F(YieldSignStageCreepTest, Init) {
-  YieldSignStageCreep yield_sign_stage_creep(config_, injector_);
-  EXPECT_EQ(yield_sign_stage_creep.Name(),
-            StageType_Name(StageType::YIELD_SIGN_CREEP));
-}
+                TEST_F(YieldSignStageCreepTest, Init
+                ) {
+                YieldSignStageCreep yield_sign_stage_creep(config_, injector_);
+                EXPECT_EQ(yield_sign_stage_creep
+                .
 
-}  // namespace yield_sign
-}  // namespace scenario
+                Name(),
+                        StageType_Name(StageType::YIELD_SIGN_CREEP)
+
+                );
+            }
+
+        }  // namespace yield_sign
+    }  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

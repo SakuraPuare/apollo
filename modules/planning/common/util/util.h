@@ -29,30 +29,30 @@
 #include "modules/planning/common/reference_line_info.h"
 
 namespace apollo {
-namespace planning {
-namespace util {
+    namespace planning {
+        namespace util {
 
-bool IsVehicleStateValid(const apollo::common::VehicleState& vehicle_state);
+            bool IsVehicleStateValid(const apollo::common::VehicleState &vehicle_state);
 
-bool IsDifferentRouting(const apollo::routing::RoutingResponse& first,
-                        const apollo::routing::RoutingResponse& second);
+            bool IsDifferentRouting(const apollo::routing::RoutingResponse &first,
+                                    const apollo::routing::RoutingResponse &second);
 
-double GetADCStopDeceleration(
-    apollo::common::VehicleStateProvider* vehicle_state,
-    const double adc_front_edge_s, const double stop_line_s);
+            double GetADCStopDeceleration(
+                    apollo::common::VehicleStateProvider *vehicle_state,
+                    const double adc_front_edge_s, const double stop_line_s);
 
-bool CheckStopSignOnReferenceLine(const ReferenceLineInfo& reference_line_info,
-                                  const std::string& stop_sign_overlap_id);
+            bool CheckStopSignOnReferenceLine(const ReferenceLineInfo &reference_line_info,
+                                              const std::string &stop_sign_overlap_id);
 
-bool CheckTrafficLightOnReferenceLine(
-    const ReferenceLineInfo& reference_line_info,
-    const std::string& traffic_light_overlap_id);
+            bool CheckTrafficLightOnReferenceLine(
+                    const ReferenceLineInfo &reference_line_info,
+                    const std::string &traffic_light_overlap_id);
 
-bool CheckInsideJunction(const ReferenceLineInfo& reference_line_info);
+            bool CheckInsideJunction(const ReferenceLineInfo &reference_line_info);
 
-void GetFilesByPath(const boost::filesystem::path& path,
-                    std::vector<std::string>* files);
+            void GetFilesByPath(const boost::filesystem::path &path,
+                                std::vector <std::string> *files);
 
-}  // namespace util
-}  // namespace planning
+        }  // namespace util
+    }  // namespace planning
 }  // namespace apollo
