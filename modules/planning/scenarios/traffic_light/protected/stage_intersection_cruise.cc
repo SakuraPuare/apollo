@@ -32,7 +32,7 @@ namespace apollo {
                     // print current car speed
                     AINFO << "current speed = " << frame->vehicle_state().linear_velocity();
                     
-                    AINFO << "stage: IntersectionCruise";
+                    ADEBUG << "stage: IntersectionCruise";
                     CHECK_NOTNULL(frame);
 
                     bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);

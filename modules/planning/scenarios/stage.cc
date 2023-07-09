@@ -64,6 +64,11 @@ namespace apollo {
                             << " used but not configured";
                     auto iter = tasks_.find(task_type);
                     if (iter == tasks_.end()) {
+
+                        AINFO << "DEBUG: Create task " << TaskConfig::TaskType_Name(task_type)
+                              << " for stage " << name_ << " with config: "
+                              << config_map[task_type]->DebugString();
+
                         auto ptr = TaskFactory::CreateTask(*config_map[task_type], injector_);
                         task_list_.push_back(ptr.get());
                         tasks_[task_type] = std::move(ptr);
@@ -71,6 +76,8 @@ namespace apollo {
                         task_list_.push_back(iter->second.get());
                     }
                 }
+
+                AINFO << "DEBUG: Stage " << name_ << " init done";
             }
 
             const std::string &Stage::Name() const { return name_; }
