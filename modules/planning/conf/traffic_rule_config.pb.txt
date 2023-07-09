@@ -17,7 +17,7 @@ config: {
     expand_s_distance: 2.0
     stop_strict_l_distance: 5.0
     stop_loose_l_distance: 8.0
-    stop_timeout: 60.0
+    stop_timeout: 40.0
   }
 }
 
