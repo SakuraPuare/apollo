@@ -36,10 +36,15 @@ bool IsWithinPathDeciderScopeObstacle(const Obstacle& obstacle) {
     return false;
   }
   // Obstacle should not be moving obstacle.
-  if (!obstacle.IsStatic() ||
-      obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
+  // if (!obstacle.IsStatic() ||
+  //     obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
+  //   return false;
+  // }
+
+  if (obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
     return false;
   }
+
   // TODO(jiacheng):
   // Some obstacles are not moving, but only because they are waiting for
   // red light (traffic rule) or because they are blocked by others (social).

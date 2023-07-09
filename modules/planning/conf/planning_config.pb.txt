@@ -88,7 +88,7 @@ default_task_config: {
       positive_jerk_coeff: 1.0
       negative_jerk_coeff: 1.0
 
-      max_acceleration: 2.0
+      max_acceleration: 1.0
       max_deceleration: -4.0
       spatial_potential_penalty: 1.0e2
     }
