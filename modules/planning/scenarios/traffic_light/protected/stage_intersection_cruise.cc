@@ -29,7 +29,7 @@ namespace apollo {
 
                 Stage::StageStatus TrafficLightProtectedStageIntersectionCruise::Process(
                         const common::TrajectoryPoint &planning_init_point, Frame *frame) {
-                    ADEBUG << "stage: IntersectionCruise";
+                    AINFO << "stage: IntersectionCruise";
                     CHECK_NOTNULL(frame);
 
                     bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
