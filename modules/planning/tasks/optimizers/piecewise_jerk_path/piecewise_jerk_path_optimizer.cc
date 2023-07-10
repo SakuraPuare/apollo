@@ -315,17 +315,17 @@ bool PiecewiseJerkPathOptimizer::OptimizePath(
   ADEBUG << "Path Optimizer used time: " << diff.count() * 1000 << " ms.";
 
   if (!success) {
-    AERROR << "piecewise jerk path optimizer failed";
-    std::stringstream ssm;
-    AERROR << "dl bound" << FLAGS_lateral_derivative_bound_default
-           << " jerk bound" << jerk_bound;
-    for (size_t i = 0; i < lat_boundaries.size(); i++) {
-      ssm << lat_boundaries[i].first << " " << lat_boundaries[i].second << ","
-          << ddl_bounds[i].first << " " << ddl_bounds[i].second << ","
-          << path_reference_l_ref[i] << std::endl;
-    }
-    AERROR << "lat boundary, ddl boundary , path reference" << std::endl
-           << ssm.str();
+    // AERROR << "piecewise jerk path optimizer failed";
+    // std::stringstream ssm;
+    // AERROR << "dl bound" << FLAGS_lateral_derivative_bound_default
+    //        << " jerk bound" << jerk_bound;
+    // for (size_t i = 0; i < lat_boundaries.size(); i++) {
+    //   ssm << lat_boundaries[i].first << " " << lat_boundaries[i].second << ","
+    //       << ddl_bounds[i].first << " " << ddl_bounds[i].second << ","
+    //       << path_reference_l_ref[i] << std::endl;
+    // }
+    // AERROR << "lat boundary, ddl boundary , path reference" << std::endl
+    //        << ssm.str();
     return false;
   }
 

@@ -99,7 +99,7 @@ bool PathDecider::MakeStaticObstacleDecision(
     const std::string &obstacle_id = obstacle->Id();
     const std::string obstacle_type_name =
         PerceptionObstacle_Type_Name(obstacle->Perception().type());
-    ADEBUG << "obstacle_id[<< " << obstacle_id << "] type["
+    AINFO << "obstacle_id[<< " << obstacle_id << "] type["
            << obstacle_type_name << "]";
 
     if (!obstacle->IsStatic() || obstacle->IsVirtual()) {
