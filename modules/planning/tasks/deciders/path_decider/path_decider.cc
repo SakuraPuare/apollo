@@ -99,10 +99,12 @@ bool PathDecider::MakeStaticObstacleDecision(
     const std::string &obstacle_id = obstacle->Id();
     const std::string obstacle_type_name =
         PerceptionObstacle_Type_Name(obstacle->Perception().type());
-    AINFO << "obstacle_id[<< " << obstacle_id << "] type["
+    ADEBUG << "obstacle_id[<< " << obstacle_id << "] type["
            << obstacle_type_name << "]";
 
     if (!obstacle->IsStatic() || obstacle->IsVirtual()) {
+      AINFO << "obstacle_id[" << obstacle_id << "] type["
+            << obstacle_type_name << "] skip non-static or virtual obstacle";
       continue;
     }
     // - skip decision making for obstacles with IGNORE/STOP decisions already.

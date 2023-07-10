@@ -40,11 +40,20 @@ bool IsWithinPathDeciderScopeObstacle(const Obstacle& obstacle) {
       obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
     return false;
   }
+  // if (obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
+  // return false;
+  // }
   // TODO(jiacheng):
   // Some obstacles are not moving, but only because they are waiting for
   // red light (traffic rule) or because they are blocked by others (social).
   // These obstacles will almost certainly move in the near future and we
   // should not side-pass such obstacles.
+
+  AINFO << "Obstacle " << obstacle.Id() << " is within path decider scope."
+        << " speed: " << obstacle.speed()
+        << " ignore: " << obstacle.IsIgnore()
+        << " HasLongitudinalDecision: " << obstacle.HasLongitudinalDecision()
+        << " HasLateralDecision: " << obstacle.HasLateralDecision();
 
   return true;
 }
