@@ -29,9 +29,6 @@ namespace traffic_light {
 
 Stage::StageStatus TrafficLightProtectedStageIntersectionCruise::Process(
     const common::TrajectoryPoint& planning_init_point, Frame* frame) {
-  AINFO << "current speed = " << frame->vehicle_state().linear_velocity();
-  AINFO << "current acc = " << frame->vehicle_state().linear_acceleration();
-
   ADEBUG << "stage: IntersectionCruise";
   CHECK_NOTNULL(frame);
 

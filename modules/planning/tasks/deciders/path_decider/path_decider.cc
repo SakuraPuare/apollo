@@ -103,8 +103,6 @@ bool PathDecider::MakeStaticObstacleDecision(
            << obstacle_type_name << "]";
 
     if (!obstacle->IsStatic() || obstacle->IsVirtual()) {
-      AINFO << "obstacle_id[" << obstacle_id << "] type["
-            << obstacle_type_name << "] skip non-static or virtual obstacle";
       continue;
     }
     // - skip decision making for obstacles with IGNORE/STOP decisions already.

@@ -80,6 +80,32 @@ common::Status PiecewiseJerkPathOptimizer::Process(
                     5.0),
       config.ddl_weight(), config.dddl_weight(), 0.0};
 
+  // Get obstacle max speed
+  double obstacle_max_speed = 0.0;
+  for (const auto* obstacle : reference_line_info_->path_decision()
+                                  ->obstacles()
+                                  .Items()) {
+    if (obstacle->IsVirtual()) {
+      continue;
+    }
+    AINFO << "We have obstacle: " << obstacle->Id() << " at s = "
+          << obstacle->PerceptionSLBoundary().start_s() << ", speed = "
+          << obstacle->speed() << ", width = "
+          << obstacle->PerceptionSLBoundary().end_l() -
+                 obstacle->PerceptionSLBoundary().start_l();
+    obstacle_max_speed = std::fmax(obstacle->speed(), obstacle_max_speed);
+  }
+
+  if (obstacle_max_speed < 1.0) {
+    // magic number
+    // l: 15 
+    // dl: 2.0 
+    // ddl: 95 
+    // dddl: 1005
+    w = {15.0, 2.0 * std::fmax(init_frenet_state.first[1] * init_frenet_state.first[1],
+                    5.0), 95.0, 1005.0, 0.0};
+  }
+
   const auto& path_boundaries =
       reference_line_info_->GetCandidatePathBoundaries();
   ADEBUG << "There are " << path_boundaries.size() << " path boundaries.";

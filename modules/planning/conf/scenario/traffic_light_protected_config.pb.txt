@@ -48,6 +48,11 @@ stage_config: {
   }
   task_config: {
     task_type: PIECEWISE_JERK_SPEED_OPTIMIZER
+    speed_heuristic_optimizer_config {
+      default_speed_config {
+        max_acceleration: 2.0
+      }
+    }
   }
   task_config: {
     task_type: SPEED_BOUNDS_PRIORI_DECIDER
@@ -98,9 +103,9 @@ stage_config: {
   }
   task_config: {
     task_type: SPEED_HEURISTIC_OPTIMIZER
-      speed_heuristic_optimizer_config {
-        default_speed_config {
-          max_acceleration: 1.0
+    speed_heuristic_optimizer_config {
+      default_speed_config {
+        max_acceleration: 1.0
       }
     }
   }

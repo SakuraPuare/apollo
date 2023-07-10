@@ -233,8 +233,7 @@ Status SpeedDecider::MakeObjectDecision(
     // always STOP for pedestrian
     if (CheckStopForPedestrian(*mutable_obstacle)) {
       ObjectDecisionType stop_decision;
-      if (CreateStopDecision(*mutable_obstacle, &stop_decision,
-                             -FLAGS_min_stop_distance_obstacle)) {
+      if (CreateStopDecision(*mutable_obstacle, &stop_decision, 2.0)) {
         mutable_obstacle->AddLongitudinalDecision("dp_st_graph/pedestrian",
                                                   stop_decision);
       }

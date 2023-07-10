@@ -71,7 +71,7 @@ config: {
   enabled: true
   traffic_light {
     stop_distance: 1.5
-    max_stop_deceleration: 4.0
+    max_stop_deceleration: 6.0
   }
 }
 
