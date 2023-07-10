@@ -25,43 +25,30 @@
 #include "modules/planning/planner/planner_dispatcher.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class OnLanePlannerDispatcherTest : public ::testing::Test {
-        public:
-            virtual void SetUp() {}
+class OnLanePlannerDispatcherTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {}
 
-        protected:
-            std::unique_ptr <PlannerDispatcher> pd_;
-        };
+ protected:
+  std::unique_ptr<PlannerDispatcher> pd_;
+};
 
-        TEST_F(OnLanePlannerDispatcherTest, Simple
-        ) {
-        auto injector = std::make_shared<DependencyInjector>();
-        pd_.reset(new
+TEST_F(OnLanePlannerDispatcherTest, Simple) {
+  auto injector = std::make_shared<DependencyInjector>();
+  pd_.reset(new OnLanePlannerDispatcher());
+  pd_->Init();
 
-        OnLanePlannerDispatcher()
+  const std::string planning_config_file =
+      "/apollo/modules/planning/conf/planning_config.pb.txt";
+  PlanningConfig planning_config;
+  apollo::cyber::common::GetProtoFromFile(planning_config_file,
+                                          &planning_config);
+  auto planner = pd_->DispatchPlanner(planning_config, injector);
 
-        );
-        pd_->
-
-        Init();
-
-        const std::string planning_config_file =
-                "/apollo/modules/planning/conf/planning_config.pb.txt";
-        PlanningConfig planning_config;
-        apollo::cyber::common::GetProtoFromFile(planning_config_file,
-                &planning_config
-        );
-        auto planner = pd_->DispatchPlanner(planning_config, injector);
-
-        EXPECT_EQ(planner
-        ->
-
-        Name(),
-
-        "PUBLIC_ROAD");
-    }
+  EXPECT_EQ(planner->Name(), "PUBLIC_ROAD");
+}
 
 }  // namespace planning
 }  // namespace apollo

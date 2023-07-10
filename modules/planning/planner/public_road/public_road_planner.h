@@ -36,45 +36,45 @@
  * @brief apollo::planning
  */
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 /**
  * @class PublicRoadPlanner
  * @brief PublicRoadPlanner is an expectation maximization planner.
  */
 
-        class PublicRoadPlanner : public PlannerWithReferenceLine {
-        public:
-            /**
-             * @brief Constructor
-             */
-            PublicRoadPlanner() = delete;
+class PublicRoadPlanner : public PlannerWithReferenceLine {
+ public:
+  /**
+   * @brief Constructor
+   */
+  PublicRoadPlanner() = delete;
 
-            explicit PublicRoadPlanner(
-                    const std::shared_ptr <DependencyInjector> &injector)
-                    : PlannerWithReferenceLine(injector) {}
+  explicit PublicRoadPlanner(
+      const std::shared_ptr<DependencyInjector>& injector)
+      : PlannerWithReferenceLine(injector) {}
 
-            /**
-             * @brief Destructor
-             */
-            virtual ~PublicRoadPlanner() = default;
+  /**
+   * @brief Destructor
+   */
+  virtual ~PublicRoadPlanner() = default;
 
-            void Stop() override {}
+  void Stop() override {}
 
-            std::string Name() override { return "PUBLIC_ROAD"; }
+  std::string Name() override { return "PUBLIC_ROAD"; }
 
-            common::Status Init(const PlanningConfig &config) override;
+  common::Status Init(const PlanningConfig& config) override;
 
-            /**
-             * @brief Override function Plan in parent class Planner.
-             * @param planning_init_point The trajectory point where planning starts.
-             * @param frame Current planning frame.
-             * @return OK if planning succeeds; error otherwise.
-             */
-            common::Status Plan(const common::TrajectoryPoint &planning_init_point,
-                                Frame *frame,
-                                ADCTrajectory *ptr_computed_trajectory) override;
-        };
+  /**
+   * @brief Override function Plan in parent class Planner.
+   * @param planning_init_point The trajectory point where planning starts.
+   * @param frame Current planning frame.
+   * @return OK if planning succeeds; error otherwise.
+   */
+  common::Status Plan(const common::TrajectoryPoint& planning_init_point,
+                      Frame* frame,
+                      ADCTrajectory* ptr_computed_trajectory) override;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

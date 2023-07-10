@@ -23,10 +23,10 @@ default_task_config: {
   task_type: PIECEWISE_JERK_PATH_OPTIMIZER
   piecewise_jerk_path_optimizer_config {
     default_path_config {
-      l_weight: 15.0
-      dl_weight: 2.0
-      ddl_weight: 95.0
-      dddl_weight: 1005.0
+      l_weight: 1.0
+      dl_weight: 20.0
+      ddl_weight: 1000.0
+      dddl_weight: 50000.0
     }
     lane_change_path_config {
       l_weight: 1.0
@@ -88,8 +88,8 @@ default_task_config: {
       positive_jerk_coeff: 1.0
       negative_jerk_coeff: 1.0
 
-      max_acceleration: 3.0
-      max_deceleration: -6.0
+      max_acceleration: 2.0
+      max_deceleration: -4.0
       spatial_potential_penalty: 1.0e2
     }
     lane_change_speed_config {

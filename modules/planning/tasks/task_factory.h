@@ -28,31 +28,30 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class TaskFactory {
-        public:
-            static void Init(const PlanningConfig &config,
-                             const std::shared_ptr <DependencyInjector> &injector);
+class TaskFactory {
+ public:
+  static void Init(const PlanningConfig &config,
+                   const std::shared_ptr<DependencyInjector> &injector);
+  static std::unique_ptr<Task> CreateTask(
+      const TaskConfig &task_config,
+      const std::shared_ptr<DependencyInjector> &injector);
 
-            static std::unique_ptr <Task> CreateTask(
-                    const TaskConfig &task_config,
-                    const std::shared_ptr <DependencyInjector> &injector);
+ private:
+  static apollo::common::util::Factory<
+      TaskConfig::TaskType, Task,
+      Task *(*)(const TaskConfig &config,
+                const std::shared_ptr<DependencyInjector> &injector),
+      std::unordered_map<
+          TaskConfig::TaskType,
+          Task *(*)(const TaskConfig &config,
+                    const std::shared_ptr<DependencyInjector> &injector),
+          std::hash<int>>>
+      task_factory_;
+  static std::unordered_map<TaskConfig::TaskType, TaskConfig, std::hash<int>>
+      default_task_configs_;
+};
 
-        private:
-            static apollo::common::util::Factory<
-                    TaskConfig::TaskType, Task,
-                    Task *(*)(const TaskConfig &config,
-                              const std::shared_ptr <DependencyInjector> &injector),
-                    std::unordered_map <
-                    TaskConfig::TaskType,
-                    Task *(*)(const TaskConfig &config,
-                              const std::shared_ptr <DependencyInjector> &injector),
-                    std::hash < int>>>
-            task_factory_;
-            static std::unordered_map <TaskConfig::TaskType, TaskConfig, std::hash<int>>
-                    default_task_configs_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

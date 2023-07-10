@@ -27,35 +27,35 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace bare_intersection {
+namespace planning {
+namespace scenario {
+namespace bare_intersection {
 
-                struct BareIntersectionUnprotectedContext;
+struct BareIntersectionUnprotectedContext;
 
-                class BareIntersectionUnprotectedStageIntersectionCruise : public Stage {
-                public:
-                    BareIntersectionUnprotectedStageIntersectionCruise(
-                            const ScenarioConfig::StageConfig &config,
-                            const std::shared_ptr <DependencyInjector> &injector)
-                            : Stage(config, injector) {}
+class BareIntersectionUnprotectedStageIntersectionCruise : public Stage {
+ public:
+  BareIntersectionUnprotectedStageIntersectionCruise(
+      const ScenarioConfig::StageConfig& config,
+      const std::shared_ptr<DependencyInjector>& injector)
+      : Stage(config, injector) {}
 
-                private:
-                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
-                                               Frame *frame) override;
+ private:
+  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
+                             Frame* frame) override;
 
-                    BareIntersectionUnprotectedContext *GetContext() {
-                        return GetContextAs<BareIntersectionUnprotectedContext>();
-                    }
+  BareIntersectionUnprotectedContext* GetContext() {
+    return GetContextAs<BareIntersectionUnprotectedContext>();
+  }
 
-                    Stage::StageStatus FinishStage();
+  Stage::StageStatus FinishStage();
 
-                private:
-                    ScenarioBareIntersectionUnprotectedConfig scenario_config_;
-                    StageIntersectionCruiseImpl stage_impl_;
-                };
+ private:
+  ScenarioBareIntersectionUnprotectedConfig scenario_config_;
+  StageIntersectionCruiseImpl stage_impl_;
+};
 
-            }  // namespace bare_intersection
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace bare_intersection
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

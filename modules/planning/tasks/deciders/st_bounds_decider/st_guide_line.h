@@ -35,34 +35,34 @@
 #include "modules/planning/reference_line/reference_line.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 // TODO(jiacheng): currently implemented a constant velocity model for
 // guide-line. Upgrade it to a constant acceleration model.
-        class STGuideLine {
-        public:
-            STGuideLine() {}
+class STGuideLine {
+ public:
+  STGuideLine() {}
 
-            void Init(double desired_v);
+  void Init(double desired_v);
 
-            void Init(double desired_v,
-                      const std::vector <common::TrajectoryPoint> &speed_reference);
+  void Init(double desired_v,
+            const std::vector<common::TrajectoryPoint> &speed_reference);
 
-            virtual ~STGuideLine() = default;
+  virtual ~STGuideLine() = default;
 
-            double GetGuideSFromT(double t);
+  double GetGuideSFromT(double t);
 
-            void UpdateBlockingInfo(const double t, const double s_block,
-                                    const bool is_lower_block);
+  void UpdateBlockingInfo(const double t, const double s_block,
+                          const bool is_lower_block);
 
-        private:
-            // Variables for simple guide-line calculation.
-            double t0_;
-            double s0_;
-            double v0_;
-            // St guideline from upstream modules
-            SpeedData guideline_speed_data_;
-        };
+ private:
+  // Variables for simple guide-line calculation.
+  double t0_;
+  double s0_;
+  double v0_;
+  // St guideline from upstream modules
+  SpeedData guideline_speed_data_;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

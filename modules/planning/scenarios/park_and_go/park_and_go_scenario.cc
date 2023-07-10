@@ -23,85 +23,85 @@
 #include "modules/planning/scenarios/park_and_go/stage_pre_cruise.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace park_and_go {
+namespace planning {
+namespace scenario {
+namespace park_and_go {
 
-                apollo::common::util::Factory<
-                        StageType, Stage,
-                        Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
-                                   const std::shared_ptr <DependencyInjector> &injector)>
-                        ParkAndGoScenario::s_stage_factory_;
+apollo::common::util::Factory<
+    StageType, Stage,
+    Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
+               const std::shared_ptr<DependencyInjector>& injector)>
+    ParkAndGoScenario::s_stage_factory_;
 
-                void ParkAndGoScenario::Init() {
-                    if (init_) {
-                        return;
-                    }
+void ParkAndGoScenario::Init() {
+  if (init_) {
+    return;
+  }
 
-                    Scenario::Init();
+  Scenario::Init();
 
-                    if (!GetScenarioConfig()) {
-                        AERROR << "fail to get scenario specific config";
-                        return;
-                    }
+  if (!GetScenarioConfig()) {
+    AERROR << "fail to get scenario specific config";
+    return;
+  }
 
-                    init_ = true;
-                }
+  init_ = true;
+}
 
-                void ParkAndGoScenario::RegisterStages() {
-                    if (!s_stage_factory_.Empty()) {
-                        s_stage_factory_.Clear();
-                    }
-                    s_stage_factory_.Register(
-                            StageType::PARK_AND_GO_CHECK,
-                            [](const ScenarioConfig::StageConfig &config,
-                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
-                                return new ParkAndGoStageCheck(config, injector);
-                            });
-                    s_stage_factory_.Register(
-                            StageType::PARK_AND_GO_ADJUST,
-                            [](const ScenarioConfig::StageConfig &config,
-                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
-                                return new ParkAndGoStageAdjust(config, injector);
-                            });
-                    s_stage_factory_.Register(
-                            StageType::PARK_AND_GO_PRE_CRUISE,
-                            [](const ScenarioConfig::StageConfig &config,
-                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
-                                return new ParkAndGoStagePreCruise(config, injector);
-                            });
-                    s_stage_factory_.Register(
-                            StageType::PARK_AND_GO_CRUISE,
-                            [](const ScenarioConfig::StageConfig &config,
-                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
-                                return new ParkAndGoStageCruise(config, injector);
-                            });
-                }
+void ParkAndGoScenario::RegisterStages() {
+  if (!s_stage_factory_.Empty()) {
+    s_stage_factory_.Clear();
+  }
+  s_stage_factory_.Register(
+      StageType::PARK_AND_GO_CHECK,
+      [](const ScenarioConfig::StageConfig& config,
+         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
+        return new ParkAndGoStageCheck(config, injector);
+      });
+  s_stage_factory_.Register(
+      StageType::PARK_AND_GO_ADJUST,
+      [](const ScenarioConfig::StageConfig& config,
+         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
+        return new ParkAndGoStageAdjust(config, injector);
+      });
+  s_stage_factory_.Register(
+      StageType::PARK_AND_GO_PRE_CRUISE,
+      [](const ScenarioConfig::StageConfig& config,
+         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
+        return new ParkAndGoStagePreCruise(config, injector);
+      });
+  s_stage_factory_.Register(
+      StageType::PARK_AND_GO_CRUISE,
+      [](const ScenarioConfig::StageConfig& config,
+         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
+        return new ParkAndGoStageCruise(config, injector);
+      });
+}
 
-                std::unique_ptr <Stage> ParkAndGoScenario::CreateStage(
-                        const ScenarioConfig::StageConfig &stage_config,
-                        const std::shared_ptr <DependencyInjector> &injector) {
-                    if (s_stage_factory_.Empty()) {
-                        RegisterStages();
-                    }
-                    auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
-                                                                   stage_config, injector);
-                    if (ptr) {
-                        ptr->SetContext(&context_);
-                    }
-                    return ptr;
-                }
+std::unique_ptr<Stage> ParkAndGoScenario::CreateStage(
+    const ScenarioConfig::StageConfig& stage_config,
+    const std::shared_ptr<DependencyInjector>& injector) {
+  if (s_stage_factory_.Empty()) {
+    RegisterStages();
+  }
+  auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
+                                                 stage_config, injector);
+  if (ptr) {
+    ptr->SetContext(&context_);
+  }
+  return ptr;
+}
 
-                bool ParkAndGoScenario::GetScenarioConfig() {
-                    if (!config_.has_park_and_go_config()) {
-                        AERROR << "miss scenario specific config";
-                        return false;
-                    }
-                    context_.scenario_config.CopyFrom(config_.park_and_go_config());
-                    return true;
-                }
+bool ParkAndGoScenario::GetScenarioConfig() {
+  if (!config_.has_park_and_go_config()) {
+    AERROR << "miss scenario specific config";
+    return false;
+  }
+  context_.scenario_config.CopyFrom(config_.park_and_go_config());
+  return true;
+}
 
-            }  // namespace park_and_go
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace park_and_go
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

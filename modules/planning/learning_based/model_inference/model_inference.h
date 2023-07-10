@@ -27,39 +27,39 @@
 #include "modules/planning/proto/task_config.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class ModelInference {
-        public:
-            /**
-             * @brief Constructor
-             */
-            explicit ModelInference(const LearningModelInferenceTaskConfig &config)
-                    : config_(config) {}
+class ModelInference {
+ public:
+  /**
+   * @brief Constructor
+   */
+  explicit ModelInference(const LearningModelInferenceTaskConfig& config)
+      : config_(config) {}
 
-            /**
-             * @brief Destructor
-             */
-            virtual ~ModelInference() = default;
+  /**
+   * @brief Destructor
+   */
+  virtual ~ModelInference() = default;
 
-            /**
-             * @brief Get the name of model inference
-             */
-            virtual std::string GetName() = 0;
+  /**
+   * @brief Get the name of model inference
+   */
+  virtual std::string GetName() = 0;
 
-            /**
-             * @brief load a learned model
-             */
-            virtual bool LoadModel() = 0;
+  /**
+   * @brief load a learned model
+   */
+  virtual bool LoadModel() = 0;
 
-            /**
-             * @brief inference a learned model
-             */
-            virtual bool DoInference(LearningDataFrame *learning_data_frame) = 0;
+  /**
+   * @brief inference a learned model
+   */
+  virtual bool DoInference(LearningDataFrame* learning_data_frame) = 0;
 
-        protected:
-            LearningModelInferenceTaskConfig config_;
-        };
+ protected:
+  LearningModelInferenceTaskConfig config_;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

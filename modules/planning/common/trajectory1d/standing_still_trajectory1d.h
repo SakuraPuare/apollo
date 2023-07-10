@@ -25,34 +25,34 @@
 #include "modules/planning/math/curve1d/curve1d.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class StandingStillTrajectory1d : public Curve1d {
-        public:
-            StandingStillTrajectory1d(const double p, const double duration);
+class StandingStillTrajectory1d : public Curve1d {
+ public:
+  StandingStillTrajectory1d(const double p, const double duration);
 
-            virtual ~StandingStillTrajectory1d() = default;
+  virtual ~StandingStillTrajectory1d() = default;
 
-            double ParamLength() const override;
+  double ParamLength() const override;
 
-            std::string ToString() const override;
+  std::string ToString() const override;
 
-            double Evaluate(const std::uint32_t order, const double param) const override;
+  double Evaluate(const std::uint32_t order, const double param) const override;
 
-        private:
-            double Evaluate_s(const double t) const;
+ private:
+  double Evaluate_s(const double t) const;
 
-            double Evaluate_v(const double t) const;
+  double Evaluate_v(const double t) const;
 
-            double Evaluate_a(const double t) const;
+  double Evaluate_a(const double t) const;
 
-            double Evaluate_j(const double t) const;
+  double Evaluate_j(const double t) const;
 
-        private:
-            double fixed_position_;
+ private:
+  double fixed_position_;
 
-            double duration_;
-        };
+  double duration_;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

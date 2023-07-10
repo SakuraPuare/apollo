@@ -24,48 +24,41 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        DECLARE_string(test_model_inference_task_config_file);
-        DEFINE_string(test_model_inference_task_config_file,
-        "",
-        "inference task config");
+DECLARE_string(test_model_inference_task_config_file);
+DEFINE_string(test_model_inference_task_config_file, "",
+              "inference task config");
 
-        class LearningModelInferenceTaskTest : public ::testing::Test {
-        public:
-            virtual void SetUp() {
-                config_.set_task_type(TaskConfig::LEARNING_MODEL_INFERENCE_TASK);
-                auto *inference_config =
-                        config_.mutable_learning_model_inference_task_config();
-                injector_ = std::make_shared<DependencyInjector>();
-                FLAGS_test_model_inference_task_config_file =
-                        "/apollo/modules/planning/testdata/model_inference_test/"
-                        "test_libtorch_inference_task_config.pb.txt";
+class LearningModelInferenceTaskTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_task_type(TaskConfig::LEARNING_MODEL_INFERENCE_TASK);
+    auto* inference_config =
+        config_.mutable_learning_model_inference_task_config();
+    injector_ = std::make_shared<DependencyInjector>();
+    FLAGS_test_model_inference_task_config_file =
+        "/apollo/modules/planning/testdata/model_inference_test/"
+        "test_libtorch_inference_task_config.pb.txt";
 
-                ACHECK(apollo::cyber::common::GetProtoFromFile(
-                        FLAGS_test_model_inference_task_config_file, inference_config))
-                        << "Failed to load config file "
-                        << FLAGS_test_model_inference_task_config_file;
-            }
+    ACHECK(apollo::cyber::common::GetProtoFromFile(
+        FLAGS_test_model_inference_task_config_file, inference_config))
+        << "Failed to load config file "
+        << FLAGS_test_model_inference_task_config_file;
+  }
 
-            virtual void TearDown() {}
+  virtual void TearDown() {}
 
-        protected:
-            TaskConfig config_;
-            std::shared_ptr <DependencyInjector> injector_;
-        };
+ protected:
+  TaskConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-        TEST_F(LearningModelInferenceTaskTest, Init
-        ) {
-        LearningModelInferenceTask learning_model_inference_task(config_, injector_);
-        EXPECT_EQ(learning_model_inference_task
-        .
-
-        Name(),
-                TaskConfig::TaskType_Name(config_.task_type())
-
-        );
-    }
+TEST_F(LearningModelInferenceTaskTest, Init) {
+  LearningModelInferenceTask learning_model_inference_task(config_, injector_);
+  EXPECT_EQ(learning_model_inference_task.Name(),
+            TaskConfig::TaskType_Name(config_.task_type()));
+}
 
 }  // namespace planning
 }  // namespace apollo

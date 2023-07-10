@@ -27,7 +27,7 @@
 #include "modules/planning/planning_base.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 #define RUN_GOLDEN_TEST(sub_case_num)                                      \
   {                                                                        \
@@ -59,51 +59,47 @@ namespace apollo {
 
 #define ENABLE_RULE(RULE_ID, ENABLED) this->rule_enabled_[RULE_ID] = ENABLED
 
-        DECLARE_string(test_routing_response_file);
-        DECLARE_string(test_localization_file);
-        DECLARE_string(test_chassis_file);
-        DECLARE_string(test_data_dir);
-        DECLARE_string(test_prediction_file);
-        DECLARE_string(test_traffic_light_file);
-        DECLARE_string(test_relative_map_file);
-        DECLARE_string(test_previous_planning_file);
+DECLARE_string(test_routing_response_file);
+DECLARE_string(test_localization_file);
+DECLARE_string(test_chassis_file);
+DECLARE_string(test_data_dir);
+DECLARE_string(test_prediction_file);
+DECLARE_string(test_traffic_light_file);
+DECLARE_string(test_relative_map_file);
+DECLARE_string(test_previous_planning_file);
 
-        class PlanningTestBase : public ::testing::Test {
-        public:
-            virtual ~PlanningTestBase() = default;
+class PlanningTestBase : public ::testing::Test {
+ public:
+  virtual ~PlanningTestBase() = default;
 
-            static void SetUpTestCase();
+  static void SetUpTestCase();
+  virtual void SetUp();
+  void UpdateData();
 
-            virtual void SetUp();
+  /**
+   * Execute the planning code.
+   * @return true if planning is success. The ADCTrajectory will be used to
+   * store the planing results.  Otherwise false.
+   */
+  bool RunPlanning(const std::string& test_case_name, int case_num,
+                   bool no_trajectory_point);
 
-            void UpdateData();
+  TrafficRuleConfig* GetTrafficRuleConfig(
+      const TrafficRuleConfig::RuleId& rule_id);
 
-            /**
-             * Execute the planning code.
-             * @return true if planning is success. The ADCTrajectory will be used to
-             * store the planing results.  Otherwise false.
-             */
-            bool RunPlanning(const std::string &test_case_name, int case_num,
-                             bool no_trajectory_point);
+ protected:
+  void TrimPlanning(ADCTrajectory* origin, bool no_trajectory_point);
+  bool FeedTestData();
+  bool IsValidTrajectory(const ADCTrajectory& trajectory);
 
-            TrafficRuleConfig *GetTrafficRuleConfig(
-                    const TrafficRuleConfig::RuleId &rule_id);
+ protected:
+  std::unique_ptr<PlanningBase> planning_ = nullptr;
+  std::map<TrafficRuleConfig::RuleId, bool> rule_enabled_;
+  ADCTrajectory adc_trajectory_;
+  LocalView local_view_;
+  PlanningConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-        protected:
-            void TrimPlanning(ADCTrajectory *origin, bool no_trajectory_point);
-
-            bool FeedTestData();
-
-            bool IsValidTrajectory(const ADCTrajectory &trajectory);
-
-        protected:
-            std::unique_ptr <PlanningBase> planning_ = nullptr;
-            std::map<TrafficRuleConfig::RuleId, bool> rule_enabled_;
-            ADCTrajectory adc_trajectory_;
-            LocalView local_view_;
-            PlanningConfig config_;
-            std::shared_ptr <DependencyInjector> injector_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

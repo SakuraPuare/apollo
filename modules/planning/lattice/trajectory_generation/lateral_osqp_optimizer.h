@@ -28,24 +28,24 @@
 #include "osqp/osqp.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class LateralOSQPOptimizer : public LateralQPOptimizer {
-        public:
-            LateralOSQPOptimizer() = default;
+class LateralOSQPOptimizer : public LateralQPOptimizer {
+ public:
+  LateralOSQPOptimizer() = default;
 
-            virtual ~LateralOSQPOptimizer() = default;
+  virtual ~LateralOSQPOptimizer() = default;
 
-            bool optimize(
-                    const std::array<double, 3> &d_state, const double delta_s,
-                    const std::vector <std::pair<double, double>> &d_bounds) override;
+  bool optimize(
+      const std::array<double, 3>& d_state, const double delta_s,
+      const std::vector<std::pair<double, double>>& d_bounds) override;
 
-        private:
-            void CalculateKernel(const std::vector <std::pair<double, double>> &d_bounds,
-                                 std::vector <c_float> *P_data,
-                                 std::vector <c_int> *P_indices,
-                                 std::vector <c_int> *P_indptr);
-        };
+ private:
+  void CalculateKernel(const std::vector<std::pair<double, double>>& d_bounds,
+                       std::vector<c_float>* P_data,
+                       std::vector<c_int>* P_indices,
+                       std::vector<c_int>* P_indptr);
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

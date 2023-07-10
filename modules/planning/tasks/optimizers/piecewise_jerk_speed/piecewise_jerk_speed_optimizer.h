@@ -23,19 +23,19 @@
 #include "modules/planning/tasks/optimizers/speed_optimizer.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class PiecewiseJerkSpeedOptimizer : public SpeedOptimizer {
-        public:
-            explicit PiecewiseJerkSpeedOptimizer(const TaskConfig &config);
+class PiecewiseJerkSpeedOptimizer : public SpeedOptimizer {
+ public:
+  explicit PiecewiseJerkSpeedOptimizer(const TaskConfig& config);
 
-            virtual ~PiecewiseJerkSpeedOptimizer() = default;
+  virtual ~PiecewiseJerkSpeedOptimizer() = default;
 
-        private:
-            common::Status Process(const PathData &path_data,
-                                   const common::TrajectoryPoint &init_point,
-                                   SpeedData *const speed_data) override;
-        };
+ private:
+  common::Status Process(const PathData& path_data,
+                         const common::TrajectoryPoint& init_point,
+                         SpeedData* const speed_data) override;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

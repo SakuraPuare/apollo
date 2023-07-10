@@ -21,37 +21,31 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace emergency_pull_over {
+namespace planning {
+namespace scenario {
+namespace emergency_pull_over {
 
-                class StageSlowDownTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {
-                        config_.set_stage_type(StageType::EMERGENCY_PULL_OVER_SLOW_DOWN);
-                        injector_ = std::make_shared<DependencyInjector>();
-                    }
+class StageSlowDownTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_stage_type(StageType::EMERGENCY_PULL_OVER_SLOW_DOWN);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-                protected:
-                    ScenarioConfig::StageConfig config_;
-                    std::shared_ptr <DependencyInjector> injector_;
-                };
+ protected:
+  ScenarioConfig::StageConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-                TEST_F(StageSlowDownTest, Init
-                ) {
-                EmergencyPullOverStageSlowDown emergency_pull_over_stage_slow_down(config_,
-                                                                                   injector_);
-                EXPECT_EQ(emergency_pull_over_stage_slow_down
-                .
+TEST_F(StageSlowDownTest, Init) {
+  EmergencyPullOverStageSlowDown emergency_pull_over_stage_slow_down(config_,
+                                                                     injector_);
+  EXPECT_EQ(emergency_pull_over_stage_slow_down.Name(),
+            StageType_Name(
+                StageType::EMERGENCY_PULL_OVER_SLOW_DOWN));
+}
 
-                Name(),
-                        StageType_Name(
-                        StageType::EMERGENCY_PULL_OVER_SLOW_DOWN)
-
-                );
-            }
-
-        }  // namespace emergency_pull_over
-    }  // namespace scenario
+}  // namespace emergency_pull_over
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

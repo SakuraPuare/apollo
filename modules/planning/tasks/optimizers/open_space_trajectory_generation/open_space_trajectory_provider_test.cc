@@ -24,19 +24,19 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class OpenSpaceTrajectoryProviderTest : public ::testing::Test {
-        public:
-            virtual void SetUp() {
-                config_.set_task_type(TaskConfig::OPEN_SPACE_TRAJECTORY_PROVIDER);
-                injector_ = std::make_shared<DependencyInjector>();
-            }
+class OpenSpaceTrajectoryProviderTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_task_type(TaskConfig::OPEN_SPACE_TRAJECTORY_PROVIDER);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-        protected:
-            TaskConfig config_;
-            std::shared_ptr <DependencyInjector> injector_;
-        };
+ protected:
+  TaskConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
 // TEST_F(OpenSpaceTrajectoryProviderTest, Init) {
 //   OpenSpaceTrajectoryProvider open_space_trajectory_provider(config_);
@@ -44,5 +44,5 @@ namespace apollo {
 //             TaskConfig::TaskType_Name(config_.task_type()));
 // }
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

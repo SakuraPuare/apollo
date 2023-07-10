@@ -27,35 +27,35 @@
 #include "modules/planning/scenarios/stop_sign/unprotected/stop_sign_unprotected_scenario.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace stop_sign {
+namespace planning {
+namespace scenario {
+namespace stop_sign {
 
-                struct StopSignUnprotectedContext;
+struct StopSignUnprotectedContext;
 
-                class StopSignUnprotectedStageCreep : public Stage {
-                public:
-                    StopSignUnprotectedStageCreep(
-                            const ScenarioConfig::StageConfig &config,
-                            const std::shared_ptr <DependencyInjector> &injector)
-                            : Stage(config, injector) {}
+class StopSignUnprotectedStageCreep : public Stage {
+ public:
+  StopSignUnprotectedStageCreep(
+      const ScenarioConfig::StageConfig& config,
+      const std::shared_ptr<DependencyInjector>& injector)
+      : Stage(config, injector) {}
 
-                private:
-                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
-                                               Frame *frame) override;
+ private:
+  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
+                             Frame* frame) override;
 
-                    StopSignUnprotectedContext *GetContext() {
-                        return Stage::GetContextAs<StopSignUnprotectedContext>();
-                    }
+  StopSignUnprotectedContext* GetContext() {
+    return Stage::GetContextAs<StopSignUnprotectedContext>();
+  }
 
-                private:
-                    Stage::StageStatus FinishStage();
+ private:
+  Stage::StageStatus FinishStage();
 
-                private:
-                    ScenarioStopSignUnprotectedConfig scenario_config_;
-                };
+ private:
+  ScenarioStopSignUnprotectedConfig scenario_config_;
+};
 
-            }  // namespace stop_sign
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace stop_sign
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

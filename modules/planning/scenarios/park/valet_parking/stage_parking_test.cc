@@ -23,35 +23,29 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace valet_parking {
+namespace planning {
+namespace scenario {
+namespace valet_parking {
 
-                class StageParkingTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {
-                        config_.set_stage_type(StageType::VALET_PARKING_PARKING);
-                        injector_ = std::make_shared<DependencyInjector>();
-                    }
+class StageParkingTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_stage_type(StageType::VALET_PARKING_PARKING);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-                protected:
-                    ScenarioConfig::StageConfig config_;
-                    std::shared_ptr <DependencyInjector> injector_;
-                };
+ protected:
+  ScenarioConfig::StageConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-                TEST_F(StageParkingTest, Init
-                ) {
-                StageParking stage_parking(config_, injector_);
-                EXPECT_EQ(stage_parking
-                .
+TEST_F(StageParkingTest, Init) {
+  StageParking stage_parking(config_, injector_);
+  EXPECT_EQ(stage_parking.Name(), StageType_Name(
+                                      StageType::VALET_PARKING_PARKING));
+}
 
-                Name(), StageType_Name(
-                        StageType::VALET_PARKING_PARKING)
-
-                );
-            }
-
-        }  // namespace valet_parking
-    }  // namespace scenario
+}  // namespace valet_parking
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

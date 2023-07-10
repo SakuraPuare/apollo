@@ -25,25 +25,25 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class TrafficLight : public TrafficRule {
-        public:
-            TrafficLight(const TrafficRuleConfig &config,
-                         const std::shared_ptr <DependencyInjector> &injector);
+class TrafficLight : public TrafficRule {
+ public:
+  TrafficLight(const TrafficRuleConfig& config,
+               const std::shared_ptr<DependencyInjector>& injector);
 
-            virtual ~TrafficLight() = default;
+  virtual ~TrafficLight() = default;
 
-            common::Status ApplyRule(Frame *const frame,
-                                     ReferenceLineInfo *const reference_line_info);
+  common::Status ApplyRule(Frame* const frame,
+                           ReferenceLineInfo* const reference_line_info);
 
-        private:
-            void MakeDecisions(Frame *const frame,
-                               ReferenceLineInfo *const reference_line_info);
+ private:
+  void MakeDecisions(Frame* const frame,
+                     ReferenceLineInfo* const reference_line_info);
 
-        private:
-            static constexpr char const *TRAFFIC_LIGHT_VO_ID_PREFIX = "TL_";
-        };
+ private:
+  static constexpr char const* TRAFFIC_LIGHT_VO_ID_PREFIX = "TL_";
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

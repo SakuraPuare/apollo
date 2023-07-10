@@ -21,37 +21,36 @@
 #include "modules/planning/proto/auto_tuning_raw_feature.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 /**
  * @brief: build model related input feature from raw feature generator
  */
 
-        class AutotuningFeatureBuilder {
-        public:
-            /**
-             * @brief: constructor
-             */
-            AutotuningFeatureBuilder() = default;
+class AutotuningFeatureBuilder {
+ public:
+  /**
+   * @brief: constructor
+   */
+  AutotuningFeatureBuilder() = default;
+  virtual ~AutotuningFeatureBuilder() = default;
 
-            virtual ~AutotuningFeatureBuilder() = default;
+  /**
+   * @param: raw feature function input
+   * @param: generated model input feature from raw feature, function output
+   */
+  virtual common::Status BuildFeature(
+      const autotuning::TrajectoryRawFeature& raw_feature,
+      autotuning::TrajectoryFeature* const input_feature) const = 0;
 
-            /**
-             * @param: raw feature function input
-             * @param: generated model input feature from raw feature, function output
-             */
-            virtual common::Status BuildFeature(
-                    const autotuning::TrajectoryRawFeature &raw_feature,
-                    autotuning::TrajectoryFeature *const input_feature) const = 0;
+  /**
+   * @param: pointwise raw feature, function input
+   * @param: generated model input feature, function output
+   */
+  virtual common::Status BuildPointFeature(
+      const autotuning::TrajectoryPointRawFeature& raw_point_feature,
+      autotuning::TrajectoryPointwiseFeature* const point_feature) const = 0;
+};
 
-            /**
-             * @param: pointwise raw feature, function input
-             * @param: generated model input feature, function output
-             */
-            virtual common::Status BuildPointFeature(
-                    const autotuning::TrajectoryPointRawFeature &raw_point_feature,
-                    autotuning::TrajectoryPointwiseFeature *const point_feature) const = 0;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

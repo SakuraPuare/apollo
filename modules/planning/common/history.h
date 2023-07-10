@@ -29,95 +29,86 @@
 #include "modules/common_msgs/planning_msgs/planning.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class HistoryObjectDecision {
-        public:
-            HistoryObjectDecision() = default;
+class HistoryObjectDecision {
+ public:
+  HistoryObjectDecision() = default;
 
-            void Init(const ObjectDecision &object_decisions);
+  void Init(const ObjectDecision& object_decisions);
+  void Init(const std::string& id,
+            const std::vector<ObjectDecisionType>& object_decisions);
 
-            void Init(const std::string &id,
-                      const std::vector <ObjectDecisionType> &object_decisions);
+  const std::string& id() const { return id_; }
+  std::vector<const ObjectDecisionType*> GetObjectDecision() const;
 
-            const std::string &id() const { return id_; }
+ private:
+  std::string id_;
+  std::vector<ObjectDecisionType> object_decision_;
+};
 
-            std::vector<const ObjectDecisionType *> GetObjectDecision() const;
+class HistoryFrame {
+ public:
+  HistoryFrame() = default;
 
-        private:
-            std::string id_;
-            std::vector <ObjectDecisionType> object_decision_;
-        };
+  void Init(const ADCTrajectory& adc_trajactory);
 
-        class HistoryFrame {
-        public:
-            HistoryFrame() = default;
+  int seq_num() const { return seq_num_; }
 
-            void Init(const ADCTrajectory &adc_trajactory);
+  std::vector<const HistoryObjectDecision*> GetObjectDecisions() const;
+  std::vector<const HistoryObjectDecision*> GetStopObjectDecisions() const;
 
-            int seq_num() const { return seq_num_; }
+  const HistoryObjectDecision* GetObjectDecisionsById(
+      const std::string& id) const;
 
-            std::vector<const HistoryObjectDecision *> GetObjectDecisions() const;
+ private:
+  int seq_num_;
+  ADCTrajectory adc_trajactory_;
+  std::unordered_map<std::string, HistoryObjectDecision> object_decisions_map_;
+  std::vector<HistoryObjectDecision> object_decisions_;
+};
 
-            std::vector<const HistoryObjectDecision *> GetStopObjectDecisions() const;
+class HistoryObjectStatus {
+ public:
+  HistoryObjectStatus() = default;
 
-            const HistoryObjectDecision *GetObjectDecisionsById(
-                    const std::string &id) const;
+  void Init(const std::string& id, const ObjectStatus& object_status);
 
-        private:
-            int seq_num_;
-            ADCTrajectory adc_trajactory_;
-            std::unordered_map <std::string, HistoryObjectDecision> object_decisions_map_;
-            std::vector <HistoryObjectDecision> object_decisions_;
-        };
+  const std::string& id() const { return id_; }
+  const ObjectStatus GetObjectStatus() const { return object_status_; }
 
-        class HistoryObjectStatus {
-        public:
-            HistoryObjectStatus() = default;
+ private:
+  std::string id_;
+  ObjectStatus object_status_;
+};
 
-            void Init(const std::string &id, const ObjectStatus &object_status);
+class HistoryStatus {
+ public:
+  HistoryStatus() = default;
 
-            const std::string &id() const { return id_; }
+  void SetObjectStatus(const std::string& id,
+                       const ObjectStatus& object_status);
 
-            const ObjectStatus GetObjectStatus() const { return object_status_; }
+  bool GetObjectStatus(const std::string& id,
+                       ObjectStatus* const object_status);
 
-        private:
-            std::string id_;
-            ObjectStatus object_status_;
-        };
+ private:
+  std::unordered_map<std::string, ObjectStatus> object_id_to_status_;
+};
 
-        class HistoryStatus {
-        public:
-            HistoryStatus() = default;
+class History {
+ public:
+  History() = default;
+  const HistoryFrame* GetLastFrame() const;
+  int Add(const ADCTrajectory& adc_trajectory_pb);
+  void Clear();
+  size_t Size() const;
+  HistoryStatus* mutable_history_status() { return &history_status_; }
 
-            void SetObjectStatus(const std::string &id,
-                                 const ObjectStatus &object_status);
+ private:
+  std::list<HistoryFrame> history_frames_;
+  HistoryStatus history_status_;
+};
 
-            bool GetObjectStatus(const std::string &id,
-                                 ObjectStatus *const object_status);
-
-        private:
-            std::unordered_map <std::string, ObjectStatus> object_id_to_status_;
-        };
-
-        class History {
-        public:
-            History() = default;
-
-            const HistoryFrame *GetLastFrame() const;
-
-            int Add(const ADCTrajectory &adc_trajectory_pb);
-
-            void Clear();
-
-            size_t Size() const;
-
-            HistoryStatus *mutable_history_status() { return &history_status_; }
-
-        private:
-            std::list <HistoryFrame> history_frames_;
-            HistoryStatus history_status_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

@@ -26,41 +26,32 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace valet_parking {
+namespace planning {
+namespace scenario {
+namespace valet_parking {
 
-                class ValetParkingScenarioTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {}
+class ValetParkingScenarioTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {}
 
-                protected:
-                    std::unique_ptr <ValetParkingScenario> scenario_;
-                };
+ protected:
+  std::unique_ptr<ValetParkingScenario> scenario_;
+};
 
-                TEST_F(ValetParkingScenarioTest, Init
-                ) {
-                FLAGS_scenario_valet_parking_config_file =
-                "/apollo/modules/planning/conf/scenario/valet_parking_config.pb.txt";
+TEST_F(ValetParkingScenarioTest, Init) {
+  FLAGS_scenario_valet_parking_config_file =
+      "/apollo/modules/planning/conf/scenario/valet_parking_config.pb.txt";
 
-                ScenarioConfig config;
-                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-                        FLAGS_scenario_valet_parking_config_file, &config)
-                );
-                ScenarioContext context;
-                auto injector = std::make_shared<DependencyInjector>();
-                scenario_.reset(new
-                ValetParkingScenario(config, &context, injector
-                ));
-                EXPECT_EQ(scenario_
-                ->
+  ScenarioConfig config;
+  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+      FLAGS_scenario_valet_parking_config_file, &config));
+  ScenarioContext context;
+  auto injector = std::make_shared<DependencyInjector>();
+  scenario_.reset(new ValetParkingScenario(config, &context, injector));
+  EXPECT_EQ(scenario_->scenario_type(), ScenarioType::VALET_PARKING);
+}
 
-                scenario_type(), ScenarioType::VALET_PARKING
-
-                );
-            }
-
-        }  // namespace valet_parking
-    }  // namespace scenario
+}  // namespace valet_parking
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

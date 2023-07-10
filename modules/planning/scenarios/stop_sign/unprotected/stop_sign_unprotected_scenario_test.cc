@@ -26,43 +26,34 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace stop_sign {
+namespace planning {
+namespace scenario {
+namespace stop_sign {
 
-                class StopSignUnprotectedScenarioTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {}
+class StopSignUnprotectedScenarioTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {}
 
-                protected:
-                    std::unique_ptr <StopSignUnprotectedScenario> scenario_;
-                };
+ protected:
+  std::unique_ptr<StopSignUnprotectedScenario> scenario_;
+};
 
-                TEST_F(StopSignUnprotectedScenarioTest, Init
-                ) {
-                FLAGS_scenario_stop_sign_unprotected_config_file =
-                "/apollo/modules/planning/conf/"
-                "scenario/stop_sign_unprotected_config.pb.txt";
+TEST_F(StopSignUnprotectedScenarioTest, Init) {
+  FLAGS_scenario_stop_sign_unprotected_config_file =
+      "/apollo/modules/planning/conf/"
+      "scenario/stop_sign_unprotected_config.pb.txt";
 
-                ScenarioConfig config;
-                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-                        FLAGS_scenario_stop_sign_unprotected_config_file, &config)
-                );
+  ScenarioConfig config;
+  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+      FLAGS_scenario_stop_sign_unprotected_config_file, &config));
 
-                ScenarioContext context;
-                auto injector = std::make_shared<DependencyInjector>();
-                scenario_.reset(new
-                StopSignUnprotectedScenario(config, &context, injector
-                ));
-                EXPECT_EQ(scenario_
-                ->
+  ScenarioContext context;
+  auto injector = std::make_shared<DependencyInjector>();
+  scenario_.reset(new StopSignUnprotectedScenario(config, &context, injector));
+  EXPECT_EQ(scenario_->scenario_type(), ScenarioType::STOP_SIGN_UNPROTECTED);
+}
 
-                scenario_type(), ScenarioType::STOP_SIGN_UNPROTECTED
-
-                );
-            }
-
-        }  // namespace stop_sign
-    }  // namespace scenario
+}  // namespace stop_sign
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

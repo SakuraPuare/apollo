@@ -24,54 +24,30 @@
 #include "modules/common_msgs/planning_msgs/planning.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class ReferenceLineInfoTest : public ::testing::Test {
-        public:
-            virtual void SetUp() {}
+class ReferenceLineInfoTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {}
 
-        protected:
-            ReferenceLineInfo reference_line_info_;
-        };
+ protected:
+  ReferenceLineInfo reference_line_info_;
+};
 
-        TEST_F(ReferenceLineInfoTest, BasicTest
-        ) {
-        EXPECT_EQ(reference_line_info_
-        .
+TEST_F(ReferenceLineInfoTest, BasicTest) {
+  EXPECT_EQ(reference_line_info_.trajectory_type(), ADCTrajectory::UNKNOWN);
 
-        trajectory_type(), ADCTrajectory::UNKNOWN
+  reference_line_info_.set_trajectory_type(ADCTrajectory::NORMAL);
+  EXPECT_EQ(reference_line_info_.trajectory_type(), ADCTrajectory::NORMAL);
 
-        );
+  reference_line_info_.set_trajectory_type(ADCTrajectory::PATH_FALLBACK);
+  EXPECT_EQ(reference_line_info_.trajectory_type(),
+            ADCTrajectory::PATH_FALLBACK);
 
-        reference_line_info_.
-        set_trajectory_type(ADCTrajectory::NORMAL);
-        EXPECT_EQ(reference_line_info_
-        .
-
-        trajectory_type(), ADCTrajectory::NORMAL
-
-        );
-
-        reference_line_info_.
-        set_trajectory_type(ADCTrajectory::PATH_FALLBACK);
-        EXPECT_EQ(reference_line_info_
-        .
-
-        trajectory_type(),
-                ADCTrajectory::PATH_FALLBACK
-
-        );
-
-        reference_line_info_.
-        set_trajectory_type(ADCTrajectory::SPEED_FALLBACK);
-        EXPECT_EQ(reference_line_info_
-        .
-
-        trajectory_type(),
-                ADCTrajectory::SPEED_FALLBACK
-
-        );
-    }
+  reference_line_info_.set_trajectory_type(ADCTrajectory::SPEED_FALLBACK);
+  EXPECT_EQ(reference_line_info_.trajectory_type(),
+            ADCTrajectory::SPEED_FALLBACK);
+}
 
 }  // namespace planning
 }  // namespace apollo

@@ -30,49 +30,48 @@
 #include "modules/planning/scenarios/scenario.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace traffic_light {
+namespace planning {
+namespace scenario {
+namespace traffic_light {
 
 // stage context
-                struct TrafficLightUnprotectedRightTurnContext {
-                    ScenarioTrafficLightUnprotectedRightTurnConfig scenario_config;
-                    std::vector <std::string> current_traffic_light_overlap_ids;
-                    double stop_start_time = 0.0;
-                    double creep_start_time = 0.0;
-                };
+struct TrafficLightUnprotectedRightTurnContext {
+  ScenarioTrafficLightUnprotectedRightTurnConfig scenario_config;
+  std::vector<std::string> current_traffic_light_overlap_ids;
+  double stop_start_time = 0.0;
+  double creep_start_time = 0.0;
+};
 
-                class TrafficLightUnprotectedRightTurnScenario : public Scenario {
-                public:
-                    TrafficLightUnprotectedRightTurnScenario(
-                            const ScenarioConfig &config, const ScenarioContext *context,
-                            const std::shared_ptr <DependencyInjector> &injector)
-                            : Scenario(config, context, injector) {}
+class TrafficLightUnprotectedRightTurnScenario : public Scenario {
+ public:
+  TrafficLightUnprotectedRightTurnScenario(
+      const ScenarioConfig& config, const ScenarioContext* context,
+      const std::shared_ptr<DependencyInjector>& injector)
+      : Scenario(config, context, injector) {}
 
-                    void Init() override;
+  void Init() override;
 
-                    std::unique_ptr <Stage> CreateStage(
-                            const ScenarioConfig::StageConfig &stage_config,
-                            const std::shared_ptr <DependencyInjector> &injector);
+  std::unique_ptr<Stage> CreateStage(
+      const ScenarioConfig::StageConfig& stage_config,
+      const std::shared_ptr<DependencyInjector>& injector);
 
-                    TrafficLightUnprotectedRightTurnContext *GetContext() { return &context_; }
+  TrafficLightUnprotectedRightTurnContext* GetContext() { return &context_; }
 
-                private:
-                    static void RegisterStages();
+ private:
+  static void RegisterStages();
+  bool GetScenarioConfig();
 
-                    bool GetScenarioConfig();
+ private:
+  static apollo::common::util::Factory<
+      StageType, Stage,
+      Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
+                 const std::shared_ptr<DependencyInjector>& injector)>
+      s_stage_factory_;
+  bool init_ = false;
+  TrafficLightUnprotectedRightTurnContext context_;
+};
 
-                private:
-                    static apollo::common::util::Factory<
-                            StageType, Stage,
-                            Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
-                                       const std::shared_ptr <DependencyInjector> &injector)>
-                            s_stage_factory_;
-                    bool init_ = false;
-                    TrafficLightUnprotectedRightTurnContext context_;
-                };
-
-            }  // namespace traffic_light
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace traffic_light
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

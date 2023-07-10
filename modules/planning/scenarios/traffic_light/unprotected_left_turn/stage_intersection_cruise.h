@@ -27,35 +27,35 @@
 #include "modules/planning/scenarios/traffic_light/unprotected_left_turn/traffic_light_unprotected_left_turn_scenario.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace traffic_light {
+namespace planning {
+namespace scenario {
+namespace traffic_light {
 
-                struct TrafficLightUnprotectedLeftTurnContext;
+struct TrafficLightUnprotectedLeftTurnContext;
 
-                class TrafficLightUnprotectedLeftTurnStageIntersectionCruise : public Stage {
-                public:
-                    TrafficLightUnprotectedLeftTurnStageIntersectionCruise(
-                            const ScenarioConfig::StageConfig &config,
-                            const std::shared_ptr <DependencyInjector> &injector)
-                            : Stage(config, injector) {}
+class TrafficLightUnprotectedLeftTurnStageIntersectionCruise : public Stage {
+ public:
+  TrafficLightUnprotectedLeftTurnStageIntersectionCruise(
+      const ScenarioConfig::StageConfig& config,
+      const std::shared_ptr<DependencyInjector>& injector)
+      : Stage(config, injector) {}
 
-                private:
-                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
-                                               Frame *frame) override;
+ private:
+  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
+                             Frame* frame) override;
 
-                    TrafficLightUnprotectedLeftTurnContext *GetContext() {
-                        return GetContextAs<TrafficLightUnprotectedLeftTurnContext>();
-                    }
+  TrafficLightUnprotectedLeftTurnContext* GetContext() {
+    return GetContextAs<TrafficLightUnprotectedLeftTurnContext>();
+  }
 
-                    Stage::StageStatus FinishStage();
+  Stage::StageStatus FinishStage();
 
-                private:
-                    ScenarioTrafficLightUnprotectedLeftTurnConfig scenario_config_;
-                    StageIntersectionCruiseImpl stage_impl_;
-                };
+ private:
+  ScenarioTrafficLightUnprotectedLeftTurnConfig scenario_config_;
+  StageIntersectionCruiseImpl stage_impl_;
+};
 
-            }  // namespace traffic_light
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace traffic_light
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

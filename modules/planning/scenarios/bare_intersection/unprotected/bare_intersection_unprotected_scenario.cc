@@ -30,98 +30,98 @@
 #include "modules/planning/scenarios/bare_intersection/unprotected/stage_intersection_cruise.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace bare_intersection {
+namespace planning {
+namespace scenario {
+namespace bare_intersection {
 
-                using apollo::hdmap::HDMapUtil;
+using apollo::hdmap::HDMapUtil;
 
-                void BareIntersectionUnprotectedScenario::Init() {
-                    if (init_) {
-                        return;
-                    }
+void BareIntersectionUnprotectedScenario::Init() {
+  if (init_) {
+    return;
+  }
 
-                    Scenario::Init();
+  Scenario::Init();
 
-                    if (!GetScenarioConfig()) {
-                        AERROR << "fail to get scenario specific config";
-                        return;
-                    }
+  if (!GetScenarioConfig()) {
+    AERROR << "fail to get scenario specific config";
+    return;
+  }
 
-                    const std::string &pnc_junction_overlap_id =
-                            injector_->planning_context()
-                                    ->planning_status()
-                                    .bare_intersection()
-                                    .current_pnc_junction_overlap_id();
-                    if (pnc_junction_overlap_id.empty()) {
-                        AERROR << "Could not find pnc_junction";
-                        return;
-                    }
-                    hdmap::PNCJunctionInfoConstPtr pnc_junction =
-                            HDMapUtil::BaseMap().GetPNCJunctionById(
-                                    hdmap::MakeMapId(pnc_junction_overlap_id));
-                    if (!pnc_junction) {
-                        AERROR << "Could not find pnc_junction: " << pnc_junction_overlap_id;
-                        return;
-                    }
+  const std::string& pnc_junction_overlap_id =
+      injector_->planning_context()
+          ->planning_status()
+          .bare_intersection()
+          .current_pnc_junction_overlap_id();
+  if (pnc_junction_overlap_id.empty()) {
+    AERROR << "Could not find pnc_junction";
+    return;
+  }
+  hdmap::PNCJunctionInfoConstPtr pnc_junction =
+      HDMapUtil::BaseMap().GetPNCJunctionById(
+          hdmap::MakeMapId(pnc_junction_overlap_id));
+  if (!pnc_junction) {
+    AERROR << "Could not find pnc_junction: " << pnc_junction_overlap_id;
+    return;
+  }
 
-                    context_.current_pnc_junction_overlap_id = pnc_junction_overlap_id;
+  context_.current_pnc_junction_overlap_id = pnc_junction_overlap_id;
 
-                    init_ = true;
-                }
+  init_ = true;
+}
 
-                apollo::common::util::Factory<
-                        StageType, Stage,
-                        Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
-                                   const std::shared_ptr <DependencyInjector> &injector)>
-                        BareIntersectionUnprotectedScenario::s_stage_factory_;
+apollo::common::util::Factory<
+    StageType, Stage,
+    Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
+               const std::shared_ptr<DependencyInjector>& injector)>
+    BareIntersectionUnprotectedScenario::s_stage_factory_;
 
-                void BareIntersectionUnprotectedScenario::RegisterStages() {
-                    if (!s_stage_factory_.Empty()) {
-                        s_stage_factory_.Clear();
-                    }
-                    s_stage_factory_.Register(
-                            StageType::BARE_INTERSECTION_UNPROTECTED_APPROACH,
-                            [](const ScenarioConfig::StageConfig &config,
-                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
-                                return new BareIntersectionUnprotectedStageApproach(config, injector);
-                            });
-                    s_stage_factory_.Register(
-                            StageType::BARE_INTERSECTION_UNPROTECTED_INTERSECTION_CRUISE,
-                            [](const ScenarioConfig::StageConfig &config,
-                               const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
-                                return new BareIntersectionUnprotectedStageIntersectionCruise(config,
-                                                                                              injector);
-                            });
-                }
+void BareIntersectionUnprotectedScenario::RegisterStages() {
+  if (!s_stage_factory_.Empty()) {
+    s_stage_factory_.Clear();
+  }
+  s_stage_factory_.Register(
+      StageType::BARE_INTERSECTION_UNPROTECTED_APPROACH,
+      [](const ScenarioConfig::StageConfig& config,
+         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
+        return new BareIntersectionUnprotectedStageApproach(config, injector);
+      });
+  s_stage_factory_.Register(
+      StageType::BARE_INTERSECTION_UNPROTECTED_INTERSECTION_CRUISE,
+      [](const ScenarioConfig::StageConfig& config,
+         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
+        return new BareIntersectionUnprotectedStageIntersectionCruise(config,
+                                                                      injector);
+      });
+}
 
-                std::unique_ptr <Stage> BareIntersectionUnprotectedScenario::CreateStage(
-                        const ScenarioConfig::StageConfig &stage_config,
-                        const std::shared_ptr <DependencyInjector> &injector) {
-                    if (s_stage_factory_.Empty()) {
-                        RegisterStages();
-                    }
-                    auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
-                                                                   stage_config, injector);
-                    if (ptr) {
-                        ptr->SetContext(&context_);
-                    }
-                    return ptr;
-                }
+std::unique_ptr<Stage> BareIntersectionUnprotectedScenario::CreateStage(
+    const ScenarioConfig::StageConfig& stage_config,
+    const std::shared_ptr<DependencyInjector>& injector) {
+  if (s_stage_factory_.Empty()) {
+    RegisterStages();
+  }
+  auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
+                                                 stage_config, injector);
+  if (ptr) {
+    ptr->SetContext(&context_);
+  }
+  return ptr;
+}
 
 /*
  * read scenario specific configs and set in context_ for stages to read
  */
-                bool BareIntersectionUnprotectedScenario::GetScenarioConfig() {
-                    if (!config_.has_bare_intersection_unprotected_config()) {
-                        AERROR << "miss scenario specific config";
-                        return false;
-                    }
-                    context_.scenario_config = config_.bare_intersection_unprotected_config();
-                    return true;
-                }
+bool BareIntersectionUnprotectedScenario::GetScenarioConfig() {
+  if (!config_.has_bare_intersection_unprotected_config()) {
+    AERROR << "miss scenario specific config";
+    return false;
+  }
+  context_.scenario_config = config_.bare_intersection_unprotected_config();
+  return true;
+}
 
-            }  // namespace bare_intersection
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace bare_intersection
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

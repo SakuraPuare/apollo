@@ -33,177 +33,153 @@
 #include "modules/common_msgs/planning_msgs/planning.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class STBoundary : public common::math::Polygon2d {
-        public:
-            /** Constructors:
-             *   STBoundary must be initialized with a vector of ST-point pairs.
-             *   Each pair refers to a time t, with (lower_s, upper_s).
-             */
-            STBoundary() = default;
+class STBoundary : public common::math::Polygon2d {
+ public:
+  /** Constructors:
+   *   STBoundary must be initialized with a vector of ST-point pairs.
+   *   Each pair refers to a time t, with (lower_s, upper_s).
+   */
+  STBoundary() = default;
+  explicit STBoundary(
+      const std::vector<std::pair<STPoint, STPoint>>& point_pairs,
+      bool is_accurate_boundary = false);
+  explicit STBoundary(const common::math::Box2d& box) = delete;
+  explicit STBoundary(std::vector<common::math::Vec2d> points) = delete;
 
-            explicit STBoundary(
-                    const std::vector <std::pair<STPoint, STPoint>> &point_pairs,
-                    bool is_accurate_boundary = false);
+  /** @brief Wrapper of the constructor (old).
+   */
+  static STBoundary CreateInstance(const std::vector<STPoint>& lower_points,
+                                   const std::vector<STPoint>& upper_points);
 
-            explicit STBoundary(const common::math::Box2d &box) = delete;
+  /** @brief Wrapper of the constructor. It doesn't use RemoveRedundantPoints
+   * and generates an accurate ST-boundary.
+   */
+  static STBoundary CreateInstanceAccurate(
+      const std::vector<STPoint>& lower_points,
+      const std::vector<STPoint>& upper_points);
 
-            explicit STBoundary(std::vector <common::math::Vec2d> points) = delete;
+  /** @brief Default destructor.
+   */
+  ~STBoundary() = default;
 
-            /** @brief Wrapper of the constructor (old).
-             */
-            static STBoundary CreateInstance(const std::vector <STPoint> &lower_points,
-                                             const std::vector <STPoint> &upper_points);
+  bool IsEmpty() const { return lower_points_.empty(); }
 
-            /** @brief Wrapper of the constructor. It doesn't use RemoveRedundantPoints
-             * and generates an accurate ST-boundary.
-             */
-            static STBoundary CreateInstanceAccurate(
-                    const std::vector <STPoint> &lower_points,
-                    const std::vector <STPoint> &upper_points);
+  bool GetUnblockSRange(const double curr_time, double* s_upper,
+                        double* s_lower) const;
 
-            /** @brief Default destructor.
-             */
-            ~STBoundary() = default;
+  bool GetBoundarySRange(const double curr_time, double* s_upper,
+                         double* s_lower) const;
 
-            bool IsEmpty() const { return lower_points_.empty(); }
+  bool GetBoundarySlopes(const double curr_time, double* ds_upper,
+                         double* ds_lower) const;
 
-            bool GetUnblockSRange(const double curr_time, double *s_upper,
-                                  double *s_lower) const;
+  // if you need to add boundary type, make sure you modify
+  // GetUnblockSRange accordingly.
+  enum class BoundaryType {
+    UNKNOWN,
+    STOP,
+    FOLLOW,
+    YIELD,
+    OVERTAKE,
+    KEEP_CLEAR,
+  };
 
-            bool GetBoundarySRange(const double curr_time, double *s_upper,
-                                   double *s_lower) const;
+  static std::string TypeName(BoundaryType type);
 
-            bool GetBoundarySlopes(const double curr_time, double *ds_upper,
-                                   double *ds_lower) const;
+  BoundaryType boundary_type() const;
+  const std::string& id() const;
+  double characteristic_length() const;
 
-            // if you need to add boundary type, make sure you modify
-            // GetUnblockSRange accordingly.
-            enum class BoundaryType {
-                UNKNOWN,
-                STOP,
-                FOLLOW,
-                YIELD,
-                OVERTAKE,
-                KEEP_CLEAR,
-            };
+  void set_id(const std::string& id);
+  void SetBoundaryType(const BoundaryType& boundary_type);
+  void SetCharacteristicLength(const double characteristic_length);
 
-            static std::string TypeName(BoundaryType type);
+  double min_s() const;
+  double min_t() const;
+  double max_s() const;
+  double max_t() const;
 
-            BoundaryType boundary_type() const;
+  std::vector<STPoint> upper_points() const { return upper_points_; }
+  std::vector<STPoint> lower_points() const { return lower_points_; }
 
-            const std::string &id() const;
+  // Used by st-optimizer.
+  bool IsPointInBoundary(const STPoint& st_point) const;
+  STBoundary ExpandByS(const double s) const;
+  STBoundary ExpandByT(const double t) const;
 
-            double characteristic_length() const;
+  // Unused function so far.
+  STBoundary CutOffByT(const double t) const;
 
-            void set_id(const std::string &id);
+  // Used by Lattice planners.
+  STPoint upper_left_point() const;
+  STPoint upper_right_point() const;
+  STPoint bottom_left_point() const;
+  STPoint bottom_right_point() const;
 
-            void SetBoundaryType(const BoundaryType &boundary_type);
+  void set_upper_left_point(STPoint st_point);
+  void set_upper_right_point(STPoint st_point);
+  void set_bottom_left_point(STPoint st_point);
+  void set_bottom_right_point(STPoint st_point);
 
-            void SetCharacteristicLength(const double characteristic_length);
+  void set_obstacle_road_right_ending_t(double road_right_ending_t) {
+    obstacle_road_right_ending_t_ = road_right_ending_t;
+  }
+  double obstacle_road_right_ending_t() const {
+    return obstacle_road_right_ending_t_;
+  }
 
-            double min_s() const;
+ private:
+  /** @brief The sanity check function for a vector of ST-point pairs.
+   */
+  bool IsValid(
+      const std::vector<std::pair<STPoint, STPoint>>& point_pairs) const;
 
-            double min_t() const;
+  /** @brief Returns true if point is within max_dist distance to seg.
+   */
+  bool IsPointNear(const common::math::LineSegment2d& seg,
+                   const common::math::Vec2d& point, const double max_dist);
 
-            double max_s() const;
+  /** @brief Sometimes a sequence of upper and lower points lie almost on
+   * two straightlines. In this case, the intermediate points are removed,
+   * with only the end-points retained.
+   */
+  // TODO(all): When slope is high, this may introduce significant errors.
+  // Also, when accumulated for multiple t, the error can get significant.
+  // This function should be reconsidered, because it may be dangerous.
+  void RemoveRedundantPoints(
+      std::vector<std::pair<STPoint, STPoint>>* point_pairs);
+  FRIEND_TEST(StBoundaryTest, remove_redundant_points);
 
-            double max_t() const;
+  /** @brief Given time t, find a segment denoted by left and right idx, that
+   * contains the time t.
+   * - If t is less than all or larger than all, return false.
+   */
+  bool GetIndexRange(const std::vector<STPoint>& points, const double t,
+                     size_t* left, size_t* right) const;
+  FRIEND_TEST(StBoundaryTest, get_index_range);
 
-            std::vector <STPoint> upper_points() const { return upper_points_; }
+ private:
+  BoundaryType boundary_type_ = BoundaryType::UNKNOWN;
 
-            std::vector <STPoint> lower_points() const { return lower_points_; }
+  std::vector<STPoint> upper_points_;
+  std::vector<STPoint> lower_points_;
 
-            // Used by st-optimizer.
-            bool IsPointInBoundary(const STPoint &st_point) const;
+  std::string id_;
+  double characteristic_length_ = 1.0;
+  double min_s_ = std::numeric_limits<double>::max();
+  double max_s_ = std::numeric_limits<double>::lowest();
+  double min_t_ = std::numeric_limits<double>::max();
+  double max_t_ = std::numeric_limits<double>::lowest();
 
-            STBoundary ExpandByS(const double s) const;
+  STPoint bottom_left_point_;
+  STPoint bottom_right_point_;
+  STPoint upper_left_point_;
+  STPoint upper_right_point_;
 
-            STBoundary ExpandByT(const double t) const;
+  double obstacle_road_right_ending_t_;
+};
 
-            // Unused function so far.
-            STBoundary CutOffByT(const double t) const;
-
-            // Used by Lattice planners.
-            STPoint upper_left_point() const;
-
-            STPoint upper_right_point() const;
-
-            STPoint bottom_left_point() const;
-
-            STPoint bottom_right_point() const;
-
-            void set_upper_left_point(STPoint st_point);
-
-            void set_upper_right_point(STPoint st_point);
-
-            void set_bottom_left_point(STPoint st_point);
-
-            void set_bottom_right_point(STPoint st_point);
-
-            void set_obstacle_road_right_ending_t(double road_right_ending_t) {
-                obstacle_road_right_ending_t_ = road_right_ending_t;
-            }
-
-            double obstacle_road_right_ending_t() const {
-                return obstacle_road_right_ending_t_;
-            }
-
-        private:
-            /** @brief The sanity check function for a vector of ST-point pairs.
-             */
-            bool IsValid(
-                    const std::vector <std::pair<STPoint, STPoint>> &point_pairs) const;
-
-            /** @brief Returns true if point is within max_dist distance to seg.
-             */
-            bool IsPointNear(const common::math::LineSegment2d &seg,
-                             const common::math::Vec2d &point, const double max_dist);
-
-            /** @brief Sometimes a sequence of upper and lower points lie almost on
-             * two straightlines. In this case, the intermediate points are removed,
-             * with only the end-points retained.
-             */
-            // TODO(all): When slope is high, this may introduce significant errors.
-            // Also, when accumulated for multiple t, the error can get significant.
-            // This function should be reconsidered, because it may be dangerous.
-            void RemoveRedundantPoints(
-                    std::vector <std::pair<STPoint, STPoint>> *point_pairs);
-
-            FRIEND_TEST(StBoundaryTest, remove_redundant_points
-            );
-
-            /** @brief Given time t, find a segment denoted by left and right idx, that
-             * contains the time t.
-             * - If t is less than all or larger than all, return false.
-             */
-            bool GetIndexRange(const std::vector <STPoint> &points, const double t,
-                               size_t *left, size_t *right) const;
-
-            FRIEND_TEST(StBoundaryTest, get_index_range
-            );
-
-        private:
-            BoundaryType boundary_type_ = BoundaryType::UNKNOWN;
-
-            std::vector <STPoint> upper_points_;
-            std::vector <STPoint> lower_points_;
-
-            std::string id_;
-            double characteristic_length_ = 1.0;
-            double min_s_ = std::numeric_limits<double>::max();
-            double max_s_ = std::numeric_limits<double>::lowest();
-            double min_t_ = std::numeric_limits<double>::max();
-            double max_t_ = std::numeric_limits<double>::lowest();
-
-            STPoint bottom_left_point_;
-            STPoint bottom_right_point_;
-            STPoint upper_left_point_;
-            STPoint upper_right_point_;
-
-            double obstacle_road_right_ending_t_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

@@ -31,75 +31,75 @@
 #include "modules/planning/tasks/deciders/path_bounds_decider/path_bounds_decider.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace emergency_stop {
+namespace planning {
+namespace scenario {
+namespace emergency_stop {
 
-                using apollo::common::TrajectoryPoint;
+using apollo::common::TrajectoryPoint;
 
-                Stage::StageStatus EmergencyStopStageStandby::Process(
-                        const TrajectoryPoint &planning_init_point, Frame *frame) {
-                    ADEBUG << "stage: Standby";
-                    CHECK_NOTNULL(frame);
+Stage::StageStatus EmergencyStopStageStandby::Process(
+    const TrajectoryPoint& planning_init_point, Frame* frame) {
+  ADEBUG << "stage: Standby";
+  CHECK_NOTNULL(frame);
 
-                    scenario_config_.CopyFrom(GetContext()->scenario_config);
+  scenario_config_.CopyFrom(GetContext()->scenario_config);
 
-                    // add a stop fence
-                    const auto &reference_line_info = frame->reference_line_info().front();
-                    const auto &reference_line = reference_line_info.reference_line();
-                    const double adc_front_edge_s = reference_line_info.AdcSlBoundary().end_s();
-                    const double stop_distance = scenario_config_.stop_distance();
+  // add a stop fence
+  const auto& reference_line_info = frame->reference_line_info().front();
+  const auto& reference_line = reference_line_info.reference_line();
+  const double adc_front_edge_s = reference_line_info.AdcSlBoundary().end_s();
+  const double stop_distance = scenario_config_.stop_distance();
 
-                    bool stop_fence_exist = false;
-                    double stop_line_s;
-                    const auto &emergency_stop_status =
-                            injector_->planning_context()->planning_status().emergency_stop();
-                    if (emergency_stop_status.has_stop_fence_point()) {
-                        common::SLPoint stop_fence_sl;
-                        reference_line.XYToSL(emergency_stop_status.stop_fence_point(),
-                                              &stop_fence_sl);
-                        if (stop_fence_sl.s() > adc_front_edge_s) {
-                            stop_fence_exist = true;
-                            stop_line_s = stop_fence_sl.s();
-                        }
-                    }
+  bool stop_fence_exist = false;
+  double stop_line_s;
+  const auto& emergency_stop_status =
+      injector_->planning_context()->planning_status().emergency_stop();
+  if (emergency_stop_status.has_stop_fence_point()) {
+    common::SLPoint stop_fence_sl;
+    reference_line.XYToSL(emergency_stop_status.stop_fence_point(),
+                          &stop_fence_sl);
+    if (stop_fence_sl.s() > adc_front_edge_s) {
+      stop_fence_exist = true;
+      stop_line_s = stop_fence_sl.s();
+    }
+  }
 
-                    if (!stop_fence_exist) {
-                        static constexpr double kBuffer = 2.0;
-                        stop_line_s = adc_front_edge_s + stop_distance + kBuffer;
-                        const auto &stop_fence_point =
-                                reference_line.GetReferencePoint(stop_line_s);
-                        auto *emergency_stop_fence_point = injector_->planning_context()
-                                ->mutable_planning_status()
-                                ->mutable_emergency_stop()
-                                ->mutable_stop_fence_point();
-                        emergency_stop_fence_point->set_x(stop_fence_point.x());
-                        emergency_stop_fence_point->set_y(stop_fence_point.y());
-                    }
+  if (!stop_fence_exist) {
+    static constexpr double kBuffer = 2.0;
+    stop_line_s = adc_front_edge_s + stop_distance + kBuffer;
+    const auto& stop_fence_point =
+        reference_line.GetReferencePoint(stop_line_s);
+    auto* emergency_stop_fence_point = injector_->planning_context()
+                                           ->mutable_planning_status()
+                                           ->mutable_emergency_stop()
+                                           ->mutable_stop_fence_point();
+    emergency_stop_fence_point->set_x(stop_fence_point.x());
+    emergency_stop_fence_point->set_y(stop_fence_point.y());
+  }
 
-                    const std::string virtual_obstacle_id = "EMERGENCY_STOP";
-                    const std::vector <std::string> wait_for_obstacle_ids;
-                    planning::util::BuildStopDecision(
-                            virtual_obstacle_id, stop_line_s, stop_distance,
-                            StopReasonCode::STOP_REASON_EMERGENCY, wait_for_obstacle_ids,
-                            "EMERGENCY_STOP-scenario", frame,
-                            &(frame->mutable_reference_line_info()->front()));
-                    ADEBUG << "Build a stop fence for emergency_stop: id[" << virtual_obstacle_id
-                           << "] s[" << stop_line_s << "]";
+  const std::string virtual_obstacle_id = "EMERGENCY_STOP";
+  const std::vector<std::string> wait_for_obstacle_ids;
+  planning::util::BuildStopDecision(
+      virtual_obstacle_id, stop_line_s, stop_distance,
+      StopReasonCode::STOP_REASON_EMERGENCY, wait_for_obstacle_ids,
+      "EMERGENCY_STOP-scenario", frame,
+      &(frame->mutable_reference_line_info()->front()));
+  ADEBUG << "Build a stop fence for emergency_stop: id[" << virtual_obstacle_id
+         << "] s[" << stop_line_s << "]";
 
-                    bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
-                    if (!plan_ok) {
-                        AERROR << "EmergencyStopStageStandby planning error";
-                    }
+  bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
+  if (!plan_ok) {
+    AERROR << "EmergencyStopStageStandby planning error";
+  }
 
-                    return Stage::RUNNING;
-                }
+  return Stage::RUNNING;
+}
 
-                Stage::StageStatus EmergencyStopStageStandby::FinishStage() {
-                    return FinishScenario();
-                }
+Stage::StageStatus EmergencyStopStageStandby::FinishStage() {
+  return FinishScenario();
+}
 
-            }  // namespace emergency_stop
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace emergency_stop
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

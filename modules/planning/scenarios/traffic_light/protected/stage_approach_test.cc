@@ -22,37 +22,31 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace traffic_light {
+namespace planning {
+namespace scenario {
+namespace traffic_light {
 
-                class TrafficLightProtectedStageApproachTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {
-                        config_.set_stage_type(StageType::TRAFFIC_LIGHT_PROTECTED_APPROACH);
-                        injector_ = std::make_shared<DependencyInjector>();
-                    }
+class TrafficLightProtectedStageApproachTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_stage_type(StageType::TRAFFIC_LIGHT_PROTECTED_APPROACH);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-                protected:
-                    ScenarioConfig::StageConfig config_;
-                    std::shared_ptr <DependencyInjector> injector_;
-                };
+ protected:
+  ScenarioConfig::StageConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-                TEST_F(TrafficLightProtectedStageApproachTest, Init
-                ) {
-                TrafficLightProtectedStageApproach traffic_light_protected_stage_approach(
-                        config_, injector_);
-                EXPECT_EQ(traffic_light_protected_stage_approach
-                .
+TEST_F(TrafficLightProtectedStageApproachTest, Init) {
+  TrafficLightProtectedStageApproach traffic_light_protected_stage_approach(
+      config_, injector_);
+  EXPECT_EQ(traffic_light_protected_stage_approach.Name(),
+            StageType_Name(
+                StageType::TRAFFIC_LIGHT_PROTECTED_APPROACH));
+}
 
-                Name(),
-                        StageType_Name(
-                        StageType::TRAFFIC_LIGHT_PROTECTED_APPROACH)
-
-                );
-            }
-
-        }  // namespace traffic_light
-    }  // namespace scenario
+}  // namespace traffic_light
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

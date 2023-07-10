@@ -27,29 +27,27 @@
 #include "modules/planning/common/reference_line_info.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class NaviTask {
-        public:
-            explicit NaviTask(const std::string &name);
+class NaviTask {
+ public:
+  explicit NaviTask(const std::string& name);
+  virtual ~NaviTask() = default;
+  virtual const std::string& Name() const;
 
-            virtual ~NaviTask() = default;
+  virtual apollo::common::Status Execute(
+      Frame* frame, ReferenceLineInfo* reference_line_info);
 
-            virtual const std::string &Name() const;
+  virtual bool Init(const PlanningConfig& config);
 
-            virtual apollo::common::Status Execute(
-                    Frame *frame, ReferenceLineInfo *reference_line_info);
+ protected:
+  bool is_init_ = false;
+  Frame* frame_ = nullptr;
+  ReferenceLineInfo* reference_line_info_ = nullptr;
 
-            virtual bool Init(const PlanningConfig &config);
+ private:
+  const std::string name_;
+};
 
-        protected:
-            bool is_init_ = false;
-            Frame *frame_ = nullptr;
-            ReferenceLineInfo *reference_line_info_ = nullptr;
-
-        private:
-            const std::string name_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

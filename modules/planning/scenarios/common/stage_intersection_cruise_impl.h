@@ -24,18 +24,18 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
+namespace planning {
+namespace scenario {
 
-            class StageIntersectionCruiseImpl {
-            public:
-                bool CheckDone(const Frame &frame,
-                               const ScenarioType &scenario_type,
-                               const ScenarioConfig::StageConfig &config,
-                               const PlanningContext *context,
-                               const bool right_of_way_status);
-            };
+class StageIntersectionCruiseImpl {
+ public:
+  bool CheckDone(const Frame& frame,
+                 const ScenarioType& scenario_type,
+                 const ScenarioConfig::StageConfig& config,
+                 const PlanningContext* context,
+                 const bool right_of_way_status);
+};
 
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

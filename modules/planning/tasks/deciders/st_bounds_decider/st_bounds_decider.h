@@ -36,66 +36,62 @@
 #include "modules/planning/tasks/deciders/st_bounds_decider/st_obstacles_processor.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        constexpr double kSTBoundsDeciderResolution = 0.1;
-        constexpr double kSTPassableThreshold = 3.0;
+constexpr double kSTBoundsDeciderResolution = 0.1;
+constexpr double kSTPassableThreshold = 3.0;
 
-        class STBoundsDecider : public Decider {
-        public:
-            STBoundsDecider(const TaskConfig &config,
-                            const std::shared_ptr <DependencyInjector> &injector);
+class STBoundsDecider : public Decider {
+ public:
+  STBoundsDecider(const TaskConfig& config,
+                  const std::shared_ptr<DependencyInjector>& injector);
 
-        private:
-            common::Status Process(Frame *const frame,
-                                   ReferenceLineInfo *const reference_line_info) override;
+ private:
+  common::Status Process(Frame* const frame,
+                         ReferenceLineInfo* const reference_line_info) override;
 
-            void InitSTBoundsDecider(const Frame &frame,
-                                     ReferenceLineInfo *const reference_line_info);
+  void InitSTBoundsDecider(const Frame& frame,
+                           ReferenceLineInfo* const reference_line_info);
 
-            common::Status GenerateFallbackSTBound(
-                    std::vector <std::tuple<double, double, double>> *const st_bound,
-                    std::vector <std::tuple<double, double, double>> *const vt_bound);
+  common::Status GenerateFallbackSTBound(
+      std::vector<std::tuple<double, double, double>>* const st_bound,
+      std::vector<std::tuple<double, double, double>>* const vt_bound);
 
-            common::Status GenerateRegularSTBound(
-                    std::vector <std::tuple<double, double, double>> *const st_bound,
-                    std::vector <std::tuple<double, double, double>> *const vt_bound,
-                    std::vector <std::pair<double, double>> *const st_guide_line);
+  common::Status GenerateRegularSTBound(
+      std::vector<std::tuple<double, double, double>>* const st_bound,
+      std::vector<std::tuple<double, double, double>>* const vt_bound,
+      std::vector<std::pair<double, double>>* const st_guide_line);
 
-            void RemoveInvalidDecisions(
-                    std::pair<double, double> driving_limit,
-                    std::vector <
-                    std::pair<std::tuple < double, double, double>,
-                    std::vector<std::pair < std::string, ObjectDecisionType>>
+  void RemoveInvalidDecisions(
+      std::pair<double, double> driving_limit,
+      std::vector<
+          std::pair<std::tuple<double, double, double>,
+                    std::vector<std::pair<std::string, ObjectDecisionType>>>>*
+          available_choices);
 
-            >>*
-            available_choices);
+  void RankDecisions(
+      double s_guide_line, std::pair<double, double> driving_limit,
+      std::vector<
+          std::pair<std::tuple<double, double, double>,
+                    std::vector<std::pair<std::string, ObjectDecisionType>>>>*
+          available_choices);
 
-            void RankDecisions(
-                    double s_guide_line, std::pair<double, double> driving_limit,
-                    std::vector <
-                    std::pair<std::tuple < double, double, double>,
-                    std::vector<std::pair < std::string, ObjectDecisionType>>
+  bool BackwardFlatten(
+      std::vector<std::tuple<double, double, double>>* const st_bound);
 
-            >>*
-            available_choices);
+  void RecordSTGraphDebug(
+      const std::vector<STBoundary>& st_graph_data,
+      const std::vector<std::tuple<double, double, double>>& st_bound,
+      const std::vector<std::pair<double, double>>& st_guide_line,
+      planning_internal::STGraphDebug* const st_graph_debug);
 
-            bool BackwardFlatten(
-                    std::vector <std::tuple<double, double, double>> *const st_bound);
+ private:
+  STBoundsDeciderConfig st_bounds_config_;
 
-            void RecordSTGraphDebug(
-                    const std::vector <STBoundary> &st_graph_data,
-                    const std::vector <std::tuple<double, double, double>> &st_bound,
-                    const std::vector <std::pair<double, double>> &st_guide_line,
-                    planning_internal::STGraphDebug *const st_graph_debug);
+  STGuideLine st_guide_line_;
+  STDrivingLimits st_driving_limits_;
+  STObstaclesProcessor st_obstacles_processor_;
+};
 
-        private:
-            STBoundsDeciderConfig st_bounds_config_;
-
-            STGuideLine st_guide_line_;
-            STDrivingLimits st_driving_limits_;
-            STObstaclesProcessor st_obstacles_processor_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

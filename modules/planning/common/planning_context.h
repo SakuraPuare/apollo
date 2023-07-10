@@ -28,27 +28,25 @@
  * persistent across multiple frames.
  */
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class PlanningContext {
-        public:
-            PlanningContext() = default;
+class PlanningContext {
+ public:
+  PlanningContext() = default;
 
-            void Clear();
+  void Clear();
+  void Init();
 
-            void Init();
+  /*
+   * please put all status info inside PlanningStatus for easy maintenance.
+   * do NOT create new struct at this level.
+   * */
+  const PlanningStatus& planning_status() const { return planning_status_; }
+  PlanningStatus* mutable_planning_status() { return &planning_status_; }
 
-            /*
-             * please put all status info inside PlanningStatus for easy maintenance.
-             * do NOT create new struct at this level.
-             * */
-            const PlanningStatus &planning_status() const { return planning_status_; }
+ private:
+  PlanningStatus planning_status_;
+};
 
-            PlanningStatus *mutable_planning_status() { return &planning_status_; }
-
-        private:
-            PlanningStatus planning_status_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

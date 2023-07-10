@@ -26,32 +26,32 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace valet_parking {
+namespace planning {
+namespace scenario {
+namespace valet_parking {
 
-                class StageParking : public Stage {
-                public:
-                    StageParking(const ScenarioConfig::StageConfig &config,
-                                 const std::shared_ptr <DependencyInjector> &injector)
-                            : Stage(config, injector) {}
+class StageParking : public Stage {
+ public:
+  StageParking(const ScenarioConfig::StageConfig& config,
+               const std::shared_ptr<DependencyInjector>& injector)
+      : Stage(config, injector) {}
 
-                private:
-                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
-                                               Frame *frame) override;
+ private:
+  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
+                             Frame* frame) override;
 
-                    ValetParkingContext *GetContext() {
-                        return GetContextAs<ValetParkingContext>();
-                    }
+  ValetParkingContext* GetContext() {
+    return GetContextAs<ValetParkingContext>();
+  }
 
-                private:
-                    Stage::StageStatus FinishStage();
+ private:
+  Stage::StageStatus FinishStage();
 
-                private:
-                    ScenarioValetParkingConfig scenario_config_;
-                };
+ private:
+  ScenarioValetParkingConfig scenario_config_;
+};
 
-            }  // namespace valet_parking
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace valet_parking
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

@@ -25,28 +25,27 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 /**
  * This class decides whether we should send rerouting request based on traffic
  * situation.
  */
-        class Rerouting : public TrafficRule {
-        public:
-            Rerouting(const TrafficRuleConfig &config,
-                      const std::shared_ptr <DependencyInjector> &injector);
+class Rerouting : public TrafficRule {
+ public:
+  Rerouting(const TrafficRuleConfig& config,
+            const std::shared_ptr<DependencyInjector>& injector);
+  virtual ~Rerouting() = default;
 
-            virtual ~Rerouting() = default;
+  common::Status ApplyRule(Frame* const frame,
+                           ReferenceLineInfo* const reference_line_info);
 
-            common::Status ApplyRule(Frame *const frame,
-                                     ReferenceLineInfo *const reference_line_info);
+ private:
+  bool ChangeLaneFailRerouting();
 
-        private:
-            bool ChangeLaneFailRerouting();
+  ReferenceLineInfo* reference_line_info_ = nullptr;
+  Frame* frame_ = nullptr;
+};
 
-            ReferenceLineInfo *reference_line_info_ = nullptr;
-            Frame *frame_ = nullptr;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

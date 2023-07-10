@@ -24,27 +24,26 @@
 #include "modules/common_msgs/planning_msgs/planning.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class PublishableTrajectory : public DiscretizedTrajectory {
-        public:
-            PublishableTrajectory() = default;
+class PublishableTrajectory : public DiscretizedTrajectory {
+ public:
+  PublishableTrajectory() = default;
 
-            PublishableTrajectory(const double header_time,
-                                  const DiscretizedTrajectory &discretized_trajectory);
+  PublishableTrajectory(const double header_time,
+                        const DiscretizedTrajectory& discretized_trajectory);
+  /**
+   * Create a publishable trajectory based on a trajectory protobuf
+   */
+  explicit PublishableTrajectory(const ADCTrajectory& trajectory_pb);
 
-            /**
-             * Create a publishable trajectory based on a trajectory protobuf
-             */
-            explicit PublishableTrajectory(const ADCTrajectory &trajectory_pb);
+  double header_time() const;
 
-            double header_time() const;
+  void PopulateTrajectoryProtobuf(ADCTrajectory* trajectory_pb) const;
 
-            void PopulateTrajectoryProtobuf(ADCTrajectory *trajectory_pb) const;
+ private:
+  double header_time_ = 0.0;
+};
 
-        private:
-            double header_time_ = 0.0;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

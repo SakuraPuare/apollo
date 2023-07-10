@@ -32,55 +32,53 @@
 #include "modules/planning/scenarios/scenario.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace stop_sign {
+namespace planning {
+namespace scenario {
+namespace stop_sign {
 
 // stage context
-                struct StopSignUnprotectedContext {
-                    ScenarioStopSignUnprotectedConfig scenario_config;
-                    std::string current_stop_sign_overlap_id;
-                    double stop_start_time = 0.0;
-                    double creep_start_time = 0.0;
-                    // watch_vehicle: <lane_id, perception_obstacle_ids>
-                    std::unordered_map <std::string, std::vector<std::string>> watch_vehicles;
-                    std::vector <std::pair<hdmap::LaneInfoConstPtr, hdmap::OverlapInfoConstPtr>>
-                            associated_lanes;
-                };
+struct StopSignUnprotectedContext {
+  ScenarioStopSignUnprotectedConfig scenario_config;
+  std::string current_stop_sign_overlap_id;
+  double stop_start_time = 0.0;
+  double creep_start_time = 0.0;
+  // watch_vehicle: <lane_id, perception_obstacle_ids>
+  std::unordered_map<std::string, std::vector<std::string>> watch_vehicles;
+  std::vector<std::pair<hdmap::LaneInfoConstPtr, hdmap::OverlapInfoConstPtr>>
+      associated_lanes;
+};
 
-                class StopSignUnprotectedScenario : public Scenario {
-                public:
-                    StopSignUnprotectedScenario(
-                            const ScenarioConfig &config, const ScenarioContext *context,
-                            const std::shared_ptr <DependencyInjector> &injector)
-                            : Scenario(config, context, injector) {}
+class StopSignUnprotectedScenario : public Scenario {
+ public:
+  StopSignUnprotectedScenario(
+      const ScenarioConfig& config, const ScenarioContext* context,
+      const std::shared_ptr<DependencyInjector>& injector)
+      : Scenario(config, context, injector) {}
 
-                    void Init() override;
+  void Init() override;
 
-                    std::unique_ptr <Stage> CreateStage(
-                            const ScenarioConfig::StageConfig &stage_config,
-                            const std::shared_ptr <DependencyInjector> &injector);
+  std::unique_ptr<Stage> CreateStage(
+      const ScenarioConfig::StageConfig& stage_config,
+      const std::shared_ptr<DependencyInjector>& injector);
 
-                    StopSignUnprotectedContext *GetContext() { return &context_; }
+  StopSignUnprotectedContext* GetContext() { return &context_; }
 
-                private:
-                    static void RegisterStages();
+ private:
+  static void RegisterStages();
+  bool GetScenarioConfig();
+  int GetAssociatedLanes(const hdmap::StopSignInfo& stop_sign_info);
 
-                    bool GetScenarioConfig();
+ private:
+  static apollo::common::util::Factory<
+      StageType, Stage,
+      Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
+                 const std::shared_ptr<DependencyInjector>& injector)>
+      s_stage_factory_;
+  bool init_ = false;
+  StopSignUnprotectedContext context_;
+};
 
-                    int GetAssociatedLanes(const hdmap::StopSignInfo &stop_sign_info);
-
-                private:
-                    static apollo::common::util::Factory<
-                            StageType, Stage,
-                            Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
-                                       const std::shared_ptr <DependencyInjector> &injector)>
-                            s_stage_factory_;
-                    bool init_ = false;
-                    StopSignUnprotectedContext context_;
-                };
-
-            }  // namespace stop_sign
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace stop_sign
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

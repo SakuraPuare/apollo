@@ -21,33 +21,27 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
+namespace planning {
+namespace scenario {
 
-            class StageRunTest : public ::testing::Test {
-            public:
-                virtual void SetUp() {
-                    config_.set_stage_type(StageType::LEARNING_MODEL_RUN);
-                    injector_ = std::make_shared<DependencyInjector>();
-                }
+class StageRunTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_stage_type(StageType::LEARNING_MODEL_RUN);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-            protected:
-                ScenarioConfig::StageConfig config_;
-                std::shared_ptr <DependencyInjector> injector_;
-            };
+ protected:
+  ScenarioConfig::StageConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-            TEST_F(StageRunTest, Init
-            ) {
-            LearningModelSampleStageRun learning_model_stage_run(config_, injector_);
-            EXPECT_EQ(learning_model_stage_run
-            .
+TEST_F(StageRunTest, Init) {
+  LearningModelSampleStageRun learning_model_stage_run(config_, injector_);
+  EXPECT_EQ(learning_model_stage_run.Name(),
+            StageType_Name(StageType::LEARNING_MODEL_RUN));
+}
 
-            Name(),
-                    StageType_Name(StageType::LEARNING_MODEL_RUN)
-
-            );
-        }
-
-    }  // namespace scenario
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

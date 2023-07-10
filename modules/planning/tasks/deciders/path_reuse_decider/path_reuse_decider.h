@@ -32,53 +32,51 @@
 #include "modules/planning/tasks/deciders/decider.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class PathReuseDecider : public Decider {
-        public:
-            PathReuseDecider(const TaskConfig &config,
-                             const std::shared_ptr <DependencyInjector> &injector);
+class PathReuseDecider : public Decider {
+ public:
+  PathReuseDecider(const TaskConfig& config,
+                   const std::shared_ptr<DependencyInjector>& injector);
 
-        private:
-            common::Status Process(Frame *frame,
-                                   ReferenceLineInfo *reference_line_info) override;
+ private:
+  common::Status Process(Frame* frame,
+                         ReferenceLineInfo* reference_line_info) override;
 
-            void GetCurrentStopPositions(
-                    Frame *frame,
-                    std::vector<const common::PointENU *> *current_stop_positions);
+  void GetCurrentStopPositions(
+      Frame* frame,
+      std::vector<const common::PointENU*>* current_stop_positions);
 
-            // get current s_projection of history objects which has stop decisions
-            void GetHistoryStopPositions(
-                    ReferenceLineInfo *const reference_line_info,
-                    const std::vector<const HistoryObjectDecision *> &
-                    history_objects_decisions,
-                    std::vector <std::pair<const double, const common::PointENU>> *
-                    history_stop_positions);
+  // get current s_projection of history objects which has stop decisions
+  void GetHistoryStopPositions(
+      ReferenceLineInfo* const reference_line_info,
+      const std::vector<const HistoryObjectDecision*>&
+          history_objects_decisions,
+      std::vector<std::pair<const double, const common::PointENU>>*
+          history_stop_positions);
 
-            void GetADCSLPoint(const ReferenceLine &reference_line,
-                               common::SLPoint *adc_position_sl);
+  void GetADCSLPoint(const ReferenceLine& reference_line,
+                     common::SLPoint* adc_position_sl);
 
-            bool GetBlockingObstacleS(ReferenceLineInfo *const reference_line_info,
-                                      double *blocking_obstacle_s);
+  bool GetBlockingObstacleS(ReferenceLineInfo* const reference_line_info,
+                            double* blocking_obstacle_s);
+  // ignore blocking obstacle when it is far away
+  bool IsIgnoredBlockingObstacle(ReferenceLineInfo* const reference_line_info);
+  // check if path is collision free
+  bool IsCollisionFree(ReferenceLineInfo* const reference_line_info);
 
-            // ignore blocking obstacle when it is far away
-            bool IsIgnoredBlockingObstacle(ReferenceLineInfo *const reference_line_info);
+  // check path length
+  bool NotShortPath(const DiscretizedPath& current_path);
 
-            // check if path is collision free
-            bool IsCollisionFree(ReferenceLineInfo *const reference_line_info);
+  // trim history path
+  bool TrimHistoryPath(Frame* frame,
+                       ReferenceLineInfo* const reference_line_info);
 
-            // check path length
-            bool NotShortPath(const DiscretizedPath &current_path);
+ private:
+  static int reusable_path_counter_;  // count reused path
+  static int total_path_counter_;     // count total path
+  static bool path_reusable_;
+};
 
-            // trim history path
-            bool TrimHistoryPath(Frame *frame,
-                                 ReferenceLineInfo *const reference_line_info);
-
-        private:
-            static int reusable_path_counter_;  // count reused path
-            static int total_path_counter_;     // count total path
-            static bool path_reusable_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

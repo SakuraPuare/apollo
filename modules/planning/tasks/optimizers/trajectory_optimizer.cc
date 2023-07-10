@@ -23,22 +23,22 @@
 #include <memory>
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        using apollo::common::Status;
+using apollo::common::Status;
 
-        TrajectoryOptimizer::TrajectoryOptimizer(const TaskConfig &config)
-                : Task(config) {}
+TrajectoryOptimizer::TrajectoryOptimizer(const TaskConfig& config)
+    : Task(config) {}
 
-        TrajectoryOptimizer::TrajectoryOptimizer(
-                const TaskConfig &config,
-                const std::shared_ptr <DependencyInjector> &injector)
-                : Task(config, injector) {}
+TrajectoryOptimizer::TrajectoryOptimizer(
+    const TaskConfig& config,
+    const std::shared_ptr<DependencyInjector>& injector)
+    : Task(config, injector) {}
 
-        Status TrajectoryOptimizer::Execute(Frame *frame) {
-            Task::Execute(frame);
-            return Process();
-        }
+Status TrajectoryOptimizer::Execute(Frame* frame) {
+  Task::Execute(frame);
+  return Process();
+}
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

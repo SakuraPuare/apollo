@@ -26,37 +26,37 @@
 #include "modules/planning/reference_line/reference_line.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        struct AnchorPoint {
-            common::PathPoint path_point;
-            double lateral_bound = 0.0;
-            double longitudinal_bound = 0.0;
-            // enforce smoother to strictly follow this reference point
-            bool enforced = false;
-        };
+struct AnchorPoint {
+  common::PathPoint path_point;
+  double lateral_bound = 0.0;
+  double longitudinal_bound = 0.0;
+  // enforce smoother to strictly follow this reference point
+  bool enforced = false;
+};
 
-        class ReferenceLineSmoother {
-        public:
-            explicit ReferenceLineSmoother(const ReferenceLineSmootherConfig &config)
-                    : config_(config) {}
+class ReferenceLineSmoother {
+ public:
+  explicit ReferenceLineSmoother(const ReferenceLineSmootherConfig& config)
+      : config_(config) {}
 
-            /**
-             * Smoothing constraints
-             */
-            virtual void SetAnchorPoints(
-                    const std::vector <AnchorPoint> &achor_points) = 0;
+  /**
+   * Smoothing constraints
+   */
+  virtual void SetAnchorPoints(
+      const std::vector<AnchorPoint>& achor_points) = 0;
 
-            /**
-             * Smooth a given reference line
-             */
-            virtual bool Smooth(const ReferenceLine &, ReferenceLine *const) = 0;
+  /**
+   * Smooth a given reference line
+   */
+  virtual bool Smooth(const ReferenceLine&, ReferenceLine* const) = 0;
 
-            virtual ~ReferenceLineSmoother() = default;
+  virtual ~ReferenceLineSmoother() = default;
 
-        protected:
-            ReferenceLineSmootherConfig config_;
-        };
+ protected:
+  ReferenceLineSmootherConfig config_;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

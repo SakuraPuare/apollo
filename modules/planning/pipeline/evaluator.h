@@ -22,25 +22,24 @@
 #include "modules/planning/proto/learning_data.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class Evaluator {
-        public:
-            void Init();
+class Evaluator {
+ public:
+  void Init();
+  void Close();
 
-            void Close();
+  void Evaluate(const std::string& source_file);
 
-            void Evaluate(const std::string &source_file);
+ private:
+  void WriteOutData(const std::string& source_filename,
+                    const LearningData& learning_data);
 
-        private:
-            void WriteOutData(const std::string &source_filename,
-                              const LearningData &learning_data);
+ private:
+  std::chrono::time_point<std::chrono::system_clock> start_time_;
+  LearningData learning_data_;
+  TrajectoryEvaluator trajectory_evaluator_;
+};
 
-        private:
-            std::chrono::time_point <std::chrono::system_clock> start_time_;
-            LearningData learning_data_;
-            TrajectoryEvaluator trajectory_evaluator_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

@@ -24,34 +24,28 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class CreepDeciderTest : public ::testing::Test {
-        public:
-            virtual void SetUp() {
-                config_.set_task_type(TaskConfig::CREEP_DECIDER);
-                config_.mutable_creep_decider_config();
-                injector_ = std::make_shared<DependencyInjector>();
-            }
+class CreepDeciderTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_task_type(TaskConfig::CREEP_DECIDER);
+    config_.mutable_creep_decider_config();
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-            virtual void TearDown() {}
+  virtual void TearDown() {}
 
-        protected:
-            TaskConfig config_;
-            std::shared_ptr <DependencyInjector> injector_;
-        };
+ protected:
+  TaskConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-        TEST_F(CreepDeciderTest, Init
-        ) {
-        CreepDecider creep_decider(config_, injector_);
-        EXPECT_EQ(creep_decider
-        .
-
-        Name(),
-                TaskConfig::TaskType_Name(config_.task_type())
-
-        );
-    }
+TEST_F(CreepDeciderTest, Init) {
+  CreepDecider creep_decider(config_, injector_);
+  EXPECT_EQ(creep_decider.Name(),
+            TaskConfig::TaskType_Name(config_.task_type()));
+}
 
 }  // namespace planning
 }  // namespace apollo

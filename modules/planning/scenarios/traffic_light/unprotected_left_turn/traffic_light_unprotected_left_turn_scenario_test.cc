@@ -26,45 +26,36 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace traffic_light {
+namespace planning {
+namespace scenario {
+namespace traffic_light {
 
-                class TrafficLightUnprotectedLeftTurnScenarioTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {}
+class TrafficLightUnprotectedLeftTurnScenarioTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {}
 
-                protected:
-                    std::unique_ptr <TrafficLightUnprotectedLeftTurnScenario> scenario_;
-                };
+ protected:
+  std::unique_ptr<TrafficLightUnprotectedLeftTurnScenario> scenario_;
+};
 
-                TEST_F(TrafficLightUnprotectedLeftTurnScenarioTest, Init
-                ) {
-                FLAGS_scenario_traffic_light_unprotected_left_turn_config_file =
-                "/apollo/modules/planning/conf/"
-                "scenario/traffic_light_unprotected_left_turn_config.pb.txt";
+TEST_F(TrafficLightUnprotectedLeftTurnScenarioTest, Init) {
+  FLAGS_scenario_traffic_light_unprotected_left_turn_config_file =
+      "/apollo/modules/planning/conf/"
+      "scenario/traffic_light_unprotected_left_turn_config.pb.txt";
 
-                ScenarioConfig config;
-                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-                        FLAGS_scenario_traffic_light_unprotected_left_turn_config_file, &config)
-                );
+  ScenarioConfig config;
+  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+      FLAGS_scenario_traffic_light_unprotected_left_turn_config_file, &config));
 
-                ScenarioContext context;
-                auto injector = std::make_shared<DependencyInjector>();
-                scenario_.reset(
-                new
-                TrafficLightUnprotectedLeftTurnScenario(config, &context, injector
-                ));
-                EXPECT_EQ(scenario_
-                ->
+  ScenarioContext context;
+  auto injector = std::make_shared<DependencyInjector>();
+  scenario_.reset(
+      new TrafficLightUnprotectedLeftTurnScenario(config, &context, injector));
+  EXPECT_EQ(scenario_->scenario_type(),
+            ScenarioType::TRAFFIC_LIGHT_UNPROTECTED_LEFT_TURN);
+}
 
-                scenario_type(),
-                        ScenarioType::TRAFFIC_LIGHT_UNPROTECTED_LEFT_TURN
-
-                );
-            }
-
-        }  // namespace traffic_light
-    }  // namespace scenario
+}  // namespace traffic_light
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

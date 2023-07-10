@@ -22,11 +22,9 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        TEST(DualVariableWarmStartProblem, SetUp
-        ) {
-    }
+TEST(DualVariableWarmStartProblem, SetUp) {}
 
 }  // namespace planning
 }  // namespace apollo

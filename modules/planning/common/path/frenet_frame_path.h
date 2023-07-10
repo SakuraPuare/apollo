@@ -27,35 +27,32 @@
 #include "modules/common_msgs/planning_msgs/sl_boundary.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class FrenetFramePath : public std::vector<common::FrenetFramePoint> {
-        public:
-            FrenetFramePath() = default;
+class FrenetFramePath : public std::vector<common::FrenetFramePoint> {
+ public:
+  FrenetFramePath() = default;
+  explicit FrenetFramePath(std::vector<common::FrenetFramePoint> points);
 
-            explicit FrenetFramePath(std::vector <common::FrenetFramePoint> points);
+  double Length() const;
+  common::FrenetFramePoint EvaluateByS(const double s) const;
 
-            double Length() const;
+  /**
+   * @brief Get the FrenetFramePoint that is within SLBoundary, or the one with
+   * smallest l() in SLBoundary's s range [start_s(), end_s()]
+   */
+  common::FrenetFramePoint GetNearestPoint(const SLBoundary &sl) const;
 
-            common::FrenetFramePoint EvaluateByS(const double s) const;
+ private:
+  static bool LowerBoundComparator(const common::FrenetFramePoint &p,
+                                   const double s) {
+    return p.s() < s;
+  }
+  static bool UpperBoundComparator(const double s,
+                                   const common::FrenetFramePoint &p) {
+    return s < p.s();
+  }
+};
 
-            /**
-             * @brief Get the FrenetFramePoint that is within SLBoundary, or the one with
-             * smallest l() in SLBoundary's s range [start_s(), end_s()]
-             */
-            common::FrenetFramePoint GetNearestPoint(const SLBoundary &sl) const;
-
-        private:
-            static bool LowerBoundComparator(const common::FrenetFramePoint &p,
-                                             const double s) {
-                return p.s() < s;
-            }
-
-            static bool UpperBoundComparator(const double s,
-                                             const common::FrenetFramePoint &p) {
-                return s < p.s();
-            }
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

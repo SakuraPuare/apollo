@@ -27,43 +27,34 @@
 #include "modules/planning/math/polynomial_xd.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class Spline1dSeg {
-        public:
-            // order represents the highest order.
-            explicit Spline1dSeg(const uint32_t order);
+class Spline1dSeg {
+ public:
+  // order represents the highest order.
+  explicit Spline1dSeg(const uint32_t order);
+  explicit Spline1dSeg(const std::vector<double>& params);
+  ~Spline1dSeg() = default;
 
-            explicit Spline1dSeg(const std::vector<double> &params);
+  void SetParams(const std::vector<double>& params);
+  double operator()(const double x) const;
+  double Derivative(const double x) const;
+  double SecondOrderDerivative(const double x) const;
+  double ThirdOrderDerivative(const double x) const;
 
-            ~Spline1dSeg() = default;
+  const PolynomialXd& spline_func() const;
+  const PolynomialXd& Derivative() const;
+  const PolynomialXd& SecondOrderDerivative() const;
+  const PolynomialXd& ThirdOrderDerivative() const;
 
-            void SetParams(const std::vector<double> &params);
+ private:
+  inline void SetSplineFunc(const PolynomialXd& spline_func);
 
-            double operator()(const double x) const;
+  PolynomialXd spline_func_;
+  PolynomialXd derivative_;
+  PolynomialXd second_order_derivative_;
+  PolynomialXd third_order_derivative_;
+};
 
-            double Derivative(const double x) const;
-
-            double SecondOrderDerivative(const double x) const;
-
-            double ThirdOrderDerivative(const double x) const;
-
-            const PolynomialXd &spline_func() const;
-
-            const PolynomialXd &Derivative() const;
-
-            const PolynomialXd &SecondOrderDerivative() const;
-
-            const PolynomialXd &ThirdOrderDerivative() const;
-
-        private:
-            inline void SetSplineFunc(const PolynomialXd &spline_func);
-
-            PolynomialXd spline_func_;
-            PolynomialXd derivative_;
-            PolynomialXd second_order_derivative_;
-            PolynomialXd third_order_derivative_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

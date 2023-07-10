@@ -25,32 +25,32 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        using apollo::common::Status;
+using apollo::common::Status;
 
-        Task::Task(const TaskConfig &config) : config_(config) {
-            name_ = TaskConfig::TaskType_Name(config_.task_type());
-        }
+Task::Task(const TaskConfig& config) : config_(config) {
+  name_ = TaskConfig::TaskType_Name(config_.task_type());
+}
 
-        Task::Task(const TaskConfig &config,
-                   const std::shared_ptr <DependencyInjector> &injector)
-                : config_(config), injector_(injector) {
-            name_ = TaskConfig::TaskType_Name(config_.task_type());
-        }
+Task::Task(const TaskConfig& config,
+           const std::shared_ptr<DependencyInjector>& injector)
+    : config_(config), injector_(injector) {
+  name_ = TaskConfig::TaskType_Name(config_.task_type());
+}
 
-        const std::string &Task::Name() const { return name_; }
+const std::string& Task::Name() const { return name_; }
 
-        Status Task::Execute(Frame *frame, ReferenceLineInfo *reference_line_info) {
-            frame_ = frame;
-            reference_line_info_ = reference_line_info;
-            return Status::OK();
-        }
+Status Task::Execute(Frame* frame, ReferenceLineInfo* reference_line_info) {
+  frame_ = frame;
+  reference_line_info_ = reference_line_info;
+  return Status::OK();
+}
 
-        Status Task::Execute(Frame *frame) {
-            frame_ = frame;
-            return Status::OK();
-        }
+Status Task::Execute(Frame* frame) {
+  frame_ = frame;
+  return Status::OK();
+}
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

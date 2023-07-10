@@ -33,37 +33,36 @@
 #include "modules/planning/scenarios/util/util.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace park_and_go {
+namespace planning {
+namespace scenario {
+namespace park_and_go {
 
-                struct ParkAndGoContext;
+struct ParkAndGoContext;
 
-                class ParkAndGoStageCheck : public Stage {
-                public:
-                    ParkAndGoStageCheck(const ScenarioConfig::StageConfig &config,
-                                        const std::shared_ptr <DependencyInjector> &injector)
-                            : Stage(config, injector) {}
+class ParkAndGoStageCheck : public Stage {
+ public:
+  ParkAndGoStageCheck(const ScenarioConfig::StageConfig& config,
+                      const std::shared_ptr<DependencyInjector>& injector)
+      : Stage(config, injector) {}
 
-                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
-                                               Frame *frame) override;
+  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
+                             Frame* frame) override;
 
-                    ParkAndGoContext *GetContext() {
-                        return Stage::GetContextAs<ParkAndGoContext>();
-                    }
+  ParkAndGoContext* GetContext() {
+    return Stage::GetContextAs<ParkAndGoContext>();
+  }
 
-                    Stage::StageStatus FinishStage(const bool success);
+  Stage::StageStatus FinishStage(const bool success);
 
-                private:
-                    bool CheckObstacle(const ReferenceLineInfo &reference_line_info);
+ private:
+  bool CheckObstacle(const ReferenceLineInfo& reference_line_info);
+  void ADCInitStatus();
 
-                    void ADCInitStatus();
+ private:
+  ScenarioParkAndGoConfig scenario_config_;
+};
 
-                private:
-                    ScenarioParkAndGoConfig scenario_config_;
-                };
-
-            }  // namespace park_and_go
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace park_and_go
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

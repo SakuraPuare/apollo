@@ -25,11 +25,9 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        TEST(SpeedProfileGeneratorTest, GenerateFallbackSpeedProfile
-        ) {
-    }
+TEST(SpeedProfileGeneratorTest, GenerateFallbackSpeedProfile) {}
 
 }  // namespace planning
 }  // namespace apollo

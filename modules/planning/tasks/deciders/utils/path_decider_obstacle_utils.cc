@@ -23,86 +23,63 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        bool IsWithinPathDeciderScopeObstacle(const Obstacle &obstacle) {
-            // Obstacle should be non-virtual.
-            if (obstacle.IsVirtual()) {
-                return false;
-            }
-            // Obstacle should not have ignore decision.
-            if (obstacle.HasLongitudinalDecision() && obstacle.HasLateralDecision() &&
-                obstacle.IsIgnore()) {
-                return false;
-            }
-            if (obstacle.Perception().type() == 1 && obstacle.speed() < 10.5){
-                return true;
-            }
-            // Obstacle should not be pedestrian or bicycle.
-            if (obstacle.Perception().type() == 3 || obstacle.Perception().type() == 4){
-                return false;
-            }
-            // Obstacle should not be moving obstacle.
-            if (obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
-                return false;
-            }
-            // Obstacle should not be moving obstacle.
-            // if (!obstacle.IsStatic() ||
-            //     obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
-            //     return false;
-            // }
+bool IsWithinPathDeciderScopeObstacle(const Obstacle& obstacle) {
+  // Obstacle should be non-virtual.
+  if (obstacle.IsVirtual()) {
+    return false;
+  }
+  // Obstacle should not have ignore decision.
+  if (obstacle.HasLongitudinalDecision() && obstacle.HasLateralDecision() &&
+      obstacle.IsIgnore()) {
+    return false;
+  }
+  // Obstacle should not be moving obstacle.
+  if (!obstacle.IsStatic() ||
+      obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {
+    return false;
+  }
+  // TODO(jiacheng):
+  // Some obstacles are not moving, but only because they are waiting for
+  // red light (traffic rule) or because they are blocked by others (social).
+  // These obstacles will almost certainly move in the near future and we
+  // should not side-pass such obstacles.
 
-            // TODO(jiacheng):
-            // Some obstacles are not moving, but only because they are waiting for
-            // red light (traffic rule) or because they are blocked by others (social).
-            // These obstacles will almost certainly move in the near future and we
-            // should not side-pass such obstacles.
+  return true;
+}
 
-            // enum PerceptionObstacle_Type : int {
-            //     PerceptionObstacle_Type_UNKNOWN = 0,
-            //     PerceptionObstacle_Type_UNKNOWN_MOVABLE = 1,
-            //     PerceptionObstacle_Type_UNKNOWN_UNMOVABLE = 2,
-            //     PerceptionObstacle_Type_PEDESTRIAN = 3,
-            //     PerceptionObstacle_Type_BICYCLE = 4,
-            //     PerceptionObstacle_Type_VEHICLE = 5
-            // };
+bool ComputeSLBoundaryIntersection(const SLBoundary& sl_boundary,
+                                   const double s, double* ptr_l_min,
+                                   double* ptr_l_max) {
+  *ptr_l_min = std::numeric_limits<double>::max();
+  *ptr_l_max = -std::numeric_limits<double>::max();
 
-            AINFO << "Obstacle [" << obstacle.Id() << "] type : "
-                  << obstacle.Perception().type() << ", speed : " << obstacle.speed();
-            return true;
-        }
+  // invalid polygon
+  if (sl_boundary.boundary_point_size() < 3) {
+    return false;
+  }
 
-        bool ComputeSLBoundaryIntersection(const SLBoundary &sl_boundary,
-                                           const double s, double *ptr_l_min,
-                                           double *ptr_l_max) {
-            *ptr_l_min = std::numeric_limits<double>::max();
-            *ptr_l_max = -std::numeric_limits<double>::max();
+  bool has_intersection = false;
+  for (auto i = 0; i < sl_boundary.boundary_point_size(); ++i) {
+    auto j = (i + 1) % sl_boundary.boundary_point_size();
+    const auto& p0 = sl_boundary.boundary_point(i);
+    const auto& p1 = sl_boundary.boundary_point(j);
 
-            // invalid polygon
-            if (sl_boundary.boundary_point_size() < 3) {
-                return false;
-            }
+    if (common::util::WithinBound<double>(std::fmin(p0.s(), p1.s()),
+                                          std::fmax(p0.s(), p1.s()), s)) {
+      has_intersection = true;
+      auto l = common::math::lerp<double>(p0.l(), p0.s(), p1.l(), p1.s(), s);
+      if (l < *ptr_l_min) {
+        *ptr_l_min = l;
+      }
+      if (l > *ptr_l_max) {
+        *ptr_l_max = l;
+      }
+    }
+  }
+  return has_intersection;
+}
 
-            bool has_intersection = false;
-            for (auto i = 0; i < sl_boundary.boundary_point_size(); ++i) {
-                auto j = (i + 1) % sl_boundary.boundary_point_size();
-                const auto &p0 = sl_boundary.boundary_point(i);
-                const auto &p1 = sl_boundary.boundary_point(j);
-
-                if (common::util::WithinBound<double>(std::fmin(p0.s(), p1.s()),
-                                                      std::fmax(p0.s(), p1.s()), s)) {
-                    has_intersection = true;
-                    auto l = common::math::lerp<double>(p0.l(), p0.s(), p1.l(), p1.s(), s);
-                    if (l < *ptr_l_min) {
-                        *ptr_l_min = l;
-                    }
-                    if (l > *ptr_l_max) {
-                        *ptr_l_max = l;
-                    }
-                }
-            }
-            return has_intersection;
-        }
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

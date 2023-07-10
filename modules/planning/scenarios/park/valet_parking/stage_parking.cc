@@ -20,26 +20,26 @@
 #include "modules/planning/scenarios/park/valet_parking/stage_parking.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace valet_parking {
+namespace planning {
+namespace scenario {
+namespace valet_parking {
 
-                Stage::StageStatus StageParking::Process(
-                        const common::TrajectoryPoint &planning_init_point, Frame *frame) {
-                    // Open space planning doesn't use planning_init_point from upstream because
-                    // of different stitching strategy
-                    frame->mutable_open_space_info()->set_is_on_open_space_trajectory(true);
-                    bool plan_ok = ExecuteTaskOnOpenSpace(frame);
-                    if (!plan_ok) {
-                        AERROR << "StageParking planning error";
-                        return StageStatus::ERROR;
-                    }
-                    return StageStatus::RUNNING;
-                }
+Stage::StageStatus StageParking::Process(
+    const common::TrajectoryPoint& planning_init_point, Frame* frame) {
+  // Open space planning doesn't use planning_init_point from upstream because
+  // of different stitching strategy
+  frame->mutable_open_space_info()->set_is_on_open_space_trajectory(true);
+  bool plan_ok = ExecuteTaskOnOpenSpace(frame);
+  if (!plan_ok) {
+    AERROR << "StageParking planning error";
+    return StageStatus::ERROR;
+  }
+  return StageStatus::RUNNING;
+}
 
-                Stage::StageStatus StageParking::FinishStage() { return Stage::FINISHED; }
+Stage::StageStatus StageParking::FinishStage() { return Stage::FINISHED; }
 
-            }  // namespace valet_parking
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace valet_parking
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

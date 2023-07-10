@@ -30,7 +30,7 @@
  * @brief apollo::planning
  */
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 /**
  * @class RTKReplayPlanner
@@ -39,59 +39,58 @@ namespace apollo {
  *        outputs proper segment of the trajectory according to vehicle
  * position.
  */
-        class RTKReplayPlanner : public PlannerWithReferenceLine {
-        public:
-            /**
-             * @brief Constructor
-             */
-            explicit RTKReplayPlanner(
-                    const std::shared_ptr <DependencyInjector> &injector);
+class RTKReplayPlanner : public PlannerWithReferenceLine {
+ public:
+  /**
+   * @brief Constructor
+   */
+  explicit RTKReplayPlanner(
+      const std::shared_ptr<DependencyInjector>& injector);
 
-            /**
-             * @brief Destructor
-             */
-            virtual ~RTKReplayPlanner() = default;
+  /**
+   * @brief Destructor
+   */
+  virtual ~RTKReplayPlanner() = default;
 
-            std::string Name() override { return "RTK"; }
+  std::string Name() override { return "RTK"; }
 
-            apollo::common::Status Init(const PlanningConfig &config) override;
+  apollo::common::Status Init(const PlanningConfig& config) override;
 
-            void Stop() override {}
+  void Stop() override {}
 
-            /**
-             * @brief Override function Plan in parent class Planner.
-             * @param planning_init_point The trajectory point where planning starts.
-             * @param frame Current planning frame.
-             * @return OK if planning succeeds; error otherwise.
-             */
-            apollo::common::Status Plan(
-                    const common::TrajectoryPoint &planning_init_point, Frame *frame,
-                    ADCTrajectory *ptr_computed_trajectory) override;
+  /**
+   * @brief Override function Plan in parent class Planner.
+   * @param planning_init_point The trajectory point where planning starts.
+   * @param frame Current planning frame.
+   * @return OK if planning succeeds; error otherwise.
+   */
+  apollo::common::Status Plan(
+      const common::TrajectoryPoint& planning_init_point, Frame* frame,
+      ADCTrajectory* ptr_computed_trajectory) override;
 
-            /**
-             * @brief Override function Plan in parent class Planner.
-             * @param planning_init_point The trajectory point where planning starts.
-             * @param frame Current planning frame.
-             * @param reference_line_info The computed reference line.
-             * @return OK if planning succeeds; error otherwise.
-             */
-            apollo::common::Status PlanOnReferenceLine(
-                    const common::TrajectoryPoint &planning_init_point, Frame *frame,
-                    ReferenceLineInfo *reference_line_info) override;
+  /**
+   * @brief Override function Plan in parent class Planner.
+   * @param planning_init_point The trajectory point where planning starts.
+   * @param frame Current planning frame.
+   * @param reference_line_info The computed reference line.
+   * @return OK if planning succeeds; error otherwise.
+   */
+  apollo::common::Status PlanOnReferenceLine(
+      const common::TrajectoryPoint& planning_init_point, Frame* frame,
+      ReferenceLineInfo* reference_line_info) override;
+  /**
+   * @brief Read the recorded trajectory file.
+   * @param filename The name of the trajectory file.
+   */
+  void ReadTrajectoryFile(const std::string& filename);
 
-            /**
-             * @brief Read the recorded trajectory file.
-             * @param filename The name of the trajectory file.
-             */
-            void ReadTrajectoryFile(const std::string &filename);
+ private:
+  std::uint32_t QueryPositionMatchedPoint(
+      const common::TrajectoryPoint& start_point,
+      const std::vector<common::TrajectoryPoint>& trajectory) const;
 
-        private:
-            std::uint32_t QueryPositionMatchedPoint(
-                    const common::TrajectoryPoint &start_point,
-                    const std::vector <common::TrajectoryPoint> &trajectory) const;
+  std::vector<common::TrajectoryPoint> complete_rtk_trajectory_;
+};
 
-            std::vector <common::TrajectoryPoint> complete_rtk_trajectory_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

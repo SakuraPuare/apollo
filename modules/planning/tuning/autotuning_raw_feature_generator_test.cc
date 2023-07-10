@@ -23,66 +23,52 @@
 #include "modules/planning/common/local_view.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class AutotuningRawFeatureGeneratorTest : public ::testing::Test {
-        protected:
-            void SetUp() override {
-                // Reference line info
-                common::VehicleState ego_state;
-                common::TrajectoryPoint ego_pos;
-                ReferenceLine reference_line;
-                hdmap::RouteSegments segments;
-                ref_line_info_.reset(
-                        new ReferenceLineInfo(ego_state, ego_pos, reference_line, segments));
-                // pseudo empty frame info
-                LocalView dummy_local_view;
-                frame_.reset(new Frame(0, dummy_local_view, ego_pos, ego_state, nullptr));
-                speed_limit_.reset(new SpeedLimit());
-                generator_.reset(new AutotuningRawFeatureGenerator(8, 17, *ref_line_info_,
-                                                                   *frame_, *speed_limit_));
-            }
+class AutotuningRawFeatureGeneratorTest : public ::testing::Test {
+ protected:
+  void SetUp() override {
+    // Reference line info
+    common::VehicleState ego_state;
+    common::TrajectoryPoint ego_pos;
+    ReferenceLine reference_line;
+    hdmap::RouteSegments segments;
+    ref_line_info_.reset(
+        new ReferenceLineInfo(ego_state, ego_pos, reference_line, segments));
+    // pseudo empty frame info
+    LocalView dummy_local_view;
+    frame_.reset(new Frame(0, dummy_local_view, ego_pos, ego_state, nullptr));
+    speed_limit_.reset(new SpeedLimit());
+    generator_.reset(new AutotuningRawFeatureGenerator(8, 17, *ref_line_info_,
+                                                       *frame_, *speed_limit_));
+  }
 
-            void TearDown() override {
-                generator_.reset(nullptr);
-                ref_line_info_.reset(nullptr);
-                frame_.reset(nullptr);
-                speed_limit_.reset(nullptr);
-            }
+  void TearDown() override {
+    generator_.reset(nullptr);
+    ref_line_info_.reset(nullptr);
+    frame_.reset(nullptr);
+    speed_limit_.reset(nullptr);
+  }
 
-            std::unique_ptr <AutotuningRawFeatureGenerator> generator_ = nullptr;
-            std::unique_ptr <ReferenceLineInfo> ref_line_info_ = nullptr;
-            std::unique_ptr <Frame> frame_ = nullptr;
-            std::unique_ptr <SpeedLimit> speed_limit_ = nullptr;
-        };
+  std::unique_ptr<AutotuningRawFeatureGenerator> generator_ = nullptr;
+  std::unique_ptr<ReferenceLineInfo> ref_line_info_ = nullptr;
+  std::unique_ptr<Frame> frame_ = nullptr;
+  std::unique_ptr<SpeedLimit> speed_limit_ = nullptr;
+};
 
-        TEST_F(AutotuningRawFeatureGeneratorTest, generate_input_trajectory
-        ) {
-        // init trajectory
-        std::vector <common::TrajectoryPoint> trajectory;
-        ASSERT_TRUE(generator_
-        != nullptr);
-        auto result = generator_->EvaluateTrajectory(trajectory, nullptr);
-        EXPECT_TRUE(result
-        .
+TEST_F(AutotuningRawFeatureGeneratorTest, generate_input_trajectory) {
+  // init trajectory
+  std::vector<common::TrajectoryPoint> trajectory;
+  ASSERT_TRUE(generator_ != nullptr);
+  auto result = generator_->EvaluateTrajectory(trajectory, nullptr);
+  EXPECT_TRUE(result.ok());
+}
 
-        ok()
-
-        );
-    }
-
-    TEST_F(AutotuningRawFeatureGeneratorTest, generate_input_trajectory_pointwise
-    ) {
-    common::TrajectoryPoint trajectory_point;
-    ASSERT_TRUE(generator_
-    != nullptr);
-    auto result = generator_->EvaluateTrajectoryPoint(trajectory_point, nullptr);
-    EXPECT_TRUE(result
-    .
-
-    ok()
-
-    );
+TEST_F(AutotuningRawFeatureGeneratorTest, generate_input_trajectory_pointwise) {
+  common::TrajectoryPoint trajectory_point;
+  ASSERT_TRUE(generator_ != nullptr);
+  auto result = generator_->EvaluateTrajectoryPoint(trajectory_point, nullptr);
+  EXPECT_TRUE(result.ok());
 }
 
 }  // namespace planning

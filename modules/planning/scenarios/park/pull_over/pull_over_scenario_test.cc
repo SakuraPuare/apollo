@@ -26,41 +26,32 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace pull_over {
+namespace planning {
+namespace scenario {
+namespace pull_over {
 
-                class PullOverScenarioTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {}
+class PullOverScenarioTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {}
 
-                protected:
-                    std::unique_ptr <PullOverScenario> scenario_;
-                };
+ protected:
+  std::unique_ptr<PullOverScenario> scenario_;
+};
 
-                TEST_F(PullOverScenarioTest, Init
-                ) {
-                FLAGS_scenario_pull_over_config_file =
-                "/apollo/modules/planning/conf/scenario/pull_over_config.pb.txt";
+TEST_F(PullOverScenarioTest, Init) {
+  FLAGS_scenario_pull_over_config_file =
+      "/apollo/modules/planning/conf/scenario/pull_over_config.pb.txt";
 
-                ScenarioConfig config;
-                EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
-                        FLAGS_scenario_pull_over_config_file, &config)
-                );
-                ScenarioContext context;
-                auto injector = std::make_shared<DependencyInjector>();
-                scenario_.reset(new
-                PullOverScenario(config, &context, injector
-                ));
-                EXPECT_EQ(scenario_
-                ->
+  ScenarioConfig config;
+  EXPECT_TRUE(apollo::cyber::common::GetProtoFromFile(
+      FLAGS_scenario_pull_over_config_file, &config));
+  ScenarioContext context;
+  auto injector = std::make_shared<DependencyInjector>();
+  scenario_.reset(new PullOverScenario(config, &context, injector));
+  EXPECT_EQ(scenario_->scenario_type(), ScenarioType::PULL_OVER);
+}
 
-                scenario_type(), ScenarioType::PULL_OVER
-
-                );
-            }
-
-        }  // namespace pull_over
-    }  // namespace scenario
+}  // namespace pull_over
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

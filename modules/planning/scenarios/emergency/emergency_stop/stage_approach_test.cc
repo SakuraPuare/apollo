@@ -21,36 +21,30 @@
 #include "gtest/gtest.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace emergency_stop {
+namespace planning {
+namespace scenario {
+namespace emergency_stop {
 
-                class StageApproachTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {
-                        config_.set_stage_type(StageType::EMERGENCY_STOP_APPROACH);
-                        injector_ = std::make_shared<DependencyInjector>();
-                    }
+class StageApproachTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_stage_type(StageType::EMERGENCY_STOP_APPROACH);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-                protected:
-                    ScenarioConfig::StageConfig config_;
-                    std::shared_ptr <DependencyInjector> injector_;
-                };
+ protected:
+  ScenarioConfig::StageConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-                TEST_F(StageApproachTest, Init
-                ) {
-                EmergencyStopStageApproach emergency_stop_stage_approach(config_, injector_);
-                EXPECT_EQ(
-                        emergency_stop_stage_approach
-                .
+TEST_F(StageApproachTest, Init) {
+  EmergencyStopStageApproach emergency_stop_stage_approach(config_, injector_);
+  EXPECT_EQ(
+      emergency_stop_stage_approach.Name(),
+      StageType_Name(StageType::EMERGENCY_STOP_APPROACH));
+}
 
-                Name(),
-                        StageType_Name(StageType::EMERGENCY_STOP_APPROACH)
-
-                );
-            }
-
-        }  // namespace emergency_stop
-    }  // namespace scenario
+}  // namespace emergency_stop
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

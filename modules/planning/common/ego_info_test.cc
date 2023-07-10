@@ -27,89 +27,29 @@
 #include "modules/planning/reference_line/reference_line_provider.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        TEST(EgoInfoTest, EgoInfoSimpleTest
-        ) {
-        const auto p = common::util::PointFactory::ToPathPoint(1.23, 3.23, 52.18, 0.0,
-                                                               0.1, 0.3, 0.32, 0.4);
-        common::TrajectoryPoint tp;
-        tp.mutable_path_point()->
-        CopyFrom(p);
-        auto ego_info = std::make_unique<EgoInfo>();
-        ego_info->
-        set_start_point(tp);
-        EXPECT_DOUBLE_EQ(ego_info
-        ->
+TEST(EgoInfoTest, EgoInfoSimpleTest) {
+  const auto p = common::util::PointFactory::ToPathPoint(1.23, 3.23, 52.18, 0.0,
+                                                         0.1, 0.3, 0.32, 0.4);
+  common::TrajectoryPoint tp;
+  tp.mutable_path_point()->CopyFrom(p);
+  auto ego_info = std::make_unique<EgoInfo>();
+  ego_info->set_start_point(tp);
+  EXPECT_DOUBLE_EQ(ego_info->start_point().path_point().x(), p.x());
+  EXPECT_DOUBLE_EQ(ego_info->start_point().path_point().y(), p.y());
+  EXPECT_DOUBLE_EQ(ego_info->start_point().path_point().z(), p.z());
 
-        start_point()
+  uint32_t sequence_num = 0;
+  common::TrajectoryPoint planning_start_point;
+  common::VehicleState vehicle_state;
+  ReferenceLineProvider reference_line_provider;
 
-        .
-
-        path_point()
-
-        .
-
-        x(), p
-
-        .
-
-        x()
-
-        );
-        EXPECT_DOUBLE_EQ(ego_info
-        ->
-
-        start_point()
-
-        .
-
-        path_point()
-
-        .
-
-        y(), p
-
-        .
-
-        y()
-
-        );
-        EXPECT_DOUBLE_EQ(ego_info
-        ->
-
-        start_point()
-
-        .
-
-        path_point()
-
-        .
-
-        z(), p
-
-        .
-
-        z()
-
-        );
-
-        uint32_t sequence_num = 0;
-        common::TrajectoryPoint planning_start_point;
-        common::VehicleState vehicle_state;
-        ReferenceLineProvider reference_line_provider;
-
-        LocalView dummy_local_view;
-        Frame frame(sequence_num, dummy_local_view, planning_start_point,
-                    vehicle_state, &reference_line_provider);
-        ego_info->
-        CalculateFrontObstacleClearDistance(frame
-        .
-
-        obstacles()
-
-        );
-    }
+  LocalView dummy_local_view;
+  Frame frame(sequence_num, dummy_local_view, planning_start_point,
+              vehicle_state, &reference_line_provider);
+  ego_info->CalculateFrontObstacleClearDistance(frame.obstacles());
+}
 
 }  // namespace planning
 }  // namespace apollo

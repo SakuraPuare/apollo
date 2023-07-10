@@ -19,7 +19,7 @@
 #include <cuda_runtime.h>
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 #define BLOCK_WIDTH 16
 #define BLOCK_HEIGHT 16
@@ -42,19 +42,18 @@ namespace apollo {
     }                                                                      \
   }
 
-        bool InitialCuda();
+bool InitialCuda();
 
-        __global__ void fill_lower_left_gpu(int *iRow, int *jCol, unsigned int *rind_L,
-                                            unsigned int *cind_L, const int nnz_L);
+__global__ void fill_lower_left_gpu(int *iRow, int *jCol, unsigned int *rind_L,
+                                    unsigned int *cind_L, const int nnz_L);
 
-        template<typename T>
-        __global__ void data_transfer_gpu(T *dst, const T *src, const int size);
+template <typename T>
+__global__ void data_transfer_gpu(T *dst, const T *src, const int size);
 
-        bool fill_lower_left(int *iRow, int *jCol, unsigned int *rind_L,
-                             unsigned int *cind_L, const int nnz_L);
+bool fill_lower_left(int *iRow, int *jCol, unsigned int *rind_L,
+                     unsigned int *cind_L, const int nnz_L);
+template <typename T>
+bool data_transfer(T *dst, const T *src, const int size);
 
-        template<typename T>
-        bool data_transfer(T *dst, const T *src, const int size);
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

@@ -27,29 +27,28 @@
 #include "modules/map/pnc_map/path.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class ReferencePoint : public hdmap::MapPathPoint {
-        public:
-            ReferencePoint() = default;
+class ReferencePoint : public hdmap::MapPathPoint {
+ public:
+  ReferencePoint() = default;
 
-            ReferencePoint(const MapPathPoint &map_path_point, const double kappa,
-                           const double dkappa);
+  ReferencePoint(const MapPathPoint& map_path_point, const double kappa,
+                 const double dkappa);
 
-            common::PathPoint ToPathPoint(double s) const;
+  common::PathPoint ToPathPoint(double s) const;
 
-            double kappa() const;
+  double kappa() const;
+  double dkappa() const;
 
-            double dkappa() const;
+  std::string DebugString() const;
 
-            std::string DebugString() const;
+  static void RemoveDuplicates(std::vector<ReferencePoint>* points);
 
-            static void RemoveDuplicates(std::vector <ReferencePoint> *points);
+ private:
+  double kappa_ = 0.0;
+  double dkappa_ = 0.0;
+};
 
-        private:
-            double kappa_ = 0.0;
-            double dkappa_ = 0.0;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

@@ -26,23 +26,22 @@
  * @brief apollo::planning
  */
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 /**
  * @class planning
  *
  * @brief PlannerDispatcher module main class.
  */
-        class OnLanePlannerDispatcher final : public PlannerDispatcher {
-        public:
-            OnLanePlannerDispatcher() = default;
+class OnLanePlannerDispatcher final : public PlannerDispatcher {
+ public:
+  OnLanePlannerDispatcher() = default;
+  virtual ~OnLanePlannerDispatcher() = default;
 
-            virtual ~OnLanePlannerDispatcher() = default;
+  std::unique_ptr<Planner> DispatchPlanner(
+      const PlanningConfig& planning_config,
+      const std::shared_ptr<DependencyInjector>& injector) override;
+};
 
-            std::unique_ptr <Planner> DispatchPlanner(
-                    const PlanningConfig &planning_config,
-                    const std::shared_ptr <DependencyInjector> &injector) override;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

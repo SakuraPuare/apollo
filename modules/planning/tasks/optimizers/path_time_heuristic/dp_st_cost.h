@@ -34,75 +34,69 @@
 #include "modules/planning/tasks/optimizers/path_time_heuristic/st_graph_point.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class DpStCost {
-        public:
-            DpStCost(const DpStSpeedOptimizerConfig &config, const double total_t,
-                     const double total_s, const std::vector<const Obstacle *> &obstacles,
-                     const STDrivableBoundary &st_drivable_boundary,
-                     const common::TrajectoryPoint &init_point);
+class DpStCost {
+ public:
+  DpStCost(const DpStSpeedOptimizerConfig& config, const double total_t,
+           const double total_s, const std::vector<const Obstacle*>& obstacles,
+           const STDrivableBoundary& st_drivable_boundary,
+           const common::TrajectoryPoint& init_point);
 
-            double GetObstacleCost(const StGraphPoint &point);
+  double GetObstacleCost(const StGraphPoint& point);
 
-            double GetSpatialPotentialCost(const StGraphPoint &point);
+  double GetSpatialPotentialCost(const StGraphPoint& point);
 
-            double GetReferenceCost(const STPoint &point,
-                                    const STPoint &reference_point) const;
+  double GetReferenceCost(const STPoint& point,
+                          const STPoint& reference_point) const;
 
-            double GetSpeedCost(const STPoint &first, const STPoint &second,
-                                const double speed_limit,
-                                const double cruise_speed) const;
+  double GetSpeedCost(const STPoint& first, const STPoint& second,
+                      const double speed_limit,
+                      const double cruise_speed) const;
 
-            double GetAccelCostByTwoPoints(const double pre_speed, const STPoint &first,
-                                           const STPoint &second);
+  double GetAccelCostByTwoPoints(const double pre_speed, const STPoint& first,
+                                 const STPoint& second);
+  double GetAccelCostByThreePoints(const STPoint& first, const STPoint& second,
+                                   const STPoint& third);
 
-            double GetAccelCostByThreePoints(const STPoint &first, const STPoint &second,
-                                             const STPoint &third);
+  double GetJerkCostByTwoPoints(const double pre_speed, const double pre_acc,
+                                const STPoint& pre_point,
+                                const STPoint& curr_point);
+  double GetJerkCostByThreePoints(const double first_speed,
+                                  const STPoint& first_point,
+                                  const STPoint& second_point,
+                                  const STPoint& third_point);
 
-            double GetJerkCostByTwoPoints(const double pre_speed, const double pre_acc,
-                                          const STPoint &pre_point,
-                                          const STPoint &curr_point);
+  double GetJerkCostByFourPoints(const STPoint& first, const STPoint& second,
+                                 const STPoint& third, const STPoint& fourth);
 
-            double GetJerkCostByThreePoints(const double first_speed,
-                                            const STPoint &first_point,
-                                            const STPoint &second_point,
-                                            const STPoint &third_point);
+ private:
+  double GetAccelCost(const double accel);
+  double JerkCost(const double jerk);
 
-            double GetJerkCostByFourPoints(const STPoint &first, const STPoint &second,
-                                           const STPoint &third, const STPoint &fourth);
+  void AddToKeepClearRange(const std::vector<const Obstacle*>& obstacles);
+  static void SortAndMergeRange(
+      std::vector<std::pair<double, double>>* keep_clear_range_);
+  bool InKeepClearRange(double s) const;
 
-        private:
-            double GetAccelCost(const double accel);
+  const DpStSpeedOptimizerConfig& config_;
+  const std::vector<const Obstacle*>& obstacles_;
 
-            double JerkCost(const double jerk);
+  STDrivableBoundary st_drivable_boundary_;
 
-            void AddToKeepClearRange(const std::vector<const Obstacle *> &obstacles);
+  const common::TrajectoryPoint& init_point_;
 
-            static void SortAndMergeRange(
-                    std::vector <std::pair<double, double>> *keep_clear_range_);
+  double unit_t_ = 0.0;
+  double total_s_ = 0.0;
 
-            bool InKeepClearRange(double s) const;
+  std::unordered_map<std::string, int> boundary_map_;
+  std::vector<std::vector<std::pair<double, double>>> boundary_cost_;
 
-            const DpStSpeedOptimizerConfig &config_;
-            const std::vector<const Obstacle *> &obstacles_;
+  std::vector<std::pair<double, double>> keep_clear_range_;
 
-            STDrivableBoundary st_drivable_boundary_;
+  std::array<double, 200> accel_cost_;
+  std::array<double, 400> jerk_cost_;
+};
 
-            const common::TrajectoryPoint &init_point_;
-
-            double unit_t_ = 0.0;
-            double total_s_ = 0.0;
-
-            std::unordered_map<std::string, int> boundary_map_;
-            std::vector <std::vector<std::pair < double, double>>>
-            boundary_cost_;
-
-            std::vector <std::pair<double, double>> keep_clear_range_;
-
-            std::array<double, 200> accel_cost_;
-            std::array<double, 400> jerk_cost_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

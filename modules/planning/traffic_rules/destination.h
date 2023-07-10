@@ -27,26 +27,25 @@
 #include "modules/planning/traffic_rules/traffic_rule.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 /**
  * This class decides whether we should stop for destination.
  * situation.
  */
-        class Destination : public TrafficRule {
-        public:
-            Destination(const TrafficRuleConfig &config,
-                        const std::shared_ptr <DependencyInjector> &injector);
+class Destination : public TrafficRule {
+ public:
+  Destination(const TrafficRuleConfig& config,
+              const std::shared_ptr<DependencyInjector>& injector);
+  virtual ~Destination() = default;
 
-            virtual ~Destination() = default;
+  common::Status ApplyRule(Frame* const frame,
+                           ReferenceLineInfo* const reference_line_info);
 
-            common::Status ApplyRule(Frame *const frame,
-                                     ReferenceLineInfo *const reference_line_info);
+ private:
+  int MakeDecisions(Frame* const frame,
+                    ReferenceLineInfo* const reference_line_info);
+};
 
-        private:
-            int MakeDecisions(Frame *const frame,
-                              ReferenceLineInfo *const reference_line_info);
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

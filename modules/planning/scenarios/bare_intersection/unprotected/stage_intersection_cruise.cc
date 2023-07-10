@@ -25,35 +25,35 @@
 #include "cyber/common/log.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace bare_intersection {
+namespace planning {
+namespace scenario {
+namespace bare_intersection {
 
-                Stage::StageStatus BareIntersectionUnprotectedStageIntersectionCruise::Process(
-                        const common::TrajectoryPoint &planning_init_point, Frame *frame) {
-                    ADEBUG << "stage: IntersectionCruise";
-                    CHECK_NOTNULL(frame);
+Stage::StageStatus BareIntersectionUnprotectedStageIntersectionCruise::Process(
+    const common::TrajectoryPoint& planning_init_point, Frame* frame) {
+  ADEBUG << "stage: IntersectionCruise";
+  CHECK_NOTNULL(frame);
 
-                    bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
-                    if (!plan_ok) {
-                        AERROR << "StopSignUnprotectedStageIntersectionCruise plan error";
-                    }
+  bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
+  if (!plan_ok) {
+    AERROR << "StopSignUnprotectedStageIntersectionCruise plan error";
+  }
 
-                    bool stage_done = stage_impl_.CheckDone(
-                            *frame, ScenarioType::BARE_INTERSECTION_UNPROTECTED, config_,
-                            injector_->planning_context(), false);
-                    if (stage_done) {
-                        return FinishStage();
-                    }
-                    return Stage::RUNNING;
-                }
+  bool stage_done = stage_impl_.CheckDone(
+      *frame, ScenarioType::BARE_INTERSECTION_UNPROTECTED, config_,
+      injector_->planning_context(), false);
+  if (stage_done) {
+    return FinishStage();
+  }
+  return Stage::RUNNING;
+}
 
-                Stage::StageStatus
-                BareIntersectionUnprotectedStageIntersectionCruise::FinishStage() {
-                    return FinishScenario();
-                }
+Stage::StageStatus
+BareIntersectionUnprotectedStageIntersectionCruise::FinishStage() {
+  return FinishScenario();
+}
 
-            }  // namespace bare_intersection
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace bare_intersection
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

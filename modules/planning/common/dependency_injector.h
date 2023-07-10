@@ -24,46 +24,40 @@
 #include "modules/planning/common/planning_context.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class DependencyInjector {
-        public:
-            DependencyInjector() = default;
+class DependencyInjector {
+ public:
+  DependencyInjector() = default;
+  ~DependencyInjector() = default;
 
-            ~DependencyInjector() = default;
+  PlanningContext* planning_context() {
+    return &planning_context_;
+  }
+  FrameHistory* frame_history() {
+    return &frame_history_;
+  }
+  History* history() {
+    return &history_;
+  }
+  EgoInfo* ego_info() {
+    return &ego_info_;
+  }
+  apollo::common::VehicleStateProvider* vehicle_state() {
+    return &vehicle_state_;
+  }
+  LearningBasedData* learning_based_data() {
+    return &learning_based_data_;
+  }
 
-            PlanningContext *planning_context() {
-                return &planning_context_;
-            }
+ private:
+  PlanningContext planning_context_;
+  FrameHistory frame_history_;
+  History history_;
+  EgoInfo ego_info_;
+  apollo::common::VehicleStateProvider vehicle_state_;
+  LearningBasedData learning_based_data_;
+};
 
-            FrameHistory *frame_history() {
-                return &frame_history_;
-            }
-
-            History *history() {
-                return &history_;
-            }
-
-            EgoInfo *ego_info() {
-                return &ego_info_;
-            }
-
-            apollo::common::VehicleStateProvider *vehicle_state() {
-                return &vehicle_state_;
-            }
-
-            LearningBasedData *learning_based_data() {
-                return &learning_based_data_;
-            }
-
-        private:
-            PlanningContext planning_context_;
-            FrameHistory frame_history_;
-            History history_;
-            EgoInfo ego_info_;
-            apollo::common::VehicleStateProvider vehicle_state_;
-            LearningBasedData learning_based_data_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

@@ -28,37 +28,36 @@
 #include "modules/planning/scenarios/stage.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace bare_intersection {
+namespace planning {
+namespace scenario {
+namespace bare_intersection {
 
-                struct BareIntersectionUnprotectedContext;
+struct BareIntersectionUnprotectedContext;
 
-                class BareIntersectionUnprotectedStageApproach : public Stage {
-                public:
-                    BareIntersectionUnprotectedStageApproach(
-                            const ScenarioConfig::StageConfig &config,
-                            const std::shared_ptr <DependencyInjector> &injector)
-                            : Stage(config, injector) {}
+class BareIntersectionUnprotectedStageApproach : public Stage {
+ public:
+  BareIntersectionUnprotectedStageApproach(
+      const ScenarioConfig::StageConfig& config,
+      const std::shared_ptr<DependencyInjector>& injector)
+      : Stage(config, injector) {}
 
-                private:
-                    Stage::StageStatus Process(const common::TrajectoryPoint &planning_init_point,
-                                               Frame *frame) override;
+ private:
+  Stage::StageStatus Process(const common::TrajectoryPoint& planning_init_point,
+                             Frame* frame) override;
+  BareIntersectionUnprotectedContext* GetContext() {
+    return GetContextAs<BareIntersectionUnprotectedContext>();
+  }
 
-                    BareIntersectionUnprotectedContext *GetContext() {
-                        return GetContextAs<BareIntersectionUnprotectedContext>();
-                    }
+  bool CheckClear(const ReferenceLineInfo& reference_line_info,
+                  std::vector<std::string>* wait_for_obstacle_ids);
 
-                    bool CheckClear(const ReferenceLineInfo &reference_line_info,
-                                    std::vector <std::string> *wait_for_obstacle_ids);
+  Stage::StageStatus FinishStage(Frame* frame);
 
-                    Stage::StageStatus FinishStage(Frame *frame);
+ private:
+  ScenarioBareIntersectionUnprotectedConfig scenario_config_;
+};
 
-                private:
-                    ScenarioBareIntersectionUnprotectedConfig scenario_config_;
-                };
-
-            }  // namespace bare_intersection
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace bare_intersection
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

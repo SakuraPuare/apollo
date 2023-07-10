@@ -23,25 +23,23 @@
 #include "modules/planning/common/trajectory/discretized_trajectory.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class ConstraintChecker {
-        public:
-            enum class Result {
-                VALID,
-                LON_VELOCITY_OUT_OF_BOUND,
-                LON_ACCELERATION_OUT_OF_BOUND,
-                LON_JERK_OUT_OF_BOUND,
-                LAT_VELOCITY_OUT_OF_BOUND,
-                LAT_ACCELERATION_OUT_OF_BOUND,
-                LAT_JERK_OUT_OF_BOUND,
-                CURVATURE_OUT_OF_BOUND,
-            };
+class ConstraintChecker {
+ public:
+  enum class Result {
+    VALID,
+    LON_VELOCITY_OUT_OF_BOUND,
+    LON_ACCELERATION_OUT_OF_BOUND,
+    LON_JERK_OUT_OF_BOUND,
+    LAT_VELOCITY_OUT_OF_BOUND,
+    LAT_ACCELERATION_OUT_OF_BOUND,
+    LAT_JERK_OUT_OF_BOUND,
+    CURVATURE_OUT_OF_BOUND,
+  };
+  ConstraintChecker() = delete;
+  static Result ValidTrajectory(const DiscretizedTrajectory& trajectory);
+};
 
-            ConstraintChecker() = delete;
-
-            static Result ValidTrajectory(const DiscretizedTrajectory &trajectory);
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

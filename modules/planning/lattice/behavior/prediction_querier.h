@@ -28,29 +28,29 @@
 #include "modules/planning/common/obstacle.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class PredictionQuerier {
-        public:
-            PredictionQuerier(const std::vector<const Obstacle *> &obstacles,
-                              const std::shared_ptr <std::vector<common::PathPoint>> &
-                              ptr_reference_line);
+class PredictionQuerier {
+ public:
+  PredictionQuerier(const std::vector<const Obstacle*>& obstacles,
+                    const std::shared_ptr<std::vector<common::PathPoint>>&
+                        ptr_reference_line);
 
-            virtual ~PredictionQuerier() = default;
+  virtual ~PredictionQuerier() = default;
 
-            std::vector<const Obstacle *> GetObstacles() const;
+  std::vector<const Obstacle*> GetObstacles() const;
 
-            double ProjectVelocityAlongReferenceLine(const std::string &obstacle_id,
-                                                     const double s,
-                                                     const double t) const;
+  double ProjectVelocityAlongReferenceLine(const std::string& obstacle_id,
+                                           const double s,
+                                           const double t) const;
 
-        private:
-            std::unordered_map<std::string, const Obstacle *> id_obstacle_map_;
+ private:
+  std::unordered_map<std::string, const Obstacle*> id_obstacle_map_;
 
-            std::vector<const Obstacle *> obstacles_;
+  std::vector<const Obstacle*> obstacles_;
 
-            std::shared_ptr <std::vector<common::PathPoint>> ptr_reference_line_;
-        };
+  std::shared_ptr<std::vector<common::PathPoint>> ptr_reference_line_;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

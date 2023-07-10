@@ -21,25 +21,25 @@
  **/
 
 namespace apollo {
-    namespace planning {
-        class StGapEstimator {
-        public:
-            StGapEstimator() = delete;
+namespace planning {
+class StGapEstimator {
+ public:
+  StGapEstimator() = delete;
 
-            virtual ~StGapEstimator() = delete;
+  virtual ~StGapEstimator() = delete;
 
-            static double EstimateSafeOvertakingGap();
+  static double EstimateSafeOvertakingGap();
 
-            static double EstimateSafeFollowingGap(const double target_obs_speed);
+  static double EstimateSafeFollowingGap(const double target_obs_speed);
 
-            static double EstimateSafeYieldingGap();
+  static double EstimateSafeYieldingGap();
 
-            static double EstimateProperOvertakingGap(const double target_obs_speed,
-                                                      const double adc_speed);
+  static double EstimateProperOvertakingGap(const double target_obs_speed,
+                                            const double adc_speed);
 
-            static double EstimateProperFollowingGap(const double adc_speed);
+  static double EstimateProperFollowingGap(const double adc_speed);
 
-            static double EstimateProperYieldingGap();
-        };
-    }  // namespace planning
+  static double EstimateProperYieldingGap();
+};
+}  // namespace planning
 }  // namespace apollo

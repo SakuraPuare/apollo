@@ -21,60 +21,59 @@
 #include "modules/planning/proto/learning_data.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class FeatureOutput {
-        public:
-            /**
-             * @brief Constructor; disabled
-             */
-            FeatureOutput() = delete;
+class FeatureOutput {
+ public:
+  /**
+   * @brief Constructor; disabled
+   */
+  FeatureOutput() = delete;
 
-            /**
-             * @brief Close the output stream
-             */
-            static void Close();
+  /**
+   * @brief Close the output stream
+   */
+  static void Close();
 
-            /**
-             * @brief Reset
-             */
-            static void Clear();
+  /**
+   * @brief Reset
+   */
+  static void Clear();
 
-            /**
-             * @brief Check if output is ready
-             * @return True if output is ready
-             */
-            static bool Ready();
+  /**
+   * @brief Check if output is ready
+   * @return True if output is ready
+   */
+  static bool Ready();
 
-            /**
-             * @brief Insert a a frame of learning data
-             * @param A feature in proto
-             */
-            static void InsertLearningDataFrame(
-                    const std::string &record_filename,
-                    const LearningDataFrame &learning_data_frame);
+  /**
+   * @brief Insert a a frame of learning data
+   * @param A feature in proto
+   */
+  static void InsertLearningDataFrame(
+      const std::string& record_filename,
+      const LearningDataFrame& learning_data_frame);
 
-            static void InsertPlanningResult();
+  static void InsertPlanningResult();
 
-            static LearningDataFrame *GetLatestLearningDataFrame();
+  static LearningDataFrame* GetLatestLearningDataFrame();
 
-            /**
-             * @brief Write LearningData to a file
-             */
-            static void WriteLearningData(const std::string &record_file);
+  /**
+   * @brief Write LearningData to a file
+   */
+  static void WriteLearningData(const std::string& record_file);
+  static void WriteRemainderiLearningData(const std::string& record_file);
 
-            static void WriteRemainderiLearningData(const std::string &record_file);
+  /**
+   * @brief Get the size of learning_data_
+   * @return The size of learning_data_
+   */
+  static int SizeOfLearningData();
 
-            /**
-             * @brief Get the size of learning_data_
-             * @return The size of learning_data_
-             */
-            static int SizeOfLearningData();
+ private:
+  static LearningData learning_data_;
+  static int learning_data_file_index_;
+};
 
-        private:
-            static LearningData learning_data_;
-            static int learning_data_file_index_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

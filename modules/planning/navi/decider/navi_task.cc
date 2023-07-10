@@ -23,21 +23,21 @@
 #include "modules/planning/proto/planning_config.pb.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        using apollo::common::Status;
+using apollo::common::Status;
 
-        NaviTask::NaviTask(const std::string &name) : name_(name) {}
+NaviTask::NaviTask(const std::string& name) : name_(name) {}
 
-        const std::string &NaviTask::Name() const { return name_; }
+const std::string& NaviTask::Name() const { return name_; }
 
-        bool NaviTask::Init(const PlanningConfig &config) { return true; }
+bool NaviTask::Init(const PlanningConfig& config) { return true; }
 
-        Status NaviTask::Execute(Frame *frame, ReferenceLineInfo *reference_line_info) {
-            frame_ = frame;
-            reference_line_info_ = reference_line_info;
-            return Status::OK();
-        }
+Status NaviTask::Execute(Frame* frame, ReferenceLineInfo* reference_line_info) {
+  frame_ = frame;
+  reference_line_info_ = reference_line_info;
+  return Status::OK();
+}
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

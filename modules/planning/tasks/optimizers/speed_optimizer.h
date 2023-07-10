@@ -26,27 +26,25 @@
 #include "modules/planning/tasks/task.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class SpeedOptimizer : public Task {
-        public:
-            explicit SpeedOptimizer(const TaskConfig &config);
+class SpeedOptimizer : public Task {
+ public:
+  explicit SpeedOptimizer(const TaskConfig& config);
 
-            virtual ~SpeedOptimizer() = default;
+  virtual ~SpeedOptimizer() = default;
+  common::Status Execute(Frame* frame,
+                         ReferenceLineInfo* reference_line_info) override;
 
-            common::Status Execute(Frame *frame,
-                                   ReferenceLineInfo *reference_line_info) override;
+ protected:
+  virtual common::Status Process(const PathData& path_data,
+                                 const common::TrajectoryPoint& init_point,
+                                 SpeedData* const speed_data) = 0;
 
-        protected:
-            virtual common::Status Process(const PathData &path_data,
-                                           const common::TrajectoryPoint &init_point,
-                                           SpeedData *const speed_data) = 0;
+  void RecordDebugInfo(const SpeedData& speed_data);
+  void RecordDebugInfo(const SpeedData& speed_data,
+                       planning_internal::STGraphDebug* st_graph_debug);
+};
 
-            void RecordDebugInfo(const SpeedData &speed_data);
-
-            void RecordDebugInfo(const SpeedData &speed_data,
-                                 planning_internal::STGraphDebug *st_graph_debug);
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

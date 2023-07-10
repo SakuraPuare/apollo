@@ -25,68 +25,68 @@
 #include "modules/planning/scenarios/learning_model/stage_run.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
+namespace planning {
+namespace scenario {
 
-            apollo::common::util::Factory<
-                    StageType, Stage,
-                    Stage *(*)(const ScenarioConfig::StageConfig &stage_config,
-                               const std::shared_ptr <DependencyInjector> &injector)>
-                    LearningModelSampleScenario::s_stage_factory_;
+apollo::common::util::Factory<
+    StageType, Stage,
+    Stage* (*)(const ScenarioConfig::StageConfig& stage_config,
+               const std::shared_ptr<DependencyInjector>& injector)>
+    LearningModelSampleScenario::s_stage_factory_;
 
-            void LearningModelSampleScenario::Init() {
-                if (init_) {
-                    return;
-                }
+void LearningModelSampleScenario::Init() {
+  if (init_) {
+    return;
+  }
 
-                Scenario::Init();
+  Scenario::Init();
 
-                if (!GetScenarioConfig()) {
-                    AERROR << "fail to get scenario specific config";
-                    return;
-                }
+  if (!GetScenarioConfig()) {
+    AERROR << "fail to get scenario specific config";
+    return;
+  }
 
-                init_ = true;
-            }
+  init_ = true;
+}
 
-            void LearningModelSampleScenario::RegisterStages() {
-                if (!s_stage_factory_.Empty()) {
-                    s_stage_factory_.Clear();
-                }
-                s_stage_factory_.Register(
-                        StageType::LEARNING_MODEL_RUN,
-                        [](const ScenarioConfig::StageConfig &config,
-                           const std::shared_ptr <DependencyInjector> &injector) -> Stage * {
-                            return new LearningModelSampleStageRun(config, injector);
-                        });
-            }
+void LearningModelSampleScenario::RegisterStages() {
+  if (!s_stage_factory_.Empty()) {
+    s_stage_factory_.Clear();
+  }
+  s_stage_factory_.Register(
+      StageType::LEARNING_MODEL_RUN,
+      [](const ScenarioConfig::StageConfig& config,
+         const std::shared_ptr<DependencyInjector>& injector) -> Stage* {
+        return new LearningModelSampleStageRun(config, injector);
+      });
+}
 
-            std::unique_ptr <Stage> LearningModelSampleScenario::CreateStage(
-                    const ScenarioConfig::StageConfig &stage_config,
-                    const std::shared_ptr <DependencyInjector> &injector) {
-                if (s_stage_factory_.Empty()) {
-                    RegisterStages();
-                }
-                auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
-                                                               stage_config, injector);
-                if (ptr) {
-                    ptr->SetContext(&context_);
-                }
-                return ptr;
-            }
+std::unique_ptr<Stage> LearningModelSampleScenario::CreateStage(
+    const ScenarioConfig::StageConfig& stage_config,
+    const std::shared_ptr<DependencyInjector>& injector) {
+  if (s_stage_factory_.Empty()) {
+    RegisterStages();
+  }
+  auto ptr = s_stage_factory_.CreateObjectOrNull(stage_config.stage_type(),
+                                                 stage_config, injector);
+  if (ptr) {
+    ptr->SetContext(&context_);
+  }
+  return ptr;
+}
 
 /*
  * read scenario specific configs and set in context_ for stages to read
  */
-            bool LearningModelSampleScenario::GetScenarioConfig() {
-                if (!config_.has_learning_model_sample_config()) {
-                    AERROR << "miss scenario specific config";
-                    return false;
-                }
-                context_.scenario_config.CopyFrom(config_.learning_model_sample_config());
-                return true;
-            }
+bool LearningModelSampleScenario::GetScenarioConfig() {
+  if (!config_.has_learning_model_sample_config()) {
+    AERROR << "miss scenario specific config";
+    return false;
+  }
+  context_.scenario_config.CopyFrom(config_.learning_model_sample_config());
+  return true;
+}
 
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

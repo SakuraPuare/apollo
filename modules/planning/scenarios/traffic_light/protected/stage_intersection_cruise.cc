@@ -23,34 +23,34 @@
 #include "cyber/common/log.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace traffic_light {
+namespace planning {
+namespace scenario {
+namespace traffic_light {
 
-                Stage::StageStatus TrafficLightProtectedStageIntersectionCruise::Process(
-                        const common::TrajectoryPoint &planning_init_point, Frame *frame) {
-                    ADEBUG << "stage: IntersectionCruise";
-                    CHECK_NOTNULL(frame);
+Stage::StageStatus TrafficLightProtectedStageIntersectionCruise::Process(
+    const common::TrajectoryPoint& planning_init_point, Frame* frame) {
+  ADEBUG << "stage: IntersectionCruise";
+  CHECK_NOTNULL(frame);
 
-                    bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
-                    if (!plan_ok) {
-                        AERROR << "TrafficLightProtectedStageIntersectionCruise plan error";
-                    }
+  bool plan_ok = ExecuteTaskOnReferenceLine(planning_init_point, frame);
+  if (!plan_ok) {
+    AERROR << "TrafficLightProtectedStageIntersectionCruise plan error";
+  }
 
-                    bool stage_done =
-                            stage_impl_.CheckDone(*frame, ScenarioType::TRAFFIC_LIGHT_PROTECTED,
-                                                  config_, injector_->planning_context(), true);
-                    if (stage_done) {
-                        return FinishStage();
-                    }
-                    return Stage::RUNNING;
-                }
+  bool stage_done =
+      stage_impl_.CheckDone(*frame, ScenarioType::TRAFFIC_LIGHT_PROTECTED,
+                            config_, injector_->planning_context(), true);
+  if (stage_done) {
+    return FinishStage();
+  }
+  return Stage::RUNNING;
+}
 
-                Stage::StageStatus TrafficLightProtectedStageIntersectionCruise::FinishStage() {
-                    return FinishScenario();
-                }
+Stage::StageStatus TrafficLightProtectedStageIntersectionCruise::FinishStage() {
+  return FinishScenario();
+}
 
-            }  // namespace traffic_light
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace traffic_light
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

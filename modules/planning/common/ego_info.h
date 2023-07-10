@@ -30,61 +30,60 @@
 #include "modules/planning/reference_line/reference_line.h"
 
 namespace apollo {
-    namespace planning {
+namespace planning {
 
-        class EgoInfo {
-        public:
-            EgoInfo();
+class EgoInfo {
+ public:
+  EgoInfo();
 
-            ~EgoInfo() = default;
+  ~EgoInfo() = default;
 
-            bool Update(const common::TrajectoryPoint &start_point,
-                        const common::VehicleState &vehicle_state);
+  bool Update(const common::TrajectoryPoint& start_point,
+              const common::VehicleState& vehicle_state);
 
-            void Clear();
+  void Clear();
 
-            common::TrajectoryPoint start_point() const { return start_point_; }
+  common::TrajectoryPoint start_point() const { return start_point_; }
 
-            common::VehicleState vehicle_state() const { return vehicle_state_; }
+  common::VehicleState vehicle_state() const { return vehicle_state_; }
 
-            double front_clear_distance() const { return front_clear_distance_; }
+  double front_clear_distance() const { return front_clear_distance_; }
 
-            common::math::Box2d ego_box() const { return ego_box_; }
+  common::math::Box2d ego_box() const { return ego_box_; }
 
-            void CalculateFrontObstacleClearDistance(
-                    const std::vector<const Obstacle *> &obstacles);
+  void CalculateFrontObstacleClearDistance(
+      const std::vector<const Obstacle*>& obstacles);
 
-        private:
-            FRIEND_TEST(EgoInfoTest, EgoInfoSimpleTest
-            );
+ private:
+  FRIEND_TEST(EgoInfoTest, EgoInfoSimpleTest);
 
-            void set_vehicle_state(const common::VehicleState &vehicle_state) {
-                vehicle_state_ = vehicle_state;
-            }
+  void set_vehicle_state(const common::VehicleState& vehicle_state) {
+    vehicle_state_ = vehicle_state;
+  }
 
-            void set_start_point(const common::TrajectoryPoint &start_point) {
-                start_point_ = start_point;
-                const auto &param = ego_vehicle_config_.vehicle_param();
-                start_point_.set_a(
-                        std::fmax(std::fmin(start_point_.a(), param.max_acceleration()),
-                                  param.max_deceleration()));
-            }
+  void set_start_point(const common::TrajectoryPoint& start_point) {
+    start_point_ = start_point;
+    const auto& param = ego_vehicle_config_.vehicle_param();
+    start_point_.set_a(
+        std::fmax(std::fmin(start_point_.a(), param.max_acceleration()),
+                  param.max_deceleration()));
+  }
 
-            void CalculateEgoBox(const common::VehicleState &vehicle_state);
+  void CalculateEgoBox(const common::VehicleState& vehicle_state);
 
-            // stitched point (at stitching mode)
-            // or real vehicle point (at non-stitching mode)
-            common::TrajectoryPoint start_point_;
+  // stitched point (at stitching mode)
+  // or real vehicle point (at non-stitching mode)
+  common::TrajectoryPoint start_point_;
 
-            // ego vehicle state
-            common::VehicleState vehicle_state_;
+  // ego vehicle state
+  common::VehicleState vehicle_state_;
 
-            double front_clear_distance_ = FLAGS_default_front_clear_distance;
+  double front_clear_distance_ = FLAGS_default_front_clear_distance;
 
-            common::VehicleConfig ego_vehicle_config_;
+  common::VehicleConfig ego_vehicle_config_;
 
-            common::math::Box2d ego_box_;
-        };
+  common::math::Box2d ego_box_;
+};
 
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

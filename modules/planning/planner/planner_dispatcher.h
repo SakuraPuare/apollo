@@ -27,36 +27,35 @@
  * @brief apollo::planning
  */
 namespace apollo {
-    namespace planning {
+namespace planning {
 
 /**
  * @class planning
  *
  * @brief PlannerDispatcher module main class.
  */
-        class PlannerDispatcher {
-        public:
-            PlannerDispatcher() = default;
+class PlannerDispatcher {
+ public:
+  PlannerDispatcher() = default;
+  virtual ~PlannerDispatcher() = default;
 
-            virtual ~PlannerDispatcher() = default;
+  virtual common::Status Init() {
+    RegisterPlanners();
+    return common::Status::OK();
+  }
 
-            virtual common::Status Init() {
-                RegisterPlanners();
-                return common::Status::OK();
-            }
+  virtual std::unique_ptr<Planner> DispatchPlanner(
+      const PlanningConfig& planning_config,
+      const std::shared_ptr<DependencyInjector>& injector) = 0;
 
-            virtual std::unique_ptr <Planner> DispatchPlanner(
-                    const PlanningConfig &planning_config,
-                    const std::shared_ptr <DependencyInjector> &injector) = 0;
+ protected:
+  void RegisterPlanners();
 
-        protected:
-            void RegisterPlanners();
+  common::util::Factory<
+      PlannerType, Planner,
+      Planner* (*)(const std::shared_ptr<DependencyInjector>& injector)>
+      planner_factory_;
+};
 
-            common::util::Factory<
-                    PlannerType, Planner,
-                    Planner *(*)(const std::shared_ptr <DependencyInjector> &injector)>
-                    planner_factory_;
-        };
-
-    }  // namespace planning
+}  // namespace planning
 }  // namespace apollo

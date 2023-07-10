@@ -22,35 +22,29 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace pull_over {
+namespace planning {
+namespace scenario {
+namespace pull_over {
 
-                class StageApproachTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {
-                        config_.set_stage_type(StageType::PULL_OVER_APPROACH);
-                        injector_ = std::make_shared<DependencyInjector>();
-                    }
+class StageApproachTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_stage_type(StageType::PULL_OVER_APPROACH);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-                protected:
-                    ScenarioConfig::StageConfig config_;
-                    std::shared_ptr <DependencyInjector> injector_;
-                };
+ protected:
+  ScenarioConfig::StageConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-                TEST_F(StageApproachTest, Init
-                ) {
-                PullOverStageApproach pull_over_stage_approach(config_, injector_);
-                EXPECT_EQ(pull_over_stage_approach
-                .
+TEST_F(StageApproachTest, Init) {
+  PullOverStageApproach pull_over_stage_approach(config_, injector_);
+  EXPECT_EQ(pull_over_stage_approach.Name(),
+            StageType_Name(StageType::PULL_OVER_APPROACH));
+}
 
-                Name(),
-                        StageType_Name(StageType::PULL_OVER_APPROACH)
-
-                );
-            }
-
-        }  // namespace pull_over
-    }  // namespace scenario
+}  // namespace pull_over
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo

@@ -20,17 +20,17 @@
 #include "modules/planning/scenarios/narrow_street_u_turn/narrow_street_u_turn_scenario.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace narrow_street_u_turn {
+namespace planning {
+namespace scenario {
+namespace narrow_street_u_turn {
 
-                std::unique_ptr <Stage> NarrowStreetUTurnScenario::CreateStage(
-                        const ScenarioConfig::StageConfig &stage_config,
-                        const std::shared_ptr <DependencyInjector> &injector) {
-                    return nullptr;
-                }
+std::unique_ptr<Stage> NarrowStreetUTurnScenario::CreateStage(
+    const ScenarioConfig::StageConfig& stage_config,
+    const std::shared_ptr<DependencyInjector>& injector) {
+  return nullptr;
+}
 
-            }  // namespace narrow_street_u_turn
-        }  // namespace scenario
-    }  // namespace planning
+}  // namespace narrow_street_u_turn
+}  // namespace scenario
+}  // namespace planning
 }  // namespace apollo

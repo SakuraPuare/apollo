@@ -22,38 +22,32 @@
 #include "modules/planning/common/planning_gflags.h"
 
 namespace apollo {
-    namespace planning {
-        namespace scenario {
-            namespace traffic_light {
+namespace planning {
+namespace scenario {
+namespace traffic_light {
 
-                class TrafficLightUnprotectedRightTurnStageCreepTest : public ::testing::Test {
-                public:
-                    virtual void SetUp() {
-                        config_.set_stage_type(
-                                StageType::TRAFFIC_LIGHT_UNPROTECTED_RIGHT_TURN_STOP);
-                        injector_ = std::make_shared<DependencyInjector>();
-                    }
+class TrafficLightUnprotectedRightTurnStageCreepTest : public ::testing::Test {
+ public:
+  virtual void SetUp() {
+    config_.set_stage_type(
+        StageType::TRAFFIC_LIGHT_UNPROTECTED_RIGHT_TURN_STOP);
+    injector_ = std::make_shared<DependencyInjector>();
+  }
 
-                protected:
-                    ScenarioConfig::StageConfig config_;
-                    std::shared_ptr <DependencyInjector> injector_;
-                };
+ protected:
+  ScenarioConfig::StageConfig config_;
+  std::shared_ptr<DependencyInjector> injector_;
+};
 
-                TEST_F(TrafficLightUnprotectedRightTurnStageCreepTest, Init
-                ) {
-                TrafficLightUnprotectedRightTurnStageCreep
-                        traffic_light_unprotected_right_turn_stage_creep(config_, injector_);
-                EXPECT_EQ(traffic_light_unprotected_right_turn_stage_creep
-                .
+TEST_F(TrafficLightUnprotectedRightTurnStageCreepTest, Init) {
+  TrafficLightUnprotectedRightTurnStageCreep
+      traffic_light_unprotected_right_turn_stage_creep(config_, injector_);
+  EXPECT_EQ(traffic_light_unprotected_right_turn_stage_creep.Name(),
+            StageType_Name(
+                StageType::TRAFFIC_LIGHT_UNPROTECTED_RIGHT_TURN_STOP));
+}
 
-                Name(),
-                        StageType_Name(
-                        StageType::TRAFFIC_LIGHT_UNPROTECTED_RIGHT_TURN_STOP)
-
-                );
-            }
-
-        }  // namespace traffic_light
-    }  // namespace scenario
+}  // namespace traffic_light
+}  // namespace scenario
 }  // namespace planning
 }  // namespace apollo
