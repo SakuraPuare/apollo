@@ -115,14 +115,16 @@ namespace apollo {
                         return false;
                     } else {
                         mutable_path_decider_status->set_is_in_path_lane_borrow_scenario(true);
-                        if (left_borrowable) {
-                            mutable_path_decider_status->add_decided_side_pass_direction(
+                        mutable_path_decider_status->add_decided_side_pass_direction(
                                     PathDeciderStatus::LEFT_BORROW);
-                        }
-                        if (right_borrowable) {
-                            mutable_path_decider_status->add_decided_side_pass_direction(
-                                    PathDeciderStatus::RIGHT_BORROW);
-                        }
+                        // if (left_borrowable) {
+                        //     mutable_path_decider_status->add_decided_side_pass_direction(
+                        //             PathDeciderStatus::LEFT_BORROW);
+                        // }
+                        // if (right_borrowable) {
+                        //     mutable_path_decider_status->add_decided_side_pass_direction(
+                        //             PathDeciderStatus::RIGHT_BORROW);
+                        // }
                     }
                 }
 
