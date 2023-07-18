@@ -65,6 +65,10 @@ Status SpeedLimitDecider::GetSpeedLimits(
     double speed_limit_from_reference_line =
         reference_line_.GetSpeedLimitFromS(reference_line_s);
 
+    if (obstacles.Items().size() > 3){
+      FLAGS_planning_upper_speed_limit = 7.0;
+    }
+
     // (2) speed limit from path curvature
     //  -- 2.1: limit by centripetal force (acceleration)
     const double speed_limit_from_centripetal_acc =

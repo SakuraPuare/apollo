@@ -44,8 +44,6 @@ class LaneChangeDecider : public Decider {
    */
   static bool IsClearToChangeLane(ReferenceLineInfo* reference_line_info);
 
-  static bool IsNeedChangeLane(ReferenceLineInfo* reference_line_info);
-
   /**
    * @brief A static function to estimate if an obstacle in certain range in
    * front of ADV blocks too much space perception behind itself by beam
