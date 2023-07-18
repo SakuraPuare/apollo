@@ -159,7 +159,7 @@ bool SpeedDecider::CheckKeepClearBlocked(
     const double adc_length =
         VehicleConfigHelper::GetConfig().vehicle_param().length();
     const double distance =
-        obstacle_start_s - keep_clear_obstacle.PerceptionSLBoundary().end_s();
+        obstacle_start_s - keep_clear_obstacle.PerceptionSLBoundary().end_s() + 20.0;
 
     if (obstacle->IsBlockingObstacle() && distance > 0 &&
         distance < (adc_length / 2)) {
@@ -174,6 +174,9 @@ bool SpeedDecider::IsFollowTooClose(const Obstacle& obstacle) const {
   if (!obstacle.IsBlockingObstacle()) {
     return false;
   }
+
+  AINFO << "BOUDARY" << obstacle.path_st_boundary().min_s();
+  // if (obstacle.speed() > 8.0 && obstacle.path_st_boundary().min_s())
 
   if (obstacle.path_st_boundary().min_t() > 0.0) {
     return false;
@@ -385,7 +388,7 @@ bool SpeedDecider::CreateFollowDecision(
     const Obstacle& obstacle, ObjectDecisionType* const follow_decision) const {
   const double follow_speed = init_point_.v();
   double follow_distance_s =
-      -StGapEstimator::EstimateProperFollowingGap(follow_speed) - 20;
+      -StGapEstimator::EstimateProperFollowingGap(follow_speed);
 
   AINFO << "FOLLOW: follow_speed[" << follow_speed
         << "] follow_distance_s[" << follow_distance_s << "]";
@@ -396,9 +399,12 @@ bool SpeedDecider::CreateFollowDecision(
 
   const auto& boundary = obstacle.path_st_boundary();
   const double reference_s =
-      adc_sl_boundary_.end_s() + boundary.min_s() + follow_distance_s;
+      adc_sl_boundary_.end_s() + boundary.min_s() + follow_distance_s + 20.0;
   const double main_stop_s =
       reference_line_info_->path_decision()->stop_reference_line_s();
+
+  AINFO << "REFERENCE_S: reference_s[" << reference_s
+        << "] main_stop_s[" << main_stop_s << "]";
   if (main_stop_s < reference_s) {
     ADEBUG << "Follow reference_s is further away, ignore.";
     return false;
@@ -416,9 +422,9 @@ bool SpeedDecider::CreateFollowDecision(
   fence_point->set_z(0.0);
   follow->set_fence_heading(ref_point.heading());
 
-  PerceptionObstacle::Type obstacle_type = obstacle.Perception().type();
-  ADEBUG << "FOLLOW: obstacle_id[" << obstacle.Id() << "] obstacle_type["
-         << PerceptionObstacle_Type_Name(obstacle_type) << "]";
+  // PerceptionObstacle::Type obstacle_type = obstacle.Perception().type();
+  // ADEBUG << "FOLLOW: obstacle_id[" << obstacle.Id() << "] obstacle_type["
+  //        << PerceptionObstacle_Type_Name(obstacle_type) << "]";
 
   return true;
 }
