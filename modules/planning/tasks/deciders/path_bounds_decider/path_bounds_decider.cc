@@ -1544,11 +1544,6 @@ std::vector<ObstacleEdge> PathBoundsDecider::SortObstaclesForSweepLine(
     if (obstacle->PerceptionSLBoundary().end_s() < adc_frenet_s_) {
       continue;
     }
-
-    // if (obstacle->speed() > 8.0){
-    //   FLAGS_obstacle_lat_buffer = 50.0;
-    // }
-
     // Decompose each obstacle's rectangle into two edges: one at
     // start_s; the other at end_s.
     const auto obstacle_sl = obstacle->PerceptionSLBoundary();

@@ -88,8 +88,6 @@ common::Status PiecewiseJerkPathOptimizer::Process(
     if (obstacle->IsVirtual()) {
       continue;
     }
-    // AINFO << "We have obstacle: " << obstacle->Id()
-    //       << "with type: " << obstacle->Perception().type();
 
     obstacle_max_speed = std::fmax(obstacle->speed(), obstacle_max_speed);
   }

@@ -334,10 +334,10 @@ bool ReferenceLineProvider::GetReferenceLinesFromRelativeMap(
     left_neighbor_lane_ids.emplace_back(neighbor_lane_id.id());
     left_lane_ptr = hdmap->GetLaneById(neighbor_lane_id);
   }
-  AINFO << adc_lane_id
+  ADEBUG << adc_lane_id
          << " left neighbor size : " << left_neighbor_lane_ids.size();
   for (const auto &neighbor : left_neighbor_lane_ids) {
-    AINFO << adc_lane_id << " left neighbor : " << neighbor;
+    ADEBUG << adc_lane_id << " left neighbor : " << neighbor;
   }
   // get adc right neighbor lanes
   std::vector<std::string> right_neighbor_lane_ids;
@@ -349,21 +349,21 @@ bool ReferenceLineProvider::GetReferenceLinesFromRelativeMap(
     right_neighbor_lane_ids.emplace_back(neighbor_lane_id.id());
     right_lane_ptr = hdmap->GetLaneById(neighbor_lane_id);
   }
-  AINFO << adc_lane_id
+  ADEBUG << adc_lane_id
          << " right neighbor size : " << right_neighbor_lane_ids.size();
   for (const auto &neighbor : right_neighbor_lane_ids) {
-    AINFO << adc_lane_id << " right neighbor : " << neighbor;
+    ADEBUG << adc_lane_id << " right neighbor : " << neighbor;
   }
   // 2.get the higher priority lane info list which priority higher
   // than current lane and get the highest one as the target lane
   using LaneIdPair = std::pair<std::string, uint32_t>;
   std::vector<LaneIdPair> high_priority_lane_pairs;
-  AINFO << "relative_map_->navigation_path_size = "
+  ADEBUG << "relative_map_->navigation_path_size = "
          << relative_map_->navigation_path_size();
   for (const auto &path_pair : relative_map_->navigation_path()) {
     const auto lane_id = path_pair.first;
     const uint32_t priority = path_pair.second.path_priority();
-    AINFO << "lane_id = " << lane_id << " priority = " << priority
+    ADEBUG << "lane_id = " << lane_id << " priority = " << priority
            << " adc_lane_id = " << adc_lane_id
            << " adc_lane_priority = " << adc_lane_priority;
     // the smaller the number, the higher the priority
@@ -379,7 +379,7 @@ bool ReferenceLineProvider::GetReferenceLinesFromRelativeMap(
               [](const LaneIdPair &left, const LaneIdPair &right) {
                 return left.second < right.second;
               });
-    AINFO << "need to change lane";
+    ADEBUG << "need to change lane";
     // the highest priority lane as the target navigation lane
     target_lane_pair = high_priority_lane_pairs.front();
     is_lane_change_needed = true;
@@ -426,7 +426,7 @@ bool ReferenceLineProvider::GetReferenceLinesFromRelativeMap(
 
     if (is_lane_change_needed) {
       if (lane_id == nearest_neighbor_lane_id) {
-        AINFO << "adc lane_id = " << adc_lane_id
+        ADEBUG << "adc lane_id = " << adc_lane_id
                << " nearest_neighbor_lane_id = " << lane_id;
         segment.SetIsNeighborSegment(true);
         segment.SetPreviousAction(lane_change_type);
@@ -651,7 +651,7 @@ bool ReferenceLineProvider::ExtendReferenceLine(const VehicleState &state,
     *segments = *prev_segment;
     segments->SetProperties(segment_properties);
     *reference_line = *prev_ref;
-    AINFO << "Reference line remain " << remain_s
+    ADEBUG << "Reference line remain " << remain_s
            << ", which is more than required " << look_forward_required_distance
            << " and no need to extend";
     return true;
@@ -674,7 +674,7 @@ bool ReferenceLineProvider::ExtendReferenceLine(const VehicleState &state,
     *segments = *prev_segment;
     segments->SetProperties(segment_properties);
     *reference_line = *prev_ref;
-    AINFO << "Could not further extend reference line";
+    ADEBUG << "Could not further extend reference line";
     return true;
   }
   hdmap::Path path(shifted_segments);
@@ -710,7 +710,7 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
   double new_forward_distance = reference_line->Length() - sl.s();
   bool need_shrink = false;
   if (sl.s() > FLAGS_look_backward_distance * 1.5) {
-    AINFO << "reference line back side is " << sl.s()
+    ADEBUG << "reference line back side is " << sl.s()
            << ", shrink reference line: origin length: "
            << reference_line->Length();
     new_backward_distance = FLAGS_look_backward_distance;
@@ -799,7 +799,7 @@ AnchorPoint ReferenceLineProvider::GetAnchorPoint(
   bool is_lane_width_safe = true;
 
   if (safe_lane_width < kEpislon) {
-    AINFO << "lane width [" << left_width + right_width << "] "
+    ADEBUG << "lane width [" << left_width + right_width << "] "
            << "is smaller than adc width [" << adc_width << "]";
     effective_width = kEpislon;
     is_lane_width_safe = false;
@@ -809,7 +809,7 @@ AnchorPoint ReferenceLineProvider::GetAnchorPoint(
   if (hdmap::RightBoundaryType(waypoint) == hdmap::LaneBoundaryType::CURB) {
     safe_lane_width -= smoother_config_.curb_shift();
     if (safe_lane_width < kEpislon) {
-      AINFO << "lane width smaller than adc width and right curb shift";
+      ADEBUG << "lane width smaller than adc width and right curb shift";
       effective_width = kEpislon;
       is_lane_width_safe = false;
     } else {
@@ -819,7 +819,7 @@ AnchorPoint ReferenceLineProvider::GetAnchorPoint(
   if (hdmap::LeftBoundaryType(waypoint) == hdmap::LaneBoundaryType::CURB) {
     safe_lane_width -= smoother_config_.curb_shift();
     if (safe_lane_width < kEpislon) {
-      AINFO << "lane width smaller than adc width and left curb shift";
+      ADEBUG << "lane width smaller than adc width and left curb shift";
       effective_width = kEpislon;
       is_lane_width_safe = false;
     } else {
