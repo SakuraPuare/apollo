@@ -36,7 +36,11 @@ bool IsWithinPathDeciderScopeObstacle(const Obstacle& obstacle) {
     return false;
   }
   // Obstacle should not be moving obstacle.
-  if (obstacle.speed() > 3.1) {
+  if (obstacle.speed() > 9.9){
+    return false;
+  }
+
+  if (obstacle.speed() > 3.1 && obstacle.speed() < 5.0) {
     return false;
   }
   // TODO(jiacheng):

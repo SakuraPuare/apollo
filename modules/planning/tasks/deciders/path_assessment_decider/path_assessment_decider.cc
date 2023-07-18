@@ -226,7 +226,7 @@ Status PathAssessmentDecider::Process(
     mutable_path_decider_status->clear_decided_side_pass_direction();
     if (right_borrow) {
       mutable_path_decider_status->add_decided_side_pass_direction(
-          PathDeciderStatus::LEFT_BORROW);
+          PathDeciderStatus::RIGHT_BORROW);
     }
     if (left_borrow) {
       mutable_path_decider_status->add_decided_side_pass_direction(
