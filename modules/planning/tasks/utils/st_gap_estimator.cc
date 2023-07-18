@@ -50,14 +50,14 @@ double StGapEstimator::EstimateProperOvertakingGap(
     const double target_obs_speed, const double adc_speed) {
   const double overtake_distance_s =
       std::fmax(std::fmax(adc_speed, target_obs_speed) * kOvertakeTimeBuffer,
-                50.0);
+                kMinOvertakeDistance);
   return overtake_distance_s;
 }
 
 // TODO(Jinyun): add more variables to follow gap calculation
 double StGapEstimator::EstimateProperFollowingGap(const double adc_speed) {
   return std::fmax(adc_speed * FLAGS_follow_time_buffer,
-                   50.0);
+                   FLAGS_follow_min_distance);
 }
 
 // TODO(Jinyun): add more variables to yielding gap calculation

@@ -1,4 +1,3 @@
-
 /******************************************************************************
  * Copyright 2017 The Apollo Authors. All Rights Reserved.
  *
@@ -385,8 +384,15 @@ bool SpeedDecider::CreateStopDecision(const Obstacle& obstacle,
 bool SpeedDecider::CreateFollowDecision(
     const Obstacle& obstacle, ObjectDecisionType* const follow_decision) const {
   const double follow_speed = init_point_.v();
-  const double follow_distance_s =
-      -StGapEstimator::EstimateProperFollowingGap(follow_speed);
+  double follow_distance_s =
+      -StGapEstimator::EstimateProperFollowingGap(follow_speed) - 20;
+
+  AINFO << "FOLLOW: follow_speed[" << follow_speed
+        << "] follow_distance_s[" << follow_distance_s << "]";
+
+  // if (obstacle.speed() > 8.0){
+  //   follow_distance_s = std::max(follow_distance_s, 60.0);
+  // }
 
   const auto& boundary = obstacle.path_st_boundary();
   const double reference_s =
@@ -402,6 +408,7 @@ bool SpeedDecider::CreateFollowDecision(
 
   // set FOLLOW decision
   auto* follow = follow_decision->mutable_follow();
+  AINFO << "FOLLOW: follow_distance_s[" << follow_distance_s << "]";
   follow->set_distance_s(follow_distance_s);
   auto* fence_point = follow->mutable_fence_point();
   fence_point->set_x(ref_point.x());
