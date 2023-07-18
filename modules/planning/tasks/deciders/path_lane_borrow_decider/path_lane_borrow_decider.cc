@@ -119,7 +119,7 @@ bool PathLaneBorrowDecider::IsNecessaryToBorrowLane(
           mutable_path_decider_status->add_decided_side_pass_direction(
               PathDeciderStatus::LEFT_BORROW);
         }
-        if (right_borrowable) {
+        else if (right_borrowable) {
           mutable_path_decider_status->add_decided_side_pass_direction(
               PathDeciderStatus::RIGHT_BORROW);
         }

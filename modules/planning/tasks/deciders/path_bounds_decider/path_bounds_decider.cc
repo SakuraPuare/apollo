@@ -1545,16 +1545,16 @@ std::vector<ObstacleEdge> PathBoundsDecider::SortObstaclesForSweepLine(
       continue;
     }
 
-    if (obstacle->speed() > 8.0){
-      FLAGS_obstacle_lat_buffer = 50.0;
-    }
+    // if (obstacle->speed() > 8.0){
+    //   FLAGS_obstacle_lat_buffer = 50.0;
+    // }
 
     // Decompose each obstacle's rectangle into two edges: one at
     // start_s; the other at end_s.
     const auto obstacle_sl = obstacle->PerceptionSLBoundary();
     sorted_obstacles.emplace_back(
         1, obstacle_sl.start_s() - FLAGS_obstacle_lon_start_buffer,
-        obstacle_sl.start_l() - FLAGS_obstacle_lat_buffer,
+        obstacle_sl.start_l() - FLAGS_obstacle_lat_buffer + 60.0,
         obstacle_sl.end_l() + FLAGS_obstacle_lat_buffer, obstacle->Id());
     sorted_obstacles.emplace_back(
         0, obstacle_sl.end_s() + FLAGS_obstacle_lon_end_buffer,
