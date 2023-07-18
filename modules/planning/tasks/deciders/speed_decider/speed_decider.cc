@@ -207,10 +207,6 @@ Status SpeedDecider::MakeObjectDecision(
     return Status(ErrorCode::PLANNING_ERROR, msg);
   }
 
-  if(path_decision->obstacles().Items().size() > 3){
-    FLAGS_planning_upper_speed_limit = 7.0;
-  }
-
   for (const auto* obstacle : path_decision->obstacles().Items()) {
     auto* mutable_obstacle = path_decision->Find(obstacle->Id());
     const auto& boundary = mutable_obstacle->path_st_boundary();
