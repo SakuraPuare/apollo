@@ -159,7 +159,7 @@ bool SpeedDecider::CheckKeepClearBlocked(
     const double adc_length =
         VehicleConfigHelper::GetConfig().vehicle_param().length();
     const double distance =
-        obstacle_start_s - keep_clear_obstacle.PerceptionSLBoundary().end_s() + 20.0;
+        obstacle_start_s - keep_clear_obstacle.PerceptionSLBoundary().end_s();
 
     if (obstacle->IsBlockingObstacle() && distance > 0 &&
         distance < (adc_length / 2)) {
@@ -211,7 +211,7 @@ Status SpeedDecider::MakeObjectDecision(
   }
 
   if (path_decision->obstacles().Items().size() > 5){
-    FLAGS_planning_upper_speed_limit = std::min(7.5, FLAGS_planning_upper_speed_limit);
+    FLAGS_planning_upper_speed_limit = std::min(7.0, FLAGS_planning_upper_speed_limit);
   }
   else{
     FLAGS_planning_upper_speed_limit = std::max(16.6, FLAGS_planning_upper_speed_limit);
@@ -387,24 +387,14 @@ bool SpeedDecider::CreateStopDecision(const Obstacle& obstacle,
 bool SpeedDecider::CreateFollowDecision(
     const Obstacle& obstacle, ObjectDecisionType* const follow_decision) const {
   const double follow_speed = init_point_.v();
-  double follow_distance_s =
+  const double follow_distance_s =
       -StGapEstimator::EstimateProperFollowingGap(follow_speed);
-
-  AINFO << "FOLLOW: follow_speed[" << follow_speed
-        << "] follow_distance_s[" << follow_distance_s << "]";
-
-  // if (obstacle.speed() > 8.0){
-  //   follow_distance_s = std::max(follow_distance_s, 60.0);
-  // }
 
   const auto& boundary = obstacle.path_st_boundary();
   const double reference_s =
-      adc_sl_boundary_.end_s() + boundary.min_s() + follow_distance_s + 20.0;
+      adc_sl_boundary_.end_s() + boundary.min_s() + follow_distance_s;
   const double main_stop_s =
       reference_line_info_->path_decision()->stop_reference_line_s();
-
-  AINFO << "REFERENCE_S: reference_s[" << reference_s
-        << "] main_stop_s[" << main_stop_s << "]";
   if (main_stop_s < reference_s) {
     ADEBUG << "Follow reference_s is further away, ignore.";
     return false;
@@ -414,7 +404,6 @@ bool SpeedDecider::CreateFollowDecision(
 
   // set FOLLOW decision
   auto* follow = follow_decision->mutable_follow();
-  AINFO << "FOLLOW: follow_distance_s[" << follow_distance_s << "]";
   follow->set_distance_s(follow_distance_s);
   auto* fence_point = follow->mutable_fence_point();
   fence_point->set_x(ref_point.x());
