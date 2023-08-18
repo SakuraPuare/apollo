@@ -103,7 +103,7 @@ void STBoundsDecider::InitSTBoundsDecider(
          << " msec.";
 
   // Initialize Guide-Line and Driving-Limits.
-  static constexpr double desired_speed = 16.67;
+  static constexpr double desired_speed = 15.0;
   // If the path_data optimization is guided from a reference path of a
   // reference trajectory, use its reference speed profile to select the st
   // bounds in LaneFollow Hybrid Mode

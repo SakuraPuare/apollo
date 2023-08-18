@@ -175,9 +175,6 @@ bool SpeedDecider::IsFollowTooClose(const Obstacle& obstacle) const {
     return false;
   }
 
-  AINFO << "BOUDARY" << obstacle.path_st_boundary().min_s();
-  // if (obstacle.speed() > 8.0 && obstacle.path_st_boundary().min_s())
-
   if (obstacle.path_st_boundary().min_t() > 0.0) {
     return false;
   }
@@ -188,8 +185,8 @@ bool SpeedDecider::IsFollowTooClose(const Obstacle& obstacle) const {
   }
   const double distance =
       obstacle.path_st_boundary().min_s() - FLAGS_min_stop_distance_obstacle;
-  static constexpr double lane_follow_max_decel = 6.0;
-  static constexpr double lane_change_max_decel = 6.0;
+  static constexpr double lane_follow_max_decel = 3.0;
+  static constexpr double lane_change_max_decel = 3.0;
   auto* planning_status = injector_->planning_context()
                               ->mutable_planning_status()
                               ->mutable_change_lane();
@@ -208,13 +205,6 @@ Status SpeedDecider::MakeObjectDecision(
     const std::string msg = "dp_st_graph failed to get speed profile.";
     AERROR << msg;
     return Status(ErrorCode::PLANNING_ERROR, msg);
-  }
-
-  if (path_decision->obstacles().Items().size() > 5){
-    FLAGS_planning_upper_speed_limit = std::min(7.0, FLAGS_planning_upper_speed_limit);
-  }
-  else{
-    FLAGS_planning_upper_speed_limit = std::max(16.6, FLAGS_planning_upper_speed_limit);
   }
 
   for (const auto* obstacle : path_decision->obstacles().Items()) {
@@ -243,7 +233,8 @@ Status SpeedDecider::MakeObjectDecision(
     // always STOP for pedestrian
     if (CheckStopForPedestrian(*mutable_obstacle)) {
       ObjectDecisionType stop_decision;
-      if (CreateStopDecision(*mutable_obstacle, &stop_decision, 2.0)) {
+      if (CreateStopDecision(*mutable_obstacle, &stop_decision,
+                             -1.5)) {
         mutable_obstacle->AddLongitudinalDecision("dp_st_graph/pedestrian",
                                                   stop_decision);
       }
@@ -411,9 +402,9 @@ bool SpeedDecider::CreateFollowDecision(
   fence_point->set_z(0.0);
   follow->set_fence_heading(ref_point.heading());
 
-  // PerceptionObstacle::Type obstacle_type = obstacle.Perception().type();
-  // ADEBUG << "FOLLOW: obstacle_id[" << obstacle.Id() << "] obstacle_type["
-  //        << PerceptionObstacle_Type_Name(obstacle_type) << "]";
+  PerceptionObstacle::Type obstacle_type = obstacle.Perception().type();
+  ADEBUG << "FOLLOW: obstacle_id[" << obstacle.Id() << "] obstacle_type["
+         << PerceptionObstacle_Type_Name(obstacle_type) << "]";
 
   return true;
 }
