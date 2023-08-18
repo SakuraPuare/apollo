@@ -61,6 +61,16 @@ Status PathBoundsDecider::Process(
   CHECK_NOTNULL(frame);
   CHECK_NOTNULL(reference_line_info);
 
+  auto corrdinate_x = frame->PlanningStartPoint().path_point().x();
+  auto corrdinate_y = frame->PlanningStartPoint().path_point().y();
+  // from 751003, 2565909
+  // to   751168, 2566017
+  if(corrdinate_x > 751003 && corrdinate_x < 751168 && corrdinate_y > 2565909 && corrdinate_y < 2566017)
+    FLAGS_planning_upper_speed_limit = 4.5;
+  else
+    FLAGS_planning_upper_speed_limit = 15;
+
+
   // Skip the path boundary decision if reusing the path.
   if (FLAGS_enable_skip_path_tasks && reference_line_info->path_reusable()) {
     return Status::OK();
@@ -272,18 +282,6 @@ void PathBoundsDecider::InitPathBoundsDecider(
     const Frame& frame, const ReferenceLineInfo& reference_line_info) {
   const ReferenceLine& reference_line = reference_line_info.reference_line();
   common::TrajectoryPoint planning_start_point = frame.PlanningStartPoint();
-
-  auto coordinate_x = planning_start_point.path_point().x();
-  auto coordinate_y = planning_start_point.path_point().y();
-
-  // from 750980, 2565900
-  // to   751100, 2566000
-  if(coordinate_x > 750980 && coordinate_x < 751100 && coordinate_y > 2565900 && coordinate_y < 2566000)
-    FLAGS_planning_upper_speed_limit = 5.5;
-  else
-    FLAGS_planning_upper_speed_limit = 16.67;
-
-
   if (FLAGS_use_front_axe_center_in_path_planning) {
     planning_start_point =
         InferFrontAxeCenterFromRearAxeCenter(planning_start_point);
