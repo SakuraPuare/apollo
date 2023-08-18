@@ -324,8 +324,8 @@ bool PiecewiseJerkPathOptimizer::OptimizePath(
           << ddl_bounds[i].first << " " << ddl_bounds[i].second << ","
           << path_reference_l_ref[i] << std::endl;
     }
-    AERROR << "lat boundary, ddl boundary , path reference" << std::endl
-           << ssm.str();
+    // AERROR << "lat boundary, ddl boundary , path reference" << std::endl
+    //        << ssm.str();
     return false;
   }
 

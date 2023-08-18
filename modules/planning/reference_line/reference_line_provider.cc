@@ -192,14 +192,14 @@ void ReferenceLineProvider::GenerateThread() {
     cyber::SleepFor(std::chrono::milliseconds(kSleepTime));
     const double start_time = Clock::NowInSeconds();
     if (!has_routing_) {
-      AERROR << "Routing is not ready.";
+      // AERROR << "Routing is not ready.";
       continue;
     }
     std::list<ReferenceLine> reference_lines;
     std::list<hdmap::RouteSegments> segments;
     if (!CreateReferenceLine(&reference_lines, &segments)) {
       is_reference_line_updated_ = false;
-      AERROR << "Fail to get reference line";
+      // AERROR << "Fail to get reference line";
       continue;
     }
     UpdateReferenceLine(reference_lines, segments);
@@ -710,7 +710,7 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
   double new_forward_distance = reference_line->Length() - sl.s();
   bool need_shrink = false;
   if (sl.s() > FLAGS_look_backward_distance * 1.5) {
-    ADEBUG << "reference line back side is " << sl.s()
+    AINFO << "reference line back side is " << sl.s()
            << ", shrink reference line: origin length: "
            << reference_line->Length();
     new_backward_distance = FLAGS_look_backward_distance;

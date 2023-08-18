@@ -65,11 +65,13 @@ Status PathBoundsDecider::Process(
   auto corrdinate_y = frame->PlanningStartPoint().path_point().y();
   // from 751003, 2565909
   // to   751168, 2566017
+  // if(corrdinate_y >= 2566017 && corrdinate_x >= 751168 && corrdinate_x < 751377)
+  //   FLAGS_planning_upper_speed_limit = 8;
   if(corrdinate_x > 751003 && corrdinate_x < 751168 && corrdinate_y > 2565909 && corrdinate_y < 2566017)
-    FLAGS_planning_upper_speed_limit = 4.5;
-  else
-    FLAGS_planning_upper_speed_limit = 15;
-
+    // FLAGS_planning_upper_speed_limit = 4.5;
+    AINFO << "curr x: " << corrdinate_x << " curr y:" << corrdinate_y;
+  // else>>
+    // FLAGS_planning_upper_speed_limit = 10;
 
   // Skip the path boundary decision if reusing the path.
   if (FLAGS_enable_skip_path_tasks && reference_line_info->path_reusable()) {
