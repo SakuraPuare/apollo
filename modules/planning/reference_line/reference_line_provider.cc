@@ -721,18 +721,31 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
   const auto &ref_points = reference_line->reference_points();
   const double cur_heading = ref_points[index].heading();
   auto last_index = index;
-  while (last_index < ref_points.size() &&
-         AngleDiff(cur_heading, ref_points[last_index].heading()) <
-             kMaxHeadingDiff) {
-    ++last_index;
+  while(last_index > 0 && AngleDiff(cur_heading, ref_points[last_index].heading()) < kMaxHeadingDiff) {
+    --last_index;
   }
-  --last_index;
-  if (last_index != ref_points.size() - 1) {
+  ++last_index;
+
+  if (last_index != 0) {
     need_shrink = true;
-    common::SLPoint forward_sl;
-    reference_line->XYToSL(ref_points[last_index], &forward_sl);
-    new_forward_distance = forward_sl.s() - sl.s();
+    common::SLPoint backward_sl;
+    reference_line->XYToSL(ref_points[last_index], &backward_sl);
+    new_backward_distance = sl.s() - backward_sl.s();
   }
+
+  // while (last_index < ref_points.size() &&
+  //        AngleDiff(cur_heading, ref_points[last_index].heading()) <
+  //            kMaxHeadingDiff) {
+  //   ++last_index;
+  // }
+  // --last_index;
+  // if (last_index != ref_points.size() - 1) {
+  //   need_shrink = true;
+  //   common::SLPoint forward_sl;
+  //   reference_line->XYToSL(ref_points[last_index], &forward_sl);
+  //   new_forward_distance = forward_sl.s() - sl.s();
+  // }
+
   if (need_shrink) {
     if (!reference_line->Segment(sl.s(), new_backward_distance,
                                  new_forward_distance)) {
