@@ -155,7 +155,10 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     const double v_lower_bound = 0.0;
     double v_upper_bound = FLAGS_planning_upper_speed_limit;
     v_upper_bound = speed_limit.GetSpeedLimitByS(path_s);
-    if (corrdinate_x > 750980 && corrdinate_x < 751120 && corrdinate_y > 2565909 && corrdinate_y < 2566000)
+    // 750980, 2565900
+    // 751110, 2566015
+    if (corrdinate_x > 750980 && corrdinate_x < 751110 &&
+        corrdinate_y > 2565900 && corrdinate_y < 2566015)
       v_upper_bound = 4.75;
     // AINFO << corrdinate_x << " "<< corrdinate_y;
     // AINFO << "s:" << path_s << " max: " << v_upper_bound;
