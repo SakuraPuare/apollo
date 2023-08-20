@@ -140,7 +140,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
   auto corrdinate_x = position.x();
   auto corrdinate_y = position.y();
 
-  if (corrdinate_x < 751180 && corrdinate_x > 750980 &&
+  if (corrdinate_x < 751150 && corrdinate_x > 750980 &&
       corrdinate_y < 2566040 && corrdinate_y > 2565900)
     FLAGS_default_cruise_speed = 4.75;
   else 
