@@ -706,6 +706,7 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
                                    RouteSegments *segments) {
   static constexpr double kMaxHeadingDiff = M_PI * 5.0 / 6.0;
   // shrink reference line
+  static constexpr double new_kMaxHeadingDiff = 5e-3;
   double new_backward_distance = sl.s();
   double new_forward_distance = reference_line->Length() - sl.s();
   bool need_shrink = false;
@@ -721,30 +722,30 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
   const auto &ref_points = reference_line->reference_points();
   const double cur_heading = ref_points[index].heading();
   auto last_index = index;
-  while(last_index > 0 && AngleDiff(cur_heading, ref_points[last_index].heading()) < kMaxHeadingDiff) {
+  while (last_index < ref_points.size() &&
+         AngleDiff(cur_heading, ref_points[last_index].heading()) <
+             kMaxHeadingDiff) {
+    ++last_index;
+  }
+  --last_index;
+  if (last_index != ref_points.size() - 1) {
+    need_shrink = true;
+    common::SLPoint forward_sl;
+    reference_line->XYToSL(ref_points[last_index], &forward_sl);
+    new_forward_distance = forward_sl.s() - sl.s();
+  }
+
+  last_index = index;
+  while (last_index > 0 && AngleDiff(ref_points[last_index].heading(), cur_heading) < new_kMaxHeadingDiff) {
     --last_index;
   }
   ++last_index;
-
   if (last_index != 0) {
     need_shrink = true;
     common::SLPoint backward_sl;
     reference_line->XYToSL(ref_points[last_index], &backward_sl);
     new_backward_distance = sl.s() - backward_sl.s();
   }
-
-  // while (last_index < ref_points.size() &&
-  //        AngleDiff(cur_heading, ref_points[last_index].heading()) <
-  //            kMaxHeadingDiff) {
-  //   ++last_index;
-  // }
-  // --last_index;
-  // if (last_index != ref_points.size() - 1) {
-  //   need_shrink = true;
-  //   common::SLPoint forward_sl;
-  //   reference_line->XYToSL(ref_points[last_index], &forward_sl);
-  //   new_forward_distance = forward_sl.s() - sl.s();
-  // }
 
   if (need_shrink) {
     if (!reference_line->Segment(sl.s(), new_backward_distance,
