@@ -160,6 +160,8 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     if (corrdinate_x > 750980 && corrdinate_x < 751110 &&
         corrdinate_y > 2565900 && corrdinate_y < 2566015)
       v_upper_bound = 4.75;
+    // else if ()
+    //   v_upper_bound = 5.0;
     // AINFO << corrdinate_x << " "<< corrdinate_y;
     // AINFO << "s:" << path_s << " max: " << v_upper_bound;
     s_dot_bounds.emplace_back(v_lower_bound, std::fmax(v_upper_bound, 0.0));

@@ -110,9 +110,9 @@ bool ReferenceLineInfo::Init(const std::vector<const Obstacle*>& obstacles) {
 
   for (const auto &traffic_light : map_path.junction_overlaps()) {
     // AINFO << "s: " << traffic_light.start_s << " " << traffic_light.end_s;
-    reference_line_.AddSpeedLimit(traffic_light.start_s - 2.0,
+    reference_line_.AddSpeedLimit(traffic_light.start_s - 5.0,
                                   traffic_light.end_s + 2.0,
-                                  5.5);
+                                  4.0);
   }
 
   SetCruiseSpeed(FLAGS_default_cruise_speed);
