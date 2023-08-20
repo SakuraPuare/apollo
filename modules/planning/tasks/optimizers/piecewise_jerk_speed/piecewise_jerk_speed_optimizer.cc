@@ -160,7 +160,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     if (corrdinate_x > 750980 && corrdinate_x < 751110 &&
         corrdinate_y > 2565900 && corrdinate_y < 2566015)
       v_upper_bound = 4.75;
-    else if (corrdinate_x > 752528 && corrdinate_x < 752661 &&
+    else if (corrdinate_x > 752615 && corrdinate_x < 752665 &&
              corrdinate_y > 2563956 && corrdinate_y < 2563975)
       // from 752528, 2563956
       // to   752661, 2563975
