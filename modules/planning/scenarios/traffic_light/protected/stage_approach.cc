@@ -87,7 +87,7 @@ Stage::StageStatus TrafficLightProtectedStageApproach::Process(
     }
 
     // check on traffic light color
-    if (signal_color != TrafficLight::GREEN) {
+    if (signal_color != TrafficLight::GREEN && signal_color != TrafficLight::UNKNOWN) {
       traffic_light_all_done = false;
       break;
     }
