@@ -47,7 +47,6 @@ double SpeedLimit::GetSpeedLimitByS(const double s) const {
     return point.first < s;
   };
 
-  // AINFO << "Speed limit at s:" << s;
   auto it_lower = std::lower_bound(speed_limit_points_.begin(),
                                    speed_limit_points_.end(), s, compare_s);
 

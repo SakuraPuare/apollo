@@ -712,7 +712,7 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
   double new_forward_distance = reference_line->Length() - sl.s();
   bool need_shrink = false;
   if (sl.s() > FLAGS_look_backward_distance * 1.5) {
-    AINFO << "reference line back side is " << sl.s()
+    ADEBUG << "reference line back side is " << sl.s()
            << ", shrink reference line: origin length: "
            << reference_line->Length();
     new_backward_distance = FLAGS_look_backward_distance;
