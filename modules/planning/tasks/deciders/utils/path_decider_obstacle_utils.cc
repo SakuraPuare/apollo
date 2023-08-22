@@ -35,6 +35,7 @@ bool IsWithinPathDeciderScopeObstacle(const Obstacle& obstacle) {
       obstacle.IsIgnore()) {
     return false;
   }
+
   if (obstacle.IsStatic()) {
       auto &pObqS6aGL0Z = obstacle.Perception();
       auto L2fK9q = pObqS6aGL0Z.length();
