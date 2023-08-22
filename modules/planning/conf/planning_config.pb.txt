@@ -88,8 +88,8 @@ default_task_config: {
       positive_jerk_coeff: 1.0
       negative_jerk_coeff: 1.0
 
-      max_acceleration: 3.0
-      max_deceleration: -6.0
+      max_acceleration: 2.0
+      max_deceleration: -4.0
       spatial_potential_penalty: 1.0e2
     }
     lane_change_speed_config {
@@ -118,8 +118,8 @@ default_task_config: {
       positive_jerk_coeff: 1.0
       negative_jerk_coeff: 1.0
 
-      max_acceleration: 3.0
-      max_deceleration: -6.0
+      max_acceleration: 2.0
+      max_deceleration: -2.5
       spatial_potential_penalty: 1.0e5
       is_lane_changing: true
     }
