@@ -146,7 +146,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
       corrdinate_y < 2566040 && corrdinate_y > 2565900)
     FLAGS_default_cruise_speed = FLAGS_planning_upper_speed_limit = 4.9;
   else
-    FLAGS_default_cruise_speed = FLAGS_planning_upper_speed_limit = 16.67;
+    FLAGS_default_cruise_speed = FLAGS_planning_upper_speed_limit = 16.6;
   for (int i = 0; i < num_of_knots; ++i) {
     double curr_t = i * delta_t;
     // get path_s
