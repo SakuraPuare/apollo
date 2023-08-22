@@ -140,9 +140,9 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
   auto corrdinate_x = position.x();
   auto corrdinate_y = position.y();
 
-  if (corrdinate_x < 751150 && corrdinate_x > 750980 &&
+  if (corrdinate_x < 751170 && corrdinate_x > 750980 &&
       corrdinate_y < 2566040 && corrdinate_y > 2565900)
-    FLAGS_default_cruise_speed = 4.75;
+    FLAGS_default_cruise_speed = 4.9;
   else 
     FLAGS_default_cruise_speed = 16;
   // 751180 2566040
@@ -159,7 +159,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     PathPoint path_point = path_data.GetPathPointWithPathS(path_s);
     penalty_dx.push_back(std::fabs(path_point.kappa()) *
                          config.kappa_penalty_weight());
-    // get v_upper_bound <
+    // get v_upper_bound
     const double v_lower_bound = 0.0;
     double v_upper_bound = FLAGS_planning_upper_speed_limit;
     v_upper_bound = speed_limit.GetSpeedLimitByS(path_s);
@@ -167,7 +167,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     // 751110, 2566015
     if (corrdinate_x > 750980 && corrdinate_x < 751110 &&
         corrdinate_y > 2565900 && corrdinate_y < 2566015)
-      v_upper_bound = 4.75;
+      v_upper_bound = 4.9;
     // else if (corrdinate_x > 752615 && corrdinate_x < 752665 &&
     //          corrdinate_y > 2563956 && corrdinate_y < 2563975)
     //   // from 752528, 2563956
