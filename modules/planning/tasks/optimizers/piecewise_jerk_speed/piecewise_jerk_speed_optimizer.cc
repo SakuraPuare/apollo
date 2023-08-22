@@ -159,7 +159,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     PathPoint path_point = path_data.GetPathPointWithPathS(path_s);
     penalty_dx.push_back(std::fabs(path_point.kappa()) *
                          config.kappa_penalty_weight());
-    // get v_upper_bound <
+    // get v_upper_bound
     const double v_lower_bound = 0.0;
     double v_upper_bound = FLAGS_planning_upper_speed_limit;
     v_upper_bound = speed_limit.GetSpeedLimitByS(path_s);
