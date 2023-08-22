@@ -422,6 +422,10 @@ bool SpeedDecider::CreateYieldDecision(
       adc_sl_boundary_.end_s() + obstacle_boundary.min_s() + yield_distance_s;
   const double main_stop_s =
       reference_line_info_->path_decision()->stop_reference_line_s();
+  // AINFO << "obstacle_boudary.min_s(): " << obstacle_boundary.min_s();
+  // AINFO << "yield_distance_s: " << yield_distance_s;
+  AINFO << "reference_line_fence_s: " << reference_line_fence_s;
+  AINFO << "main_stop_s" << main_stop_s;
   if (main_stop_s < reference_line_fence_s) {
     ADEBUG << "Yield reference_s is further away, ignore.";
     return false;

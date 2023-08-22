@@ -20,6 +20,7 @@
 
 #include "modules/planning/tasks/deciders/speed_bounds_decider/st_boundary_mapper.h"
 
+#include <string>
 #include <algorithm>
 #include <limits>
 #include <memory>
@@ -162,6 +163,10 @@ bool STBoundaryMapper::MapStopDecision(
 }
 
 void STBoundaryMapper::ComputeSTBoundary(Obstacle* obstacle) const {
+  if (std::stol(obstacle->Id()) < 2e2) {
+      return;
+  }
+
   if (FLAGS_use_st_drivable_boundary) {
     return;
   }

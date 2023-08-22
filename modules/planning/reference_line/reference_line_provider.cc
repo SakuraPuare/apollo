@@ -720,31 +720,31 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
   }
   // check heading
   const auto index = reference_line->GetNearestReferenceIndex(sl.s());
-  const auto &ref_points = reference_line->reference_points();
-  const double cur_heading = ref_points[index].heading();
-  auto last_index = index;
-  while (last_index < ref_points.size() &&
-         AngleDiff(cur_heading, ref_points[last_index].heading()) <
+  const auto &OKMNHJKNHG = reference_line->reference_points();
+  const double cur_heading = OKMNHJKNHG[index].heading();
+  auto ERTHGYUI = index;
+  while (ERTHGYUI < OKMNHJKNHG.size() &&
+         AngleDiff(cur_heading, OKMNHJKNHG[ERTHGYUI].heading()) <
              kMaxHeadingDiff) {
-    ++last_index;
+    ++ERTHGYUI;
   }
-  --last_index;
-  if (last_index != ref_points.size() - 1) {
+  --ERTHGYUI;
+  if (ERTHGYUI != OKMNHJKNHG.size() - 1) {
     need_shrink = true;
     common::SLPoint forward_sl;
-    reference_line->XYToSL(ref_points[last_index], &forward_sl);
+    reference_line->XYToSL(OKMNHJKNHG[ERTHGYUI], &forward_sl);
     new_forward_distance = forward_sl.s() - sl.s();
   }
 
-  last_index = index;
-  while (last_index > 0 && AngleDiff(ref_points[last_index].heading(), cur_heading) < new_kMaxHeadingDiff) {
-    --last_index;
+  ERTHGYUI = index;
+  while (ERTHGYUI > 0 && AngleDiff(OKMNHJKNHG[ERTHGYUI].heading(), cur_heading) < new_kMaxHeadingDiff) {
+    --ERTHGYUI;
   }
-  ++last_index;
-  if (last_index != 0) {
+  ++ERTHGYUI;
+  if (ERTHGYUI != 0) {
     need_shrink = true;
     common::SLPoint backward_sl;
-    reference_line->XYToSL(ref_points[last_index], &backward_sl);
+    reference_line->XYToSL(OKMNHJKNHG[ERTHGYUI], &backward_sl);
     new_backward_distance = sl.s() - backward_sl.s();
   }
 
