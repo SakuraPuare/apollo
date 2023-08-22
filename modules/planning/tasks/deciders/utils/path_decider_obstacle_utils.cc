@@ -35,16 +35,18 @@ bool IsWithinPathDeciderScopeObstacle(const Obstacle& obstacle) {
       obstacle.IsIgnore()) {
     return false;
   }
+
   if (obstacle.IsStatic()) {
-      auto &pObqS6aGL0Z = obstacle.Perception();
-      auto L2fK9q = pObqS6aGL0Z.length();
-      auto wXZZF = pObqS6aGL0Z.width();
-      auto eH18bW = pObqS6aGL0Z.height();
-      if (L2fK9q > 8.4 && L2fK9q < 8.6 &&
-          wXZZF > 2.4 && wXZZF < 2.6 &&
-          eH18bW > 3.1 && eH18bW < 3.3)
-        return false;
-  }  
+    auto perception_obstacle = obstacle.Perception();
+    auto length = perception_obstacle.length();
+    auto width = perception_obstacle.width();
+    auto height = perception_obstacle.height();
+    if (length > 8.4 && length < 8.6 &&
+        width > 2.4 && width < 2.6 &&
+        height > 3.1 && height < 3.3)
+      return false;
+  }
+    
   // Obstacle should not be moving obstacle.
   if (!obstacle.IsStatic() ||
       obstacle.speed() > FLAGS_static_obstacle_speed_threshold) {

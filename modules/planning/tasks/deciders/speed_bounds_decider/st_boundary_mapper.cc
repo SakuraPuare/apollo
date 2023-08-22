@@ -20,7 +20,6 @@
 
 #include "modules/planning/tasks/deciders/speed_bounds_decider/st_boundary_mapper.h"
 
-#include <string>
 #include <algorithm>
 #include <limits>
 #include <memory>
