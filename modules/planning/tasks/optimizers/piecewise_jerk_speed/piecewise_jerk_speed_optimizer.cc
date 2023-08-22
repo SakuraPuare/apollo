@@ -142,7 +142,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
 
   // 751085 2566995
   // 751003 2565909
-  if (corrdinate_x < 751158 && corrdinate_x > 750980 &&
+  if (corrdinate_x < 751160 && corrdinate_x > 750980 &&
       corrdinate_y < 2566040 && corrdinate_y > 2565900)
     FLAGS_default_cruise_speed = FLAGS_planning_upper_speed_limit = 4.9;
   else
