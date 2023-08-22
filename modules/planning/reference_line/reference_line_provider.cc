@@ -707,7 +707,7 @@ bool ReferenceLineProvider::Shrink(const common::SLPoint &sl,
   static constexpr double kMaxHeadingDiff = M_PI * 5.0 / 6.0;
   // shrink reference line
   // static constexpr double new_kMaxHeadingDiff = 5e-3;
-  static constexpr double new_kMaxHeadingDiff = 0.05;
+  static constexpr double new_kMaxHeadingDiff = M_PI * 0.03;
   double new_backward_distance = sl.s();
   double new_forward_distance = reference_line->Length() - sl.s();
   bool need_shrink = false;
