@@ -140,13 +140,13 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
   auto corrdinate_x = position.x();
   auto corrdinate_y = position.y();
 
-  if (corrdinate_x < 751170 && corrdinate_x > 750980 &&
+  // 751085 2566995
+  // 751003 2565909
+  if (corrdinate_x < 751160 && corrdinate_x > 750980 &&
       corrdinate_y < 2566040 && corrdinate_y > 2565900)
     FLAGS_default_cruise_speed = 4.9;
   else 
     FLAGS_default_cruise_speed = 16;
-  // 751180 2566040
-  // 750980 2565900
 
   for (int i = 0; i < num_of_knots; ++i) {
     double curr_t = i * delta_t;
@@ -163,18 +163,11 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     const double v_lower_bound = 0.0;
     double v_upper_bound = FLAGS_planning_upper_speed_limit;
     v_upper_bound = speed_limit.GetSpeedLimitByS(path_s);
-    // 750980, 2565900
-    // 751110, 2566015
-    if (corrdinate_x > 750980 && corrdinate_x < 751110 &&
-        corrdinate_y > 2565900 && corrdinate_y < 2566015)
+    // 751085 2565995
+    // 751003 2565910
+    if (corrdinate_x > 751003 && corrdinate_x < 751085 &&
+        corrdinate_y > 2565910 && corrdinate_y < 2565995)
       v_upper_bound = 4.9;
-    // else if (corrdinate_x > 752615 && corrdinate_x < 752665 &&
-    //          corrdinate_y > 2563956 && corrdinate_y < 2563975)
-    //   // from 752528, 2563956
-    //   // to   752661, 2563975
-    //   v_upper_bound = 2.0;
-    // AINFO << corrdinate_x << " "<< corrdinate_y;
-    // AINFO << "s:" << path_s << " max: " << v_upper_bound;
     s_dot_bounds.emplace_back(v_lower_bound, std::fmax(v_upper_bound, 0.0));
   }
   piecewise_jerk_problem.set_x_ref(config.ref_s_weight(), std::move(x_ref));
