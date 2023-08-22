@@ -142,7 +142,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
 
   if (corrdinate_x < 751170 && corrdinate_x > 750980 &&
       corrdinate_y < 2566040 && corrdinate_y > 2565900)
-    FLAGS_default_cruise_speed = 4.75;
+    FLAGS_default_cruise_speed = 4.9;
   else 
     FLAGS_default_cruise_speed = 16;
   // 751180 2566040
@@ -167,7 +167,7 @@ Status PiecewiseJerkSpeedOptimizer::Process(const PathData& path_data,
     // 751110, 2566015
     if (corrdinate_x > 750980 && corrdinate_x < 751110 &&
         corrdinate_y > 2565900 && corrdinate_y < 2566015)
-      v_upper_bound = 4.75;
+      v_upper_bound = 4.9;
     // else if (corrdinate_x > 752615 && corrdinate_x < 752665 &&
     //          corrdinate_y > 2563956 && corrdinate_y < 2563975)
     //   // from 752528, 2563956
